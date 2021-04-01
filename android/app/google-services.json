@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "280157479470",
+    "project_id": "mayteaam-72b2a",
+    "storage_bucket": "mayteaam-72b2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280157479470:android:010c5b4469557593c435bf",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "280157479470-hvrbckk5d0vuo42hbbrankrutk8ek8qo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app",
+            "certificate_hash": "a7f90d62abd453499637733f0fe261fb9c4a9a11"
+          }
+        },
+        {
+          "client_id": "280157479470-7f4fnn1ccm9058t9p02hvj36v5uohr28.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHRO5hrnbbPOTtR1pox3ynKBYWAqrq_08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "280157479470-7f4fnn1ccm9058t9p02hvj36v5uohr28.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
