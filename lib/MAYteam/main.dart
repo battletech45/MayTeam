@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
 class loginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return MaterialButton(
        child: const Text('LOGIN'),
       color: Colors.red,
       elevation: 5.0,
@@ -59,7 +59,7 @@ class loginButton extends StatelessWidget {
 class signUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return MaterialButton(
       child: const Text('SIGN UP'),
       color: Colors.black,
       elevation: 5.0,

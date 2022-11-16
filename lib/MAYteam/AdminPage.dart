@@ -113,13 +113,13 @@ class _AdminPageState extends State<AdminPage> {
 
 
   void _popupDialog(BuildContext context) {
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = ElevatedButton(
       child: Text("Cancel"),
       onPressed:  () {
         Navigator.of(context).pop();
       },
     );
-    Widget createButton = FlatButton(
+    Widget createButton = ElevatedButton(
       child: Text("Create"),
       onPressed:  () async {
         if(_groupName != null) {
