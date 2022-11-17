@@ -29,10 +29,10 @@ dependencies:
   cloud_firestore: any
   firebase_storage: any
   firebase_analytics: any
-  email_validator: ^1.0.4
-  rflutter_alert: ^1.0.3
-  the_validator: ^1.0.1
-  shared_preferences: ^0.5.7+3
+  email_validator: ^2.1.17
+  rflutter_alert: ^2.0.4
+  the_validator: ^2.0.0
+  shared_preferences: ^2.0.15
 
 
   # The following adds the Cupertino Icons font to your application.
