@@ -24,11 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core: any
-  firebase_auth: any
-  cloud_firestore: any
-  firebase_storage: any
-  firebase_analytics: any
+  firebase_core: 2.3.0
+  firebase_auth: 4.1.3
+  cloud_firestore: 4.1.0
+  firebase_storage: 11.0.6
+  firebase_analytics: 10.0.6
   email_validator: ^2.1.17
   rflutter_alert: ^2.0.4
   the_validator: ^2.0.0
