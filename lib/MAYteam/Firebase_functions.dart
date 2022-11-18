@@ -51,7 +51,7 @@ class FirebaseFunctions {
 
     DocumentReference groupDocRef = groupCollection.doc(groupID);
 
-    List<dynamic> groups = await userDocSnapshot.data()['groups'];
+    List<dynamic> groups = await userDocSnapshot.get("groups");
 
     if (groups.contains(groupID + '_' + groupName)) {
       await userDocRef.update({
@@ -77,7 +77,7 @@ class FirebaseFunctions {
     DocumentReference userDocRef = userCollection.doc(userID);
     DocumentSnapshot userDocSnapshot = await userDocRef.get();
 
-    List<dynamic> groups = await userDocSnapshot.data()['groups'];
+    List<dynamic> groups = await userDocSnapshot.get("groups");
 
     if (groups.contains(groupID + '_' + groupName)) {
       return true;
