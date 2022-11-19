@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       stream: _groups,
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if(snapshot.hasData) {
-          var data = snapshot.data.data();
+          var data = snapshot.data;
           if(data['groups'] != null) {
             if(data['groups'].length != 0) {
               return ListView.builder(
