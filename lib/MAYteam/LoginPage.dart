@@ -39,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
 
           await SideFunctions.saveUserLoggedInSharedPreference(true);
           await SideFunctions.saverUserEmailSharedPreference(email);
-          await SideFunctions.saveUserNameSharedPreference(userInfoSnapshot.docs[0].data()['fullName']);
+          await SideFunctions.saveUserNameSharedPreference(userInfoSnapshot.docs[0].get('fullName'));
 
           if(email == 'taneri862@gmail.com') {
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AdminPage()));
