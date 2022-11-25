@@ -137,7 +137,7 @@ class _SignInPageState extends State<SignInPage> {
                           }
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 25.0),
                     Text.rich(
                       TextSpan(
                         text: "Don't have an account? ",
