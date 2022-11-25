@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
           body: new Container(
             alignment: Alignment.center,
-            color: Colors.black38,
+            color: Colors.brown[900],
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -42,8 +42,9 @@ class loginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
        child: const Text('LOGIN'),
-      color: Colors.red,
       elevation: 5.0,
+      color: Colors.red,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.black,
       onPressed: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
@@ -59,6 +60,7 @@ class signUpButton extends StatelessWidget {
       color: Colors.black,
       elevation: 5.0,
       splashColor: Colors.red,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       onPressed: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterPage()));
       },
