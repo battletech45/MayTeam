@@ -19,21 +19,16 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         home: Scaffold(
-          appBar: AppBar(
-            title: Text('M.A.Y. TEAM'),
-            backgroundColor: Colors.red,
-          ),
           body: new Container(
-            margin: const EdgeInsets.only(top: 210.0),
+            alignment: Alignment.center,
+            color: Colors.black38,
             child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 577,
-                  height: 121,
-                  child: Image.asset('images/logo.png')),
-            new Column(
-              children: [loginButton(),signUpButton()],
-            ),]
+                Image.asset('images/logo.png'),
+                loginButton(),
+                signUpButton()
+            ]
           ),
           ),
     ),
