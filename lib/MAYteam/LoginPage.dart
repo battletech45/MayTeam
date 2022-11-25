@@ -6,6 +6,7 @@ import 'package:flutter_app/MAYteam/Auth_functions.dart';
 import 'package:flutter_app/MAYteam/Firebase_functions.dart';
 import 'package:flutter_app/MAYteam/SideFunctions.dart';
 import 'package:flutter_app/MAYteam/SignUpPage.dart';
+import 'package:flutter_app/MAYteam/main.dart';
 import 'GameGroupPage.dart';
 
 class SignInPage extends StatefulWidget {
@@ -62,27 +63,29 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text('M.A.Y. TEAM'),
-        backgroundColor: Colors.red,
+        elevation: 0.0,
+        backgroundColor: Colors.brown[900],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp()),
+          ),
+        ),
       ),
       body: Form(
           key: _formKey,
           child: Container(
-            color: Colors.black,
+            alignment: Alignment.center,
+            color: Colors.brown[900],
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 80.0),
               children: <Widget>[
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 30.0),
-
                     Text("Sign In",
                         style: TextStyle(color: Colors.white, fontSize: 25.0)),
-
                     SizedBox(height: 20.0),
-
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'EMAIL'
@@ -91,21 +94,17 @@ class _SignInPageState extends State<SignInPage> {
                       validator: (val) {
                         return RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-
                             .hasMatch(val)
                             ? null
                             : "Please enter a valid email";
                       },
-
                       onChanged: (val) {
                         setState(() {
                           email = val;
                         });
                       },
                     ),
-
                     SizedBox(height: 15.0),
-
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'PASSWORD'
@@ -122,9 +121,7 @@ class _SignInPageState extends State<SignInPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 20.0),
-
                     SizedBox(
                       width: double.infinity,
                       height: 50.0,
@@ -132,7 +129,7 @@ class _SignInPageState extends State<SignInPage> {
                           elevation: 0.0,
                           color: Colors.red,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
+                              borderRadius: BorderRadius.circular(80.0)),
                           child: Text('Sign In', style: TextStyle(
                               color: Colors.white, fontSize: 16.0)),
                           onPressed: () {
@@ -140,9 +137,7 @@ class _SignInPageState extends State<SignInPage> {
                           }
                       ),
                     ),
-
-                    SizedBox(height: 10.0),
-
+                    SizedBox(height: 20.0),
                     Text.rich(
                       TextSpan(
                         text: "Don't have an account? ",
@@ -162,9 +157,7 @@ class _SignInPageState extends State<SignInPage> {
                         ],
                       ),
                     ),
-
                     SizedBox(height: 10.0),
-
                     Text(error,
                         style: TextStyle(color: Colors.red, fontSize: 14.0)),
                   ],
