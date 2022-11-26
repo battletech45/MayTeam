@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
   void _showScaffold(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.brown,
         duration: Duration(milliseconds: 5000),
         content: Text(message, textAlign:  TextAlign.center, style: TextStyle(fontSize: 17.0)),
       )
@@ -79,9 +79,7 @@ class _SearchPageState extends State<SearchPage> {
           searchResultSnapshot.docs[index].get("admin"),
         );
       }
-    )
-        :
-        Container();
+    ) : Container();
   }
 
   Widget groupTile(String userName, String groupID, String groupName, String admin){
@@ -152,7 +150,7 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               color: Colors.black,
               child: Row(
                 children: [
