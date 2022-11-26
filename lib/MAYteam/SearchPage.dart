@@ -142,6 +142,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         elevation: 0.0,
         backgroundColor: Colors.brown[900],
         title: Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
@@ -149,9 +150,10 @@ class _SearchPageState extends State<SearchPage> {
       body: Container(
         child: Column(
           children: [
+            SizedBox(height: 20.0),
             Container(
+              decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              color: Colors.black,
               child: Row(
                 children: [
                   Expanded(
