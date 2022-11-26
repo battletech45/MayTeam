@@ -29,10 +29,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget noGroupWidget() {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 25.0),
+        alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
                 onTap: () {
@@ -73,9 +72,7 @@ class _HomePageState extends State<HomePage> {
           }
         }
         else {
-          return Center(
-              child: CircularProgressIndicator()
-          );
+          return CircularProgressIndicator();
         }
       },
     );
@@ -99,16 +96,13 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
-
   String _destructureId(String res) {
     return res.substring(0, res.indexOf('_'));
   }
 
-
   String _destructureName(String res) {
     return res.substring(res.indexOf('_') + 1);
   }
-
 
   void _popupDialog(BuildContext context) {
     Widget cancelButton = ElevatedButton(
@@ -161,7 +155,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Game Groups', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.brown[900],
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
