@@ -90,7 +90,7 @@ class _SearchPageState extends State<SearchPage> {
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       leading: CircleAvatar(
         radius: 30.0,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.brown[900],
         child: Text(groupName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white))
       ),
       title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
@@ -130,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-                color: Colors.blue
+                color: Colors.brown[900]
               ),
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: Text('Join', style: TextStyle(color: Colors.white)),
@@ -145,7 +145,7 @@ class _SearchPageState extends State<SearchPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.brown[900],
         title: Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
       ),
       body: Container(
