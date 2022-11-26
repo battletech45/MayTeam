@@ -32,9 +32,7 @@ class _ChatPageState extends State<ChatPage> {
                   sentByMe: widget.userName == snapshot.data.docs[index].get("sender"),
                 );
               }
-          )
-              :
-          Container();
+          ) : Container();
         },
       );
     }
@@ -71,9 +69,10 @@ class _ChatPageState extends State<ChatPage> {
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
           title: Text(widget.groupName, style: TextStyle(color: Colors.white)),
           centerTitle: true,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.brown[900],
           elevation: 0.0,
         ),
         body: Container(
@@ -87,19 +86,16 @@ class _ChatPageState extends State<ChatPage> {
                     .size
                     .width,
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 15.0, vertical: 10.0),
-                  color: Colors.grey,
+                  decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
+                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         child: TextField(
                           controller: messageEditingController,
-                          style: TextStyle(
-                              color: Colors.white
-                          ),
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                              hintText: 'Send a message',
+                              hintText: 'Send a message...',
                               hintStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -108,8 +104,6 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 12.0),
-
                       GestureDetector(
                         onTap: () {
                           _sendMessage();
@@ -118,13 +112,12 @@ class _ChatPageState extends State<ChatPage> {
                           height: 50.0,
                           width: 50.0,
                           decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Colors.brown[700],
                               borderRadius: BorderRadius.circular(50)
                           ),
-                          child: Center(child: Icon(
-                              Icons.send, color: Colors.white)),
+                          child: Center(child: Icon(Icons.send, color: Colors.white)),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
