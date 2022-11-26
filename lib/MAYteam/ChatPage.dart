@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/MAYteam/Chat_Message_Settings.dart';
-import 'package:flutter_app/MAYteam/main.dart';
 import 'Firebase_functions.dart';
 
 class ChatPage extends StatefulWidget {
@@ -81,10 +80,7 @@ class _ChatPageState extends State<ChatPage> {
               _chatMessages(),
               Container(
                 alignment: Alignment.bottomCenter,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 child: Container(
                   decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
                   padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),

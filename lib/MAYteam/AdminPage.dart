@@ -31,7 +31,7 @@ class _AdminPageState extends State<AdminPage> {
 
   Widget noGroupWidget() {
     return Container(
-      color: Colors.brown[900],
+      color: Colors.grey[850],
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -138,6 +138,7 @@ class _AdminPageState extends State<AdminPage> {
     );
 
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       title: Text("Create a group"),
       content: TextField(
           onChanged: (val) {
@@ -167,6 +168,7 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         title: Text('Admin Page', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.brown[900],
         elevation: 0.0,
@@ -188,7 +190,7 @@ class _AdminPageState extends State<AdminPage> {
             _popupDialog(context);
           },
           child: Icon(Icons.add, color: Colors.white, size: 35.0),
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.brown[700],
           elevation: 0.0,
         ),
       ),

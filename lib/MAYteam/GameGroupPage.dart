@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget noGroupWidget() {
     return Container(
-        color: Colors.brown[900],
+        color: Colors.grey[850],
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -169,7 +169,6 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      
       body: groupsList(),
     );
   }
