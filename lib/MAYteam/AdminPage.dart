@@ -31,6 +31,7 @@ class _AdminPageState extends State<AdminPage> {
 
   Widget noGroupWidget() {
     return Container(
+      color: Colors.brown[900],
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -179,7 +180,6 @@ class _AdminPageState extends State<AdminPage> {
           )
         ],
       ),
-
       body: groupsList(),
       floatingActionButton: Transform.scale(
         scale: 1.2,
@@ -188,7 +188,7 @@ class _AdminPageState extends State<AdminPage> {
             _popupDialog(context);
           },
           child: Icon(Icons.add, color: Colors.white, size: 35.0),
-          backgroundColor: Colors.brown[800],
+          backgroundColor: Colors.black,
           elevation: 0.0,
         ),
       ),
