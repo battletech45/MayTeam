@@ -21,7 +21,7 @@ class MessageTile extends StatelessWidget {
               :
               BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23), bottomRight: Radius.circular(23)
               ),
-          color: sentByMe ? Colors.red : Colors.blue,
+          color: sentByMe ? Colors.teal[900] : Colors.blueGrey[700],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

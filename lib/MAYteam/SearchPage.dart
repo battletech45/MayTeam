@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
   void _showScaffold(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.brown,
         duration: Duration(milliseconds: 5000),
         content: Text(message, textAlign:  TextAlign.center, style: TextStyle(fontSize: 17.0)),
       )
@@ -74,14 +74,12 @@ class _SearchPageState extends State<SearchPage> {
       itemBuilder: (context, index) {
         return groupTile(
           _userName,
-          searchResultSnapshot.docs[index].data()["groupID"],
-          searchResultSnapshot.docs[index].data()["groupName"],
-          searchResultSnapshot.docs[index].data()["admin"],
+          searchResultSnapshot.docs[index].get("groupID"),
+          searchResultSnapshot.docs[index].get("groupName"),
+          searchResultSnapshot.docs[index].get("admin"),
         );
       }
-    )
-        :
-        Container();
+    ) : Container();
   }
 
   Widget groupTile(String userName, String groupID, String groupName, String admin){
@@ -90,7 +88,7 @@ class _SearchPageState extends State<SearchPage> {
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       leading: CircleAvatar(
         radius: 30.0,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.brown[900],
         child: Text(groupName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white))
       ),
       title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
@@ -130,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-                color: Colors.blue
+                color: Colors.brown[900]
               ),
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: Text('Join', style: TextStyle(color: Colors.white)),
@@ -144,16 +142,18 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         elevation: 0.0,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.brown[900],
         title: Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
       ),
       body: Container(
         child: Column(
           children: [
+            SizedBox(height: 20.0),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-              color: Colors.black,
+              decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
                   Expanded(

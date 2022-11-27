@@ -19,21 +19,16 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         home: Scaffold(
-          appBar: AppBar(
-            title: Text('M.A.Y. TEAM'),
-            backgroundColor: Colors.red,
-          ),
           body: new Container(
-            margin: const EdgeInsets.only(top: 210.0),
+            alignment: Alignment.center,
+            color: Colors.brown[900],
             child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 577,
-                  height: 121,
-                  child: Image.asset('images/logo.png')),
-            new Column(
-              children: [loginButton(),signUpButton()],
-            ),]
+                Image.asset('images/logo.png'),
+                loginButton(),
+                signUpButton()
+            ]
           ),
           ),
     ),
@@ -47,8 +42,9 @@ class loginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
        child: const Text('LOGIN'),
-      color: Colors.red,
       elevation: 5.0,
+      color: Colors.red,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.black,
       onPressed: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
@@ -64,6 +60,7 @@ class signUpButton extends StatelessWidget {
       color: Colors.black,
       elevation: 5.0,
       splashColor: Colors.red,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       onPressed: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterPage()));
       },

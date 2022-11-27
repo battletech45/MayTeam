@@ -19,7 +19,7 @@ class GroupTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 30.0,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.brown[900],
             child: Text(groupName.substring(0,1).toUpperCase(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
           ),
           title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),

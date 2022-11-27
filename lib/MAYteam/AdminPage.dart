@@ -31,16 +31,16 @@ class _AdminPageState extends State<AdminPage> {
 
   Widget noGroupWidget() {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 25.0),
+      color: Colors.grey[850],
+        alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
                 onTap: () {
                   _popupDialog(context);
                 },
-                child: Icon(Icons.add_circle, color: Colors.red, size: 100.0)
+                child: Icon(Icons.add_circle, color: Colors.white, size: 80.0)
             ),
             SizedBox(height: 20.0),
             Text("You've not joined any group, tap on the 'add' icon"),
@@ -54,7 +54,7 @@ class _AdminPageState extends State<AdminPage> {
       stream: _groups,
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if(snapshot.hasData) {
-          var data = snapshot.data.data();
+          var data = snapshot.data;
           if(data['groups'] != null) {
             if(data['groups'].length != 0) {
               return ListView.builder(
@@ -106,22 +106,28 @@ class _AdminPageState extends State<AdminPage> {
     return res.substring(0, res.indexOf('_'));
   }
 
-
   String _destructureName(String res) {
     return res.substring(res.indexOf('_') + 1);
   }
 
-
   void _popupDialog(BuildContext context) {
-    Widget cancelButton = ElevatedButton(
+    Widget cancelButton = MaterialButton(
       child: Text("Cancel"),
-      onPressed:  () {
+      elevation: 5.0,
+      color: Colors.red[900],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      splashColor: Colors.black,
+      onPressed: () {
         Navigator.of(context).pop();
       },
     );
-    Widget createButton = ElevatedButton(
+    Widget createButton = MaterialButton(
       child: Text("Create"),
-      onPressed:  () async {
+      elevation: 5.0,
+      color: Colors.red[900],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      splashColor: Colors.black,
+      onPressed: () async {
         if(_groupName != null) {
           await SideFunctions.getUserNameSharedPreference().then((val) {
             FirebaseFunctions(userID: _user.uid).createGroup(val, _groupName);
@@ -132,6 +138,7 @@ class _AdminPageState extends State<AdminPage> {
     );
 
     AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       title: Text("Create a group"),
       content: TextField(
           onChanged: (val) {
@@ -157,13 +164,13 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Game Groups(Admin)', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.red,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        title: Text('Admin Page', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.brown[900],
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
@@ -175,15 +182,17 @@ class _AdminPageState extends State<AdminPage> {
           )
         ],
       ),
-
       body: groupsList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _popupDialog(context);
-        },
-        child: Icon(Icons.add, color: Colors.black, size: 30.0),
-        backgroundColor: Colors.red,
-        elevation: 0.0,
+      floatingActionButton: Transform.scale(
+        scale: 1.2,
+        child: FloatingActionButton(
+          onPressed: () {
+            _popupDialog(context);
+          },
+          child: Icon(Icons.add, color: Colors.white, size: 35.0),
+          backgroundColor: Colors.brown[700],
+          elevation: 0.0,
+        ),
       ),
     );
   }

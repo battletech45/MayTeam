@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_app/MAYteam/LoginPage.dart';
+import 'package:flutter_app/MAYteam/main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'GameGroupPage.dart';
@@ -51,26 +52,27 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('M.A.Y. TEAM'),
-        backgroundColor: Colors.red,
+        elevation: 0.0,
+        backgroundColor: Colors.brown[900],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp()),
+          ),
+        ),
       ),
       body: Form(
           key: _formKey,
           child: Container(
-            color: Colors.black,
+            alignment: Alignment.center,
+            color: Colors.brown[900],
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 80.0),
+              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 60.0),
               children: <Widget>[
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 30.0),
-
                     Text("Register", style: TextStyle(color: Colors.white, fontSize: 25.0)),
-
                     SizedBox(height: 20.0),
-
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'NAME'
@@ -82,9 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 15.0),
-
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'EMAIL',
@@ -99,9 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 15.0),
-
                     TextFormField(
                       decoration: InputDecoration(
                         hintText: 'PASSWORD'
@@ -114,9 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
-
                     SizedBox(height: 20.0),
-
                     SizedBox(
                       width: double.infinity,
                       height: 50.0,
@@ -130,9 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                       ),
                     ),
-
-                    SizedBox(height: 10.0),
-
+                    SizedBox(height: 25.0),
                     Text.rich(
                       TextSpan(
                         text: "Already have an account? ",
@@ -148,9 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                     ),
-
                     SizedBox(height: 10.0),
-
                     Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0)),
                   ],
                 ),
