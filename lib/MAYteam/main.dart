@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('images/logo.png'),
+                Image.asset('images/logo.png', width: 200, height: 200),
                 loginButton(),
                 signUpButton()
             ]
