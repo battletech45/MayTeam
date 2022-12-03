@@ -45,11 +45,12 @@ class _ChatPageState extends State<ChatPage> {
               .now()
               .millisecondsSinceEpoch,
         };
-
         FirebaseFunctions().sendMessage(widget.groupID, chatMessageMap);
-
-        setState(() {
-          messageEditingController.text = "";
+        FirebaseFunctions().getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
+          setState(() {
+            _chats = val;
+            messageEditingController.text = "";
+          });
         });
       }
     }
