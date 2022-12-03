@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_app/MAYteam/LoginPage.dart';
-import 'package:flutter_app/MAYteam/main.dart';
+import 'package:flutter_app/main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'GameGroupPage.dart';
