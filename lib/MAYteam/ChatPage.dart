@@ -66,44 +66,57 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     void _popupGroupMemberLists(BuildContext context) {
-      _getGroupMembers();
+
+      Widget backButton = MaterialButton(
+        child: Text("Back"),
+        elevation: 5.0,
+        color: Colors.red[900],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        splashColor: Colors.black,
+        onPressed:  () {
+          Navigator.of(context).pop();
+        },
+      );
+
       AlertDialog alert = AlertDialog(
+        icon: Icon(Icons.people_alt),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         title: Text("Group Members"),
-        content: Container(
-          height: 200.0,
-          width: 200.0,
-          child: StreamBuilder <DocumentSnapshot> (
-            stream: _groupMembers,
-            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if(snapshot.hasData) {
-                var data = snapshot.data;
-                if(data['members'] != null) {
-                  if(data['members'].length != 0) {
-                    return ListView.builder(
-                        itemCount: data['members'].length,
-                        shrinkWrap: true,
-                        itemBuilder:  (context, index) {
-                          int reqIndex = data['members'].length - index - 1;
-                          return MemberTile(userName: data['members'][reqIndex], groupName: widget.groupName);
-                        }
-                    );
+        actions: [backButton],
+        content: Material(
+          elevation: 10.0,
+          child: Container(
+            height: 225.0,
+            width:  200.0,
+            child: StreamBuilder <DocumentSnapshot> (
+              stream: _groupMembers,
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if(snapshot.hasData) {
+                  var data = snapshot.data;
+                  if(data['members'] != null) {
+                    if(data['members'].length != 0) {
+                      return ListView.builder(
+                          itemCount: data['members'].length,
+                          shrinkWrap: true,
+                          itemBuilder:  (context, index) {
+                            int reqIndex = data['members'].length - index - 1;
+                            return MemberTile(userName: data['members'][reqIndex], groupName: widget.groupName);
+                          }
+                      );
+                    }
+                    else {
+                      return CircularProgressIndicator();
+                    }
                   }
                   else {
-                    print("here 1");
                     return CircularProgressIndicator();
                   }
                 }
                 else {
-                  print("here 2");
                   return CircularProgressIndicator();
                 }
-              }
-              else {
-                print("here 3");
-                return CircularProgressIndicator();
-              }
-            },
+              },
+            ),
           ),
         )
       );
