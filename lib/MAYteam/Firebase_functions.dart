@@ -99,6 +99,10 @@ class FirebaseFunctions {
           .snapshots();
   }
 
+  Future<Stream<DocumentSnapshot>> getGroupMembers(String groupID) async {
+      return FirebaseFirestore.instance.collection('groups').doc(groupID).snapshots();
+  }
+
   void sendMessage(String groupID, chatMessageData) {
     FirebaseFirestore.instance
         .collection('groups')
