@@ -45,11 +45,12 @@ class _ChatPageState extends State<ChatPage> {
               .now()
               .millisecondsSinceEpoch,
         };
-
         FirebaseFunctions().sendMessage(widget.groupID, chatMessageMap);
-
-        setState(() {
-          messageEditingController.text = "";
+        FirebaseFunctions().getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
+          setState(() {
+            _chats = val;
+            messageEditingController.text = "";
+          });
         });
       }
     }
@@ -75,9 +76,11 @@ class _ChatPageState extends State<ChatPage> {
           elevation: 0.0,
         ),
         body: Container(
-          child: Stack(
+          child: Column(
             children: <Widget>[
-              _chatMessages(),
+              Expanded(
+                  child: _chatMessages()
+              ),
               Container(
                 alignment: Alignment.bottomCenter,
                 width: MediaQuery.of(context).size.width,
@@ -117,7 +120,7 @@ class _ChatPageState extends State<ChatPage> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

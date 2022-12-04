@@ -6,7 +6,7 @@ import 'package:flutter_app/MAYteam/Auth_functions.dart';
 import 'package:flutter_app/MAYteam/Firebase_functions.dart';
 import 'package:flutter_app/MAYteam/SideFunctions.dart';
 import 'package:flutter_app/MAYteam/SignUpPage.dart';
-import 'package:flutter_app/MAYteam/main.dart';
+import 'package:flutter_app/main.dart';
 import 'GameGroupPage.dart';
 
 class SignInPage extends StatefulWidget {
