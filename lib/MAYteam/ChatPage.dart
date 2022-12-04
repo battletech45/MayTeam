@@ -84,7 +84,8 @@ class _ChatPageState extends State<ChatPage> {
                         itemCount: data['members'].length,
                         shrinkWrap: true,
                         itemBuilder:  (context, index) {
-                          return GroupTile(userName: data['admin'], groupID: widget.groupID, groupName: widget.groupName);
+                          int reqIndex = data['members'].length - index - 1;
+                          return MemberTile(userName: data['members'][reqIndex], groupName: widget.groupName);
                         }
                     );
                   }
