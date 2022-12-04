@@ -25,12 +25,13 @@ class _ChatPageState extends State<ChatPage> {
         stream: _chats,
         builder: (context, snapshot) {
           return snapshot.hasData ? ListView.builder(
+            reverse: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 return MessageTile(
-                  message: snapshot.data.docs[index].get("message"),
-                  sender: snapshot.data.docs[index].get("sender"),
-                  sentByMe: widget.userName == snapshot.data.docs[index].get("sender"),
+                  message: snapshot.data.docs[snapshot.data.docs.length - index - 1].get("message"),
+                  sender: snapshot.data.docs[snapshot.data.docs.length - index - 1].get("sender"),
+                  sentByMe: widget.userName == snapshot.data.docs[snapshot.data.docs.length - index - 1].get("sender"),
                 );
               }
           ) : Container();
