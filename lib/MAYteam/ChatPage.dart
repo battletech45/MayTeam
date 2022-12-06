@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/MAYteam/Chat_Group_Settings.dart';
 import 'package:flutter_app/MAYteam/Chat_Message_Settings.dart';
 import 'Firebase_functions.dart';
 
@@ -16,6 +17,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
     Stream<QuerySnapshot> _chats;
+    Stream<DocumentSnapshot> _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
 
     Widget _chatMessages() {
@@ -23,12 +25,13 @@ class _ChatPageState extends State<ChatPage> {
         stream: _chats,
         builder: (context, snapshot) {
           return snapshot.hasData ? ListView.builder(
+            reverse: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 return MessageTile(
-                  message: snapshot.data.docs[index].get("message"),
-                  sender: snapshot.data.docs[index].get("sender"),
-                  sentByMe: widget.userName == snapshot.data.docs[index].get("sender"),
+                  message: snapshot.data.docs[snapshot.data.docs.length - index - 1].get("message"),
+                  sender: snapshot.data.docs[snapshot.data.docs.length - index - 1].get("sender"),
+                  sentByMe: widget.userName == snapshot.data.docs[snapshot.data.docs.length - index - 1].get("sender"),
                 );
               }
           ) : Container();
@@ -55,9 +58,82 @@ class _ChatPageState extends State<ChatPage> {
       }
     }
 
+    _getGroupMembers() async {
+      FirebaseFunctions().getGroupMembers(widget.groupID).then((Stream<DocumentSnapshot> val) {
+        setState(() {
+          _groupMembers = val;
+        });
+      });
+    }
+
+    void _popupGroupMemberLists(BuildContext context) {
+
+      Widget backButton = MaterialButton(
+        child: Text("Back"),
+        elevation: 5.0,
+        color: Colors.red[900],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        splashColor: Colors.black,
+        onPressed:  () {
+          Navigator.of(context).pop();
+        },
+      );
+
+      AlertDialog alert = AlertDialog(
+        icon: Icon(Icons.people_alt),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        title: Text("Group Members"),
+        actions: [backButton],
+        content: Material(
+          elevation: 10.0,
+          child: Container(
+            height: 225.0,
+            width:  200.0,
+            child: StreamBuilder <DocumentSnapshot> (
+              stream: _groupMembers,
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if(snapshot.hasData) {
+                  var data = snapshot.data;
+                  if(data['members'] != null) {
+                    if(data['members'].length != 0) {
+                      return ListView.builder(
+                          itemCount: data['members'].length,
+                          shrinkWrap: true,
+                          itemBuilder:  (context, index) {
+                            int reqIndex = data['members'].length - index - 1;
+                            return MemberTile(userName: data['members'][reqIndex], groupName: widget.groupName);
+                          }
+                      );
+                    }
+                    else {
+                      return CircularProgressIndicator();
+                    }
+                  }
+                  else {
+                    return CircularProgressIndicator();
+                  }
+                }
+                else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        )
+      );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
     @override
     void initState() {
       super.initState();
+      _getGroupMembers();
       FirebaseFunctions().getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
         setState(() {
           _chats = val;
@@ -74,6 +150,14 @@ class _ChatPageState extends State<ChatPage> {
           centerTitle: true,
           backgroundColor: Colors.brown[900],
           elevation: 0.0,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.info_outline_rounded, color: Colors.white),
+              onPressed: () {
+                _popupGroupMemberLists(context);
+              },
+            ),
+          ],
         ),
         body: Container(
           child: Column(
