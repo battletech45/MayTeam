@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/MAYteam/AdminPage.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_app/MAYteam/Auth_functions.dart';
 import 'package:flutter_app/MAYteam/Firebase_functions.dart';
 import 'package:flutter_app/MAYteam/SideFunctions.dart';
 import 'package:flutter_app/MAYteam/SignUpPage.dart';
+import 'package:flutter_app/MAYteam/VerificationPage.dart';
 import 'package:flutter_app/main.dart';
 import 'GameGroupPage.dart';
 
@@ -20,6 +22,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final _user = FirebaseAuth.instance;
   bool _isLoading = false;
 
   String email = '';
@@ -34,26 +37,35 @@ class _SignInPageState extends State<SignInPage> {
 
       await _auth.signInWithEmailAndPassWord(email, password).then((
           result) async {
-        if (result != null) {
-          QuerySnapshot userInfoSnapshot = await FirebaseFunctions()
-              .   getUserData(email);
+        if(_user.currentUser.emailVerified) {
+          if (result != null) {
+            QuerySnapshot userInfoSnapshot = await FirebaseFunctions()
+                .getUserData(email);
 
-          await SideFunctions.saveUserLoggedInSharedPreference(true);
-          await SideFunctions.saverUserEmailSharedPreference(email);
-          await SideFunctions.saveUserNameSharedPreference(userInfoSnapshot.docs[0].get('fullName'));
+            await SideFunctions.saveUserLoggedInSharedPreference(true);
+            await SideFunctions.saverUserEmailSharedPreference(email);
+            await SideFunctions.saveUserNameSharedPreference(userInfoSnapshot.docs[0].get('fullName'));
 
-          if(email == 'taneri862@gmail.com') {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AdminPage()));
+            if (email == 'taneri862@gmail.com') {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => AdminPage()));
+            }
+            else {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => HomePage()));
+            }
           }
           else {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+            setState(() {
+              error = 'Error signing in!';
+              _isLoading = false;
+            });
           }
         }
         else {
-          setState(() {
-            error = 'Error signing in!';
-            _isLoading = false;
-          });
+          _user.currentUser.sendEmailVerification();
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerificationPage()));
+          print("mail sent");
         }
       });
     }

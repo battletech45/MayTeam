@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_app/MAYteam/LoginPage.dart';
+import 'package:flutter_app/MAYteam/VerificationPage.dart';
 import 'package:flutter_app/main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
@@ -17,6 +19,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final _user = FirebaseAuth.instance;
   bool _isLoading = false;
 
   String fullName = '';
@@ -31,18 +34,26 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
-        if (result != null) {
-          await SideFunctions.saveUserLoggedInSharedPreference(true);
-          await SideFunctions.saverUserEmailSharedPreference(email);
-          await SideFunctions.saveUserNameSharedPreference(fullName);
+        if(_user.currentUser.emailVerified) {
+          if (result != null) {
+            await SideFunctions.saveUserLoggedInSharedPreference(true);
+            await SideFunctions.saverUserEmailSharedPreference(email);
+            await SideFunctions.saveUserNameSharedPreference(fullName);
 
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => HomePage()));
+          }
+          else {
+            setState(() {
+              error = 'Error while registering the user!';
+              _isLoading = false;
+            });
+          }
         }
         else {
-          setState(() {
-            error = 'Error while registering the user!';
-            _isLoading = false;
-          });
+          _user.currentUser.sendEmailVerification();
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerificationPage()));
+          print("mail sent");
         }
       });
     }
