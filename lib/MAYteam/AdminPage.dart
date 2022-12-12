@@ -168,6 +168,7 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.exit_to_app), onPressed: () {AuthService().signOut();}),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         title: Text('Admin Page', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.brown[900],
