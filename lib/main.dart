@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_app/MAYteam/GameGroupPage.dart';
+import 'package:flutter_app/MAYteam/SideFunctions.dart';
+import 'MAYteam/AdminPage.dart';
 import 'MAYteam/LoginPage.dart';
 import 'MAYteam/SignUpPage.dart';
 
@@ -9,11 +12,40 @@ void main() async{
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  bool isLoggedIn = false;
+  bool isAdmin = false;
+
+  _checkUserStatus() async {
+    var savedLoggedIn = await SideFunctions.getUserLoggedInSharedPreference();
+    print(isLoggedIn);
+    setState(() {
+      isLoggedIn = savedLoggedIn;
+    });
+    print(isLoggedIn);
+    var savedEmail = await SideFunctions.getUserEmailSharedPreference();
+    if(savedEmail == "taneri862@gmail.com") {
+      setState(() {
+        isAdmin = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUserStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+       return !isLoggedIn ? MaterialApp(
         title: 'M.A.Y. TEAM',
         theme: ThemeData(
           brightness: Brightness.dark,
@@ -23,17 +55,20 @@ class MyApp extends StatelessWidget {
             alignment: Alignment.center,
             color: Colors.brown[900],
             child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('images/logo.png', width: 200, height: 200),
-                SizedBox(height: 20.0),
-                loginButton(),
-                signUpButton()
-            ]
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('images/logo.png', width: 200, height: 200),
+                  SizedBox(height: 20.0),
+                  loginButton(),
+                  signUpButton()
+                ]
+            ),
           ),
-          ),
-    ),
-    );
+        ),
+      ) : MaterialApp(
+           theme: ThemeData(brightness: Brightness.dark),
+           home: isAdmin ? AdminPage() : HomePage()
+       );
   }
 }
 
