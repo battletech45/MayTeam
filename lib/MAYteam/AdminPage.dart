@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/MAYteam/ProfilePage.dart';
 import '../main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
@@ -168,11 +169,6 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp())));
-            }),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         title: Text('Admin Page', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.brown[900],
@@ -197,6 +193,24 @@ class _AdminPageState extends State<AdminPage> {
           child: Icon(Icons.add, color: Colors.white, size: 35.0),
           backgroundColor: Colors.brown[700],
           elevation: 0.0,
+        ),
+      ),
+      drawer: Drawer(
+        elevation: 0.0,
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+                title: Text("Profile"),
+                onTap: (){
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
+                }
+            ),ListTile(
+                title: Text("Sign Out"),
+                onTap: (){
+                  AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp())));
+                }
+            ),
+          ],
         ),
       ),
     );
