@@ -199,6 +199,11 @@ class _AdminPageState extends State<AdminPage> {
         elevation: 0.0,
         child: ListView(
           children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight)),
+                child: Text("MAY TEAM")
+            ),
             ListTile(
                 title: Text("Profile"),
                 onTap: (){
