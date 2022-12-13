@@ -28,24 +28,26 @@ class _VerificationPageState extends State<VerificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-       backgroundColor:Colors.brown[900],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.white),
-          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MyApp()))
-        ),
-      ),
       body: Container(
         alignment: Alignment.center,
         color:Colors.brown [900],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Icon(Icons.email_outlined, size: 100.0),
+            SizedBox(height: 20.0),
             Text('Please Verify Your E-Mail !', style: TextStyle(fontSize: 30.0)),
+            SizedBox(height: 30.0),
             MaterialButton(
-              color: Colors.red,
-              child: Text('Check Verification'),
-                onPressed: _getVerificationValue
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                color: Colors.red,
+                child: Text('Check Verification'),
+                  onPressed: _getVerificationValue
+            ),MaterialButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                color: Colors.black,
+                child: Text('Back'),
+                onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MyApp()))
             ),
           ],
         ),
