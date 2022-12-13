@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/MAYteam/Chat_Group_Settings.dart';
-import 'package:flutter_app/MAYteam/Chat_Message_Settings.dart';
+import 'package:MayTeam/MAYteam/Chat_Group_Settings.dart';
+import 'package:MayTeam/MAYteam/Chat_Message_Settings.dart';
 import 'Firebase_functions.dart';
 
 class ChatPage extends StatefulWidget {

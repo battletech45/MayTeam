@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app/MAYteam/GameGroupPage.dart';
-import 'package:flutter_app/main.dart';
+import 'package:MayTeam/MAYteam/GameGroupPage.dart';
+import 'package:MayTeam/main.dart';
 
 class VerificationPage extends StatefulWidget {
   @override

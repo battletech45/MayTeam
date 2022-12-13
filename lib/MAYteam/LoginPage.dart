@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/MAYteam/AdminPage.dart';
-import 'package:flutter_app/MAYteam/Auth_functions.dart';
-import 'package:flutter_app/MAYteam/Firebase_functions.dart';
-import 'package:flutter_app/MAYteam/SideFunctions.dart';
-import 'package:flutter_app/MAYteam/SignUpPage.dart';
-import 'package:flutter_app/MAYteam/VerificationPage.dart';
-import 'package:flutter_app/main.dart';
+import 'package:MayTeam/MAYteam/AdminPage.dart';
+import 'package:MayTeam/MAYteam/Auth_functions.dart';
+import 'package:MayTeam/MAYteam/Firebase_functions.dart';
+import 'package:MayTeam/MAYteam/SideFunctions.dart';
+import 'package:MayTeam/MAYteam/SignUpPage.dart';
+import 'package:MayTeam/MAYteam/VerificationPage.dart';
+import 'package:MayTeam/main.dart';
 import 'GameGroupPage.dart';
 
 class SignInPage extends StatefulWidget {

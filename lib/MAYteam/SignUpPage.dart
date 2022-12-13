@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter_app/MAYteam/LoginPage.dart';
-import 'package:flutter_app/MAYteam/VerificationPage.dart';
-import 'package:flutter_app/main.dart';
+import 'package:MayTeam/MAYteam/LoginPage.dart';
+import 'package:MayTeam/MAYteam/VerificationPage.dart';
+import 'package:MayTeam/main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'GameGroupPage.dart';

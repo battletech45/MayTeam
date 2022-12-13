@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_app/MAYteam/GameGroupPage.dart';
-import 'package:flutter_app/MAYteam/SideFunctions.dart';
+import 'MAYteam/GameGroupPage.dart';
+import 'MAYteam/SideFunctions.dart';
 import 'MAYteam/AdminPage.dart';
 import 'MAYteam/LoginPage.dart';
 import 'MAYteam/SignUpPage.dart';
