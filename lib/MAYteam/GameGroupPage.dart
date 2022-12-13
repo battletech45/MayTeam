@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/MAYteam/ProfilePage.dart';
+import '../main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'SearchPage.dart';
@@ -160,12 +161,6 @@ class _HomePageState extends State<HomePage> {
         title: Text('Game Groups', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.brown[900],
         elevation: 0.0,
-        leading: IconButton(
-          icon:Icon(Icons.person,color: Colors.white,),
-          onPressed: (){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
-          },
-        ),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -177,6 +172,24 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: groupsList(),
+      drawer: Drawer(
+        elevation: 0.0,
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: Text("Profile"),
+              onTap: (){
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
+              }
+            ),ListTile(
+              title: Text("Sign Out"),
+              onTap: (){
+                AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp())));
+              }
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
