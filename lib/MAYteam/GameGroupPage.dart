@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/main.dart';
+import 'package:flutter_app/MAYteam/ProfilePage.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'SearchPage.dart';
@@ -156,15 +156,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp())));
-            }),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         title: Text('Game Groups', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.brown[900],
         elevation: 0.0,
+        leading: IconButton(
+          icon:Icon(Icons.person,color: Colors.white,),
+          onPressed: (){
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
+          },
+        ),
         actions: <Widget>[
           IconButton(
               padding: EdgeInsets.symmetric(horizontal: 20.0),

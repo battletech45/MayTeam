@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/MAYteam/GameGroupPage.dart';
+import 'package:flutter_app/main.dart';
 
 class VerificationPage extends StatefulWidget {
   @override
@@ -27,8 +28,16 @@ class _VerificationPageState extends State<VerificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+       backgroundColor:Colors.brown[900],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,color: Colors.white),
+          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MyApp()))
+        ),
+      ),
       body: Container(
         alignment: Alignment.center,
+        color:Colors.brown [900],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
