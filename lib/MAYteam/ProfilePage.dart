@@ -1,3 +1,5 @@
+import 'package:MayTeam/MAYteam/SideFunctions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'GameGroupPage.dart';
 
@@ -7,6 +9,29 @@ class ProfilePage extends StatefulWidget{
   State<StatefulWidget> createState() => ProfilePageState();
 }
 class ProfilePageState extends State<ProfilePage> {
+  String userName = '';
+  String userEmail = '';
+
+  _getUserName() async {
+    print(userName);
+    print(userEmail);
+    var name = await SideFunctions.getUserNameSharedPreference();
+    setState(() {
+      userName = name;
+    });
+    var email = await SideFunctions.getUserEmailSharedPreference();
+    setState(() {
+      userEmail = email;
+    });
+    print(userName);
+    print(userEmail);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserName();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +54,7 @@ class ProfilePageState extends State<ProfilePage> {
       ),
       body: Container(
           child: ListView(
-            children: [
+            children: <Widget>[
               Container(
                 width:200,
                 height: 200,
@@ -41,13 +66,12 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-
               Container(
                 height: 40,
                 margin: EdgeInsets.all(15),
-                color: Colors.amber,
+                color: Colors.deepOrange[900],
                 child: Center(
-                 child: Text("Yarkın Ata", selectionColor: Colors.pink,),
+                 child: Text("$userName", selectionColor: Colors.pink),
                 ),
               ),
               Container(
@@ -55,7 +79,7 @@ class ProfilePageState extends State<ProfilePage> {
                 margin: EdgeInsets.all(15),
                 color: Colors.blueAccent,
                 child: Center(
-                  child: Text("dasda@gmail.com", selectionColor: Colors.black45,),
+                  child: Text("$userEmail", selectionColor: Colors.black45),
                 ),
               ),
               Container(
@@ -63,7 +87,7 @@ class ProfilePageState extends State<ProfilePage> {
                 margin: EdgeInsets.all(15),
                 color: Colors.red,
                 child: Center(
-                  child: Text("NBA 2K23", selectionColor: Colors.yellowAccent,),
+                  child: Text("NBA 2K23", selectionColor: Colors.yellowAccent),
                 ),
               ),
             ],
