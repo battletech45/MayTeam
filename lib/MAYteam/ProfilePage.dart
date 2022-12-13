@@ -68,26 +68,28 @@ class ProfilePageState extends State<ProfilePage> {
               ),
               Container(
                 height: 40,
-                margin: EdgeInsets.all(15),
-                color: Colors.deepOrange[900],
+                decoration: BoxDecoration(color: Colors.deepOrange[900], borderRadius: BorderRadius.circular(50)),
+                margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child: Center(
-                 child: Text("$userName", selectionColor: Colors.pink),
+                 child: Text("$userName"),
                 ),
               ),
+              SizedBox(height: 25.0),
               Container(
                 height: 40,
-                margin: EdgeInsets.all(15),
-                color: Colors.blueAccent,
+                decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(50)),
+                margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child: Center(
-                  child: Text("$userEmail", selectionColor: Colors.black45),
+                  child: Text("$userEmail"),
                 ),
               ),
+              SizedBox(height: 25.0),
               Container(
                 height: 40,
-                margin: EdgeInsets.all(15),
-                color: Colors.red,
+                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(50)),
+                margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child: Center(
-                  child: Text("NBA 2K23", selectionColor: Colors.yellowAccent),
+                  child: Text("NBA 2K23"),
                 ),
               ),
             ],
