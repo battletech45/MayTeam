@@ -25,9 +25,11 @@ class _MyAppState extends State<MyApp> {
   _checkUserStatus() async {
     var savedLoggedIn = await SideFunctions.getUserLoggedInSharedPreference();
     print(isLoggedIn);
-    setState(() {
-      isLoggedIn = savedLoggedIn;
-    });
+    if(savedLoggedIn != null){
+      setState(() {
+        isLoggedIn = savedLoggedIn;
+      });
+    }
     print(isLoggedIn);
     var savedEmail = await SideFunctions.getUserEmailSharedPreference();
     if(savedEmail == "taneri862@gmail.com") {
