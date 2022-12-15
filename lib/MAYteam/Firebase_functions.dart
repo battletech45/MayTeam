@@ -132,7 +132,7 @@ class FirebaseFunctions {
         .get();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllGroups() {
+  Future<Stream<QuerySnapshot>> getAllGroups() async {
     return FirebaseFirestore.instance.collection("groups").snapshots();
   }
 }

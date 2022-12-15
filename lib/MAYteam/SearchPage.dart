@@ -14,6 +14,7 @@ class _SearchPageState extends State<SearchPage> {
 
   TextEditingController searchEditingController = new TextEditingController();
   QuerySnapshot searchResultSnapshot;
+  Stream<QuerySnapshot> allGroupsSnapshot;
   bool isLoading = false;
   bool hasUserJoined = false;
   bool _isJoined = false;
@@ -25,6 +26,7 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     _getCurrentUserNameAndUserID();
+    _getAllGroups();
   }
 
   _getCurrentUserNameAndUserID() async {
@@ -47,6 +49,13 @@ class _SearchPageState extends State<SearchPage> {
         });
       });
     }
+  }
+
+  _getAllGroups () async {
+    var val = await FirebaseFunctions().getAllGroups();
+    setState(() {
+      allGroupsSnapshot = val;
+    });
   }
 
   void _showScaffold(String message) {
@@ -79,7 +88,24 @@ class _SearchPageState extends State<SearchPage> {
           searchResultSnapshot.docs[index].get("admin"),
         );
       }
-    ) : Container();
+    ) : StreamBuilder <QuerySnapshot>(
+      stream: allGroupsSnapshot,
+        builder: (context, snapshot) {
+        return snapshot.hasData ? ListView.builder(
+              shrinkWrap: true,
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                return groupTile(
+                  _userName,
+                  snapshot.data.docs[index].get("groupID"),
+                  snapshot.data.docs[index].get("groupName"),
+                  snapshot.data.docs[index].get("admin"),
+                );
+              }
+          ) :
+            CircularProgressIndicator();
+        }
+    );
   }
 
   Widget groupTile(String userName, String groupID, String groupName, String admin){
@@ -148,49 +174,51 @@ class _SearchPageState extends State<SearchPage> {
         title: Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
       ),
       body: Container(
-        child: Column(
-          children: [
-            SizedBox(height: 20.0),
-            Container(
-              decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: searchEditingController,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      decoration: InputDecoration(
-                          hintText: "Search groups...",
-                          hintStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                          border: InputBorder.none
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 20.0),
+              Container(
+                decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: searchEditingController,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                            hintText: "Search groups...",
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            border: InputBorder.none
+                        ),
                       ),
                     ),
-                  ),
-                  GestureDetector(
-                      onTap: (){
-                        _initiateSearch();
-                      },
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(40)
-                          ),
-                          child: Icon(Icons.search, color: Colors.white)
-                      )
-                  )
-                ],
+                    GestureDetector(
+                        onTap: (){
+                          _initiateSearch();
+                        },
+                        child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(40)
+                            ),
+                            child: Icon(Icons.search, color: Colors.white)
+                        )
+                    )
+                  ],
+                ),
               ),
-            ),
-            isLoading ? Container(child: Center(child: CircularProgressIndicator())) : groupList()
-          ],
+              isLoading ? Container(child: Center(child: CircularProgressIndicator())) : groupList()
+            ],
+          ),
         ),
       ),
     );
