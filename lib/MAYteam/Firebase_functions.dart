@@ -131,4 +131,8 @@ class FirebaseFunctions {
         .where('groupName', isEqualTo: groupName)
         .get();
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllGroups() {
+    return FirebaseFirestore.instance.collection("groups").snapshots();
+  }
 }
