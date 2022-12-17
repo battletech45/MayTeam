@@ -169,7 +169,7 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         title: Text('Admin Page', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.brown[900],
         elevation: 0.0,

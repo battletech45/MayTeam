@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
        return !isLoggedIn ? MaterialApp(
+         debugShowCheckedModeBanner: false,
         title: 'M.A.Y. TEAM',
         theme: ThemeData(
           brightness: Brightness.dark,
@@ -68,6 +69,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ) : MaterialApp(
+         debugShowCheckedModeBanner: false,
            theme: ThemeData(brightness: Brightness.dark),
            home: isAdmin ? AdminPage() : HomePage()
        );

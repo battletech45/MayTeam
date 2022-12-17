@@ -145,7 +145,7 @@ class _ChatPageState extends State<ChatPage> {
     Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           title: Text(widget.groupName, style: TextStyle(color: Colors.white)),
           centerTitle: true,
           backgroundColor: Colors.brown[900],
