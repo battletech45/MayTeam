@@ -68,14 +68,6 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Future<void> _joinValueInGroup(
-      String userName, String groupID, String groupName, String admin) async {
-    bool value = await FirebaseFunctions(userID: _user.uid).isUserJoined(groupID, groupID, userName);
-    setState(() {
-      _isJoined = value;
-    });
-  }
-
   Widget groupList() {
     return hasUserJoined ? ListView.builder(
       shrinkWrap: true,
