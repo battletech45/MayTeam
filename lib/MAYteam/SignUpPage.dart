@@ -1,3 +1,5 @@
+import 'package:MayTeam/MAYteam/Firebase_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -21,6 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _user = FirebaseAuth.instance;
   bool _isLoading = false;
+  bool _isUserUnique = true;
 
   String fullName = '';
   String email = '';
@@ -56,6 +59,19 @@ class _RegisterPageState extends State<RegisterPage> {
           print("mail sent");
         }
       });
+    }
+  }
+
+  _checkUserNameExistence(String userName) async {
+    var snapshot = await FirebaseFirestore.instance.collection("users").get();
+    for (var i = 0; i < snapshot.docs.length; i ++) {
+      if(snapshot.docs[i].get("fullName") == fullName) {
+        print(_isUserUnique);
+        setState(() {
+          _isUserUnique = false;
+        });
+        print(_isUserUnique);
+      }
     }
   }
 
@@ -133,6 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                           child: Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
                           onPressed: () {
+                            _checkUserNameExistence(fullName);
                             _onRegister();
                           }
                       ),
