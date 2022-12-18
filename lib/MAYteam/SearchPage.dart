@@ -62,7 +62,7 @@ class _SearchPageState extends State<SearchPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.brown,
-        duration: Duration(milliseconds: 5000),
+        duration: Duration(milliseconds: 1500),
         content: Text(message, textAlign:  TextAlign.center, style: TextStyle(fontSize: 17.0)),
       )
     );
@@ -109,7 +109,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget groupTile(String userName, String groupID, String groupName, String admin){
-    _joinValueInGroup(userName, groupID,groupName, admin);
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       leading: CircleAvatar(
@@ -122,9 +121,10 @@ class _SearchPageState extends State<SearchPage> {
       trailing: InkWell(
         onTap: () async {
           await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(groupID, groupName, userName);
-          if(_isJoined) {
+          bool val = await FirebaseFunctions(userID: _user.uid).isUserJoined(groupID, groupName, userName);
+          if(val) {
             setState(() {
-              _isJoined =! _isJoined;
+              _isJoined = val;
             });
             _showScaffold("Successfully joined the group $groupName");
             Future.delayed(Duration(milliseconds: 2000), () {
@@ -133,9 +133,9 @@ class _SearchPageState extends State<SearchPage> {
           }
           else {
             setState(() {
-              _isJoined =! _isJoined;
+              _isJoined = val;
             });
-            _showScaffold("To Leave the group press twice to Join Button ");
+            _showScaffold("You leaved the group $groupName");
           }
         },
         child: _isJoined ? Container(
