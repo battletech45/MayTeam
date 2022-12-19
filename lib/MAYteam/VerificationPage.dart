@@ -1,3 +1,5 @@
+import 'package:MayTeam/MAYteam/Firebase_functions.dart';
+import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:MayTeam/MAYteam/GameGroupPage.dart';
@@ -11,6 +13,19 @@ class VerificationPage extends StatefulWidget {
 class _VerificationPageState extends State<VerificationPage> {
   final _user = FirebaseAuth.instance;
   bool _isVerified = false;
+  String _userName = '';
+
+
+  _getUserName() async {
+    var snapshot = await FirebaseFunctions().getUserData(_user.currentUser.email);
+    for(int i = 0; i < snapshot.docs.length; i++) {
+      if(snapshot.docs[i].get("email") == _user.currentUser.email) {
+        setState(() {
+          _userName = snapshot.docs[i].get("fullName");
+        });
+      }
+    }
+  }
 
   _getVerificationValue() async {
     await _user.currentUser.reload();
@@ -21,8 +36,17 @@ class _VerificationPageState extends State<VerificationPage> {
     print(_user.currentUser.email);
     print(_user.currentUser.uid);
     if(_isVerified) {
+      await SideFunctions.saveUserLoggedInSharedPreference(true);
+      await SideFunctions.saverUserEmailSharedPreference(_user.currentUser.email);
+      await SideFunctions.saveUserNameSharedPreference(_userName);
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserName();
   }
 
   @override
