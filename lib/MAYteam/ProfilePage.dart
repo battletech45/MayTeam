@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'GameGroupPage.dart';
 
 
@@ -11,6 +14,9 @@ class ProfilePage extends StatefulWidget{
 class ProfilePageState extends State<ProfilePage> {
   String userName = '';
   String userEmail = '';
+  FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+  ImagePicker _picker = ImagePicker();
+  File _photo;
 
   _getUserName() async {
     print(userName);
@@ -25,6 +31,34 @@ class ProfilePageState extends State<ProfilePage> {
     });
     print(userName);
     print(userEmail);
+  }
+
+  _uploadImage() async {
+    if (_photo == null) return;
+    final filename = base64Decode(_photo.path);
+    final destination = 'files/$filename';
+
+    try {
+      final ref = FirebaseStorage.instance.ref(destination).child("file/");
+      await ref.putFile(_photo);
+    }
+    catch (e) {
+      print("error occured");
+    }
+  }
+
+  _selectImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if(pickedFile != null) {
+        _photo = File(pickedFile.path);
+        _uploadImage();
+      }
+      else {
+        print("No Image Selected.");
+      }
+    });
   }
 
   @override
@@ -42,6 +76,7 @@ class ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.white),
+            onPressed: _selectImage,
           ),
         ],
         title: Text("Profile"),
