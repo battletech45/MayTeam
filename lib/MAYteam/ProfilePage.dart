@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
@@ -16,6 +17,7 @@ class ProfilePageState extends State<ProfilePage> {
   String userEmail = '';
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   ImagePicker _picker = ImagePicker();
+  FirebaseAuth _user = FirebaseAuth.instance;
   File _photo;
 
   _getUserName() async {
@@ -36,10 +38,11 @@ class ProfilePageState extends State<ProfilePage> {
   _uploadImage() async {
     if (_photo == null) return;
     final filename = basename(_photo.path);
-    final destination = 'files/$filename';
+    var userID = _user.currentUser.uid;
+    final destination = '$userID/' + '$filename';
 
     try {
-      final ref = FirebaseStorage.instance.ref(destination).child("file/");
+      final ref = FirebaseStorage.instance.ref(destination).child(userID);
       await ref.putFile(_photo);
     }
     catch (e) {
