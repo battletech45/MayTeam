@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:path/path.dart';
 import 'dart:io';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -35,7 +35,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   _uploadImage() async {
     if (_photo == null) return;
-    final filename = base64Decode(_photo.path);
+    final filename = basename(_photo.path);
     final destination = 'files/$filename';
 
     try {
