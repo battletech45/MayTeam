@@ -1,4 +1,3 @@
-import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,41 +35,51 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
 
-      await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
-        if(_user.currentUser.emailVerified) {
-          if (result != null) {
-            await SideFunctions.saveUserLoggedInSharedPreference(true);
-            await SideFunctions.saverUserEmailSharedPreference(email);
-            await SideFunctions.saveUserNameSharedPreference(fullName);
+      await _checkUserNameExistence(fullName);
+      if(_isUserUnique) {
+        await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
+          if (_user.currentUser.emailVerified) {
+            if (result != null) {
+              await SideFunctions.saveUserLoggedInSharedPreference(true);
+              await SideFunctions.saverUserEmailSharedPreference(email);
+              await SideFunctions.saveUserNameSharedPreference(fullName);
 
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => HomePage()));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => HomePage()));
+            }
+            else {
+              setState(() {
+                error = 'Error while registering the user!';
+                _isLoading = false;
+              });
+            }
           }
           else {
-            setState(() {
-              error = 'Error while registering the user!';
-              _isLoading = false;
-            });
+            _user.currentUser.sendEmailVerification();
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => VerificationPage()));
+            print("mail sent");
           }
-        }
-        else {
-          _user.currentUser.sendEmailVerification();
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerificationPage()));
-          print("mail sent");
-        }
-      });
+        });
+      }
+      else {
+        setState(() {
+          error = 'UserName is not unique !';
+        });
+      }
     }
   }
 
   _checkUserNameExistence(String userName) async {
+    setState(() {
+      _isUserUnique = true;
+    });
     var snapshot = await FirebaseFirestore.instance.collection("users").get();
     for (var i = 0; i < snapshot.docs.length; i ++) {
-      if(snapshot.docs[i].get("fullName") == fullName) {
-        print(_isUserUnique);
+      if (snapshot.docs[i].get("fullName") == userName) {
         setState(() {
           _isUserUnique = false;
         });
-        print(_isUserUnique);
       }
     }
   }
@@ -149,7 +158,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                           child: Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
                           onPressed: () {
-                            _checkUserNameExistence(fullName);
                             _onRegister();
                           }
                       ),
