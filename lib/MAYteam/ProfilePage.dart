@@ -73,9 +73,9 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        backgroundColor: Colors.brown[900],
-        elevation: 0.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        backgroundColor: Color.fromRGBO(45, 64, 89,1),
+        //elevation: 0.0,
         actions: [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.white),
@@ -91,6 +91,7 @@ class ProfilePageState extends State<ProfilePage> {
         ),
       ),
       body: Container(
+        color: Color.fromRGBO(45, 64, 89,1),//RENK BURAYA EKLENDİ
           child: ListView(
             children: <Widget>[
               Container(
@@ -104,30 +105,61 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              Container(
+              /*Container(
                 height: 40,
                 decoration: BoxDecoration(color: Colors.deepOrange[900], borderRadius: BorderRadius.circular(50)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child: Center(
                  child: Text("$userName"),
                 ),
-              ),
-              SizedBox(height: 25.0),
+              ), */
               Container(
                 height: 40,
-                decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(50)),
+                decoration: BoxDecoration(/*color: Colors.deepOrange[900]*/color:Color.fromRGBO(199, 75, 80,1), borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Center(
-                  child: Text("$userEmail"),
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(Icons.person_outline_rounded,size: 25.0,),
+                    SizedBox(width: 70.0,),
+                    Text("$userName",style: TextStyle(fontSize: 15),),
+                    SizedBox(width: 120.0,),
+
+                  ],
                 ),
               ),
               SizedBox(height: 25.0),
               Container(
                 height: 40,
-                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(50)),
+                decoration: BoxDecoration(/*color: Colors.blueAccent*/ color:Color.fromRGBO(240, 123, 63,1) ,borderRadius: BorderRadius.circular(7)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Center(
-                  child: Text("NBA 2K23"),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(width: 20.0,),
+                    Icon(Icons.alternate_email_rounded, size: 25.0,),
+                    SizedBox(width: 50.0,),
+                    Expanded(
+                      child: Text("$userEmail",style: TextStyle(fontSize: 15),),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 25.0),
+              Container(
+                height: 40,
+                decoration: BoxDecoration(/*color: Colors.red*/ color:Color.fromARGB(255, 212, 96,1), borderRadius: BorderRadius.circular(7)),
+                margin: EdgeInsets.symmetric(horizontal: 30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(width: 20.0,),
+                    Icon(Icons.games, size:25.0),
+                    SizedBox(width: 100.0),
+                    Expanded(
+                      child: Text("NBA 2K23",style:TextStyle(fontSize: 15),),
+                    ),
+                  ],
                 ),
               ),
             ],
