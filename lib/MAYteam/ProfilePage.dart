@@ -73,6 +73,7 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 20.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
         backgroundColor: Color.fromRGBO(45, 64, 89,1),
         //elevation: 0.0,
@@ -105,17 +106,9 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              /*Container(
-                height: 40,
-                decoration: BoxDecoration(color: Colors.deepOrange[900], borderRadius: BorderRadius.circular(50)),
-                margin: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Center(
-                 child: Text("$userName"),
-                ),
-              ), */
               Container(
                 height: 40,
-                decoration: BoxDecoration(/*color: Colors.deepOrange[900]*/color:Color.fromRGBO(199, 75, 80,1), borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color:Color.fromRGBO(199, 75, 80,1), borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child:Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
