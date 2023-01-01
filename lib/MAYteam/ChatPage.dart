@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/Chat_Group_Settings.dart';
 import 'package:MayTeam/MAYteam/Chat_Message_Settings.dart';
+import 'AdminPage.dart';
 import 'Firebase_functions.dart';
+import 'GameGroupPage.dart';
 
 class ChatPage extends StatefulWidget {
   final String groupID;
@@ -19,6 +22,7 @@ class _ChatPageState extends State<ChatPage> {
     Stream<QuerySnapshot> _chats;
     Stream<DocumentSnapshot> _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
+    User _user;
 
     Widget _chatMessages() {
       return StreamBuilder <QuerySnapshot>(
@@ -64,10 +68,10 @@ class _ChatPageState extends State<ChatPage> {
           _groupMembers = val;
         });
       });
+      _user = await FirebaseAuth.instance.currentUser;
     }
 
     void _popupGroupMemberLists(BuildContext context) {
-
       Widget backButton = MaterialButton(
         child: Text("Back"),
         elevation: 5.0,
@@ -79,11 +83,28 @@ class _ChatPageState extends State<ChatPage> {
         },
       );
 
+      Widget leaveButton = MaterialButton(
+        child: Text("Leave Group"),
+        elevation: 5.0,
+        color: Colors.black,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+        splashColor: Colors.red[900],
+        onPressed: () async {
+          await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(widget.groupID, widget.groupName, widget.userName);
+          if(_user.email == "taneri862@gmail.com") {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminPage()));
+          }
+          else {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+          }
+        },
+      );
+
       AlertDialog alert = AlertDialog(
         icon: Icon(Icons.people_alt),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         title: Text("Group Members"),
-        actions: [backButton],
+        actions: [backButton, leaveButton],
         content: Material(
           elevation: 10.0,
           child: Container(
