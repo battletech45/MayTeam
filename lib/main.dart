@@ -7,7 +7,10 @@ import 'MAYteam/AdminPage.dart';
 import 'MAYteam/LoginPage.dart';
 import 'MAYteam/SignUpPage.dart';
 
-void main() async{
+final loginProvider = Provider((_) => 'LOGIN');
+final signUpProvider = Provider((_) => 'SIGN UP');
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
@@ -80,11 +83,12 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-class loginButton extends StatelessWidget {
+class loginButton extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final String text = ref.watch(loginProvider);
     return MaterialButton(
-       child: const Text('LOGIN'),
+       child: Text(text),
       elevation: 5.0,
       color: Colors.red,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
@@ -95,11 +99,12 @@ class loginButton extends StatelessWidget {
     );
   }
 }
-class signUpButton extends StatelessWidget {
+class signUpButton extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final String text = ref.watch(signUpProvider);
     return MaterialButton(
-      child: const Text('SIGN UP'),
+      child: Text(text),
       color: Colors.black,
       elevation: 5.0,
       splashColor: Colors.red,
