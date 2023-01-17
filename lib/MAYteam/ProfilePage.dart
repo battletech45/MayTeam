@@ -19,6 +19,8 @@ class ProfilePageState extends State<ProfilePage> {
   ImagePicker _picker = ImagePicker();
   FirebaseAuth _user = FirebaseAuth.instance;
   File _photo;
+  String _photoLink;
+  bool _isPhotoExist = false;
 
   _getUserName() async {
     print(userName);
@@ -37,9 +39,8 @@ class ProfilePageState extends State<ProfilePage> {
 
   _uploadImage() async {
     if (_photo == null) return;
-    final filename = basename(_photo.path);
     var userID = _user.currentUser.uid;
-    final destination = '$userID/' + '$filename';
+    final destination = '$userID';
 
     try {
       final ref = FirebaseStorage.instance.ref(destination).child(userID);
@@ -47,6 +48,31 @@ class ProfilePageState extends State<ProfilePage> {
     }
     catch (e) {
       print("error occured");
+    }
+  }
+
+  _getImage() async {
+    var userID = _user.currentUser.uid;
+    final destination = '$userID';
+    String link;
+    try {
+      final ref = FirebaseStorage.instance.ref(destination).child(userID);
+      link = await ref.getDownloadURL();
+    }
+    catch (e) {
+      print('error occured on url');
+      print(link);
+    }
+    if(link != null) {
+      setState(() {
+        _photoLink = link;
+        _isPhotoExist = true;
+      });
+    }
+    else {
+      setState(() {
+        _isPhotoExist = false;
+      });
     }
   }
 
@@ -68,6 +94,7 @@ class ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _getUserName();
+    _getImage();
   }
   @override
   Widget build(BuildContext context) {
@@ -100,7 +127,7 @@ class ProfilePageState extends State<ProfilePage> {
                 child: Center(
                   child: CircleAvatar(
                     radius: 78,
-                    child: Icon(Icons.person,size: 80.0,),
+                    child: _isPhotoExist ? CircleAvatar(radius: 75, backgroundImage: NetworkImage(_photoLink)) : Icon(Icons.person,size: 80.0),
                   ),
                 ),
               ),
