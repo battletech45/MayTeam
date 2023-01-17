@@ -73,10 +73,9 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 20.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-        backgroundColor: Color.fromRGBO(45, 64, 89,1),
-        //elevation: 0.0,
+        elevation: 0.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        backgroundColor: Colors.brown[900],
         actions: [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.white),
@@ -92,7 +91,6 @@ class ProfilePageState extends State<ProfilePage> {
         ),
       ),
       body: Container(
-        color: Color.fromRGBO(45, 64, 89,1),//RENK BURAYA EKLENDİ
           child: ListView(
             children: <Widget>[
               Container(
@@ -108,7 +106,7 @@ class ProfilePageState extends State<ProfilePage> {
               ),
               Container(
                 height: 40,
-                decoration: BoxDecoration(color:Color.fromRGBO(199, 75, 80,1), borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color:Colors.purple[900], borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child:Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -124,7 +122,7 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 25.0),
               Container(
                 height: 40,
-                decoration: BoxDecoration(/*color: Colors.blueAccent*/ color:Color.fromRGBO(240, 123, 63,1) ,borderRadius: BorderRadius.circular(7)),
+                decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(7)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -141,7 +139,7 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 25.0),
               Container(
                 height: 40,
-                decoration: BoxDecoration(/*color: Colors.red*/ color:Color.fromARGB(255, 212, 96,1), borderRadius: BorderRadius.circular(7)),
+                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(7)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
