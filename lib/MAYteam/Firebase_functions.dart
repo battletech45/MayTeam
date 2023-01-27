@@ -22,6 +22,13 @@ class FirebaseFunctions {
     });
   }
 
+  updateUserLastGroup(String groupName) async {
+    print(userID);
+    return await userCollection.doc(userID).update({
+      'activeGroup': groupName
+    });
+  }
+
   Future createGroup(String userName, String groupName) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
@@ -133,6 +140,6 @@ class FirebaseFunctions {
   }
 
   Future<Stream<QuerySnapshot>> getAllGroups() async {
-    return FirebaseFirestore.instance.collection("groups").snapshots();
+    return groupCollection.snapshots();
   }
 }
