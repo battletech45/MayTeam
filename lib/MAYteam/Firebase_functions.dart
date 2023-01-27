@@ -18,7 +18,8 @@ class FirebaseFunctions {
       'email': email,
       'password': password,
       'groups': [],
-      'profilePic': ''
+      'profilePic': '',
+      'activeGroup': ''
     });
   }
 
