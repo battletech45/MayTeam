@@ -17,7 +17,6 @@ class _SearchPageState extends State<SearchPage> {
   Stream<QuerySnapshot> allGroupsSnapshot;
   bool isLoading = false;
   bool hasUserJoined = false;
-  bool _isJoined = false;
   String _userName = '';
   User _user;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -33,7 +32,7 @@ class _SearchPageState extends State<SearchPage> {
     await SideFunctions.getUserNameSharedPreference().then((value) {
       _userName = value;
     });
-    _user = await FirebaseAuth.instance.currentUser;
+    _user = FirebaseAuth.instance.currentUser;
   }
 
   _initiateSearch() async {
@@ -70,6 +69,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget groupList() {
     return hasUserJoined ? ListView.builder(
+        physics: BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: searchResultSnapshot.docs.length,
       itemBuilder: (context, index) {
@@ -84,6 +84,7 @@ class _SearchPageState extends State<SearchPage> {
       stream: allGroupsSnapshot,
         builder: (context, snapshot) {
         return snapshot.hasData ? ListView.builder(
+          physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
@@ -115,35 +116,16 @@ class _SearchPageState extends State<SearchPage> {
           await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(groupID, groupName, userName);
           bool val = await FirebaseFunctions(userID: _user.uid).isUserJoined(groupID, groupName, userName);
           if(val) {
-            setState(() {
-              _isJoined = val;
-            });
             _showScaffold("Successfully joined the group $groupName");
             Future.delayed(Duration(milliseconds: 2000), () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName)));
             });
           }
           else {
-            setState(() {
-              _isJoined = val;
-            });
             _showScaffold("You leaved the group $groupName");
           }
         },
-        child: _isJoined ? Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.black,
-            border: Border.all(
-              color: Colors.white,
-              width: 1.0
-            )
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: Text('Joined', style:  TextStyle(color: Colors.white)),
-        )
-            :
-            Container(
+        child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 color: Colors.brown[900]

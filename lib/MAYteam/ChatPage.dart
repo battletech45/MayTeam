@@ -29,6 +29,7 @@ class _ChatPageState extends State<ChatPage> {
         stream: _chats,
         builder: (context, snapshot) {
           return snapshot.hasData ? ListView.builder(
+              physics: BouncingScrollPhysics(),
             reverse: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
