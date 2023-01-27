@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:path/path.dart';
 import 'dart:io';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,10 +21,9 @@ class ProfilePageState extends State<ProfilePage> {
   File _photo;
   String _photoLink;
   bool _isPhotoExist = false;
+  String _activeGroup;
 
   _getUserName() async {
-    print(userName);
-    print(userEmail);
     var name = await SideFunctions.getUserNameSharedPreference();
     setState(() {
       userName = name;
@@ -33,8 +32,15 @@ class ProfilePageState extends State<ProfilePage> {
     setState(() {
       userEmail = email;
     });
-    print(userName);
-    print(userEmail);
+  }
+
+  _getActiveGroup() async {
+    var userData = await FirebaseFirestore.instance.collection('users').doc(_user.currentUser.uid).get();
+    var data = userData.data();
+
+    setState(() {
+      _activeGroup = data['activeGroup'];
+    });
   }
 
   _uploadImage() async {
@@ -95,6 +101,7 @@ class ProfilePageState extends State<ProfilePage> {
     super.initState();
     _getUserName();
     _getImage();
+    _getActiveGroup();
   }
   @override
   Widget build(BuildContext context) {
@@ -175,7 +182,7 @@ class ProfilePageState extends State<ProfilePage> {
                     Icon(Icons.games, size:25.0),
                     SizedBox(width: 100.0),
                     Expanded(
-                      child: Text("NBA 2K23",style:TextStyle(fontSize: 15),),
+                      child: Text("$_activeGroup",style:TextStyle(fontSize: 15),),
                     ),
                   ],
                 ),
