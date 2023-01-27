@@ -60,6 +60,7 @@ class _ChatPageState extends State<ChatPage> {
           });
         });
       }
+      FirebaseFunctions(userID: _user.uid).updateUserLastGroup(widget.groupName);
     }
 
     _getGroupMembers() async {
@@ -68,7 +69,7 @@ class _ChatPageState extends State<ChatPage> {
           _groupMembers = val;
         });
       });
-      _user = await FirebaseAuth.instance.currentUser;
+      _user = FirebaseAuth.instance.currentUser;
     }
 
     void _popupGroupMemberLists(BuildContext context) {
