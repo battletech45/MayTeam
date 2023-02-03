@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
           if(data['groups'] != null) {
             if(data['groups'].length != 0) {
               return ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   itemCount: data['groups'].length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {

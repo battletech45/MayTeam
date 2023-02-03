@@ -120,6 +120,7 @@ class _ChatPageState extends State<ChatPage> {
                   if(data['members'] != null) {
                     if(data['members'].length != 0) {
                       return ListView.builder(
+                          physics: BouncingScrollPhysics(),
                           itemCount: data['members'].length,
                           shrinkWrap: true,
                           itemBuilder:  (context, index) {
