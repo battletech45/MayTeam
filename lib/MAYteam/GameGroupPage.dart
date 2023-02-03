@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final AuthService _auth = AuthService();
   User _user;
   String _groupName = '';
   String _userName = '';

@@ -57,13 +57,50 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void _showScaffold(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.brown,
-        duration: Duration(milliseconds: 1500),
-        content: Text(message, textAlign:  TextAlign.center, style: TextStyle(fontSize: 17.0)),
-      )
+  void _showPopupDialog(BuildContext context, String groupName, String groupID, String userName) {
+    Widget cancelButton = MaterialButton(
+      child: Text("Cancel"),
+      elevation: 5.0,
+      color: Colors.red[900],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      splashColor: Colors.black,
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget joinButton = MaterialButton(
+      child: Text("Join"),
+      elevation: 5.0,
+      color: Colors.black,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      splashColor: Colors.red[900],
+      onPressed: () async {
+        await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(groupID, groupName, userName);
+        bool val = await FirebaseFunctions(userID: _user.uid).isUserJoined(groupID, groupName, userName);
+        if(val) {
+          Future.delayed(Duration(milliseconds: 2000), () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName)));
+          });
+        }
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      title: Text("You will join: $groupName"),
+      content: Text('If you already joined this group, this action will remove you from group !!!'),
+      actions: [
+        cancelButton,
+        joinButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 
@@ -111,29 +148,8 @@ class _SearchPageState extends State<SearchPage> {
       ),
       title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Text("Admin: $admin"),
-      trailing: InkWell(
-        onTap: () async {
-          await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(groupID, groupName, userName);
-          bool val = await FirebaseFunctions(userID: _user.uid).isUserJoined(groupID, groupName, userName);
-          if(val) {
-            _showScaffold("Successfully joined the group $groupName");
-            Future.delayed(Duration(milliseconds: 2000), () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName)));
-            });
-          }
-          else {
-            _showScaffold("You leaved the group $groupName");
-          }
-        },
-        child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.brown[900]
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: Text('Join', style: TextStyle(color: Colors.white)),
-            ),
-      ),
+      onTap: () => _showPopupDialog(context, groupName, groupID, userName),
+      trailing: Icon(Icons.chat_outlined),
     );
   }
 
