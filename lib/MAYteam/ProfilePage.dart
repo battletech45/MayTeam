@@ -53,7 +53,7 @@ class ProfilePageState extends State<ProfilePage> {
       await ref.putFile(_photo);
     }
     catch (e) {
-      print("error occured");
+      print("error occurred");
     }
   }
 
@@ -66,7 +66,7 @@ class ProfilePageState extends State<ProfilePage> {
       link = await ref.getDownloadURL();
     }
     catch (e) {
-      print('error occured on url');
+      print('error occurred on url');
       print(link);
     }
     if(link != null) {
@@ -103,6 +103,7 @@ class ProfilePageState extends State<ProfilePage> {
     _getImage();
     _getActiveGroup();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,19 +126,19 @@ class ProfilePageState extends State<ProfilePage> {
         ),
       ),
       body: Container(
-          child: ListView(
+          child: Column(
             children: <Widget>[
+              SizedBox(height: 50.0),
               Container(
-                width:200,
-                height: 200,
                 margin: EdgeInsets.all(15),
                 child: Center(
                   child: CircleAvatar(
-                    radius: 78,
-                    child: _isPhotoExist ? CircleAvatar(radius: 75, backgroundImage: NetworkImage(_photoLink)) : Icon(Icons.person,size: 80.0),
+                    radius: 95,
+                    child: _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: NetworkImage(_photoLink)) : Icon(Icons.person,size: 80.0),
                   ),
                 ),
               ),
+              SizedBox(height: 50.0),
               Container(
                 height: 40,
                 decoration: BoxDecoration(color:Colors.purple[900], borderRadius: BorderRadius.circular(8)),
