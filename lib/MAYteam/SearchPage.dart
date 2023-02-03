@@ -165,6 +165,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Container(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               SizedBox(height: 20.0),
