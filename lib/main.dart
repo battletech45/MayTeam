@@ -6,13 +6,16 @@ import 'MAYteam/SideFunctions.dart';
 import 'MAYteam/AdminPage.dart';
 import 'MAYteam/LoginPage.dart';
 import 'MAYteam/SignUpPage.dart';
+import 'firebase_options.dart';
 
 final loginProvider = Provider((_) => 'LOGIN');
 final signUpProvider = Provider((_) => 'SIGN UP');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
       ProviderScope(child: MyApp())
   );
