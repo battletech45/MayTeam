@@ -16,7 +16,6 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
 
-  final AuthService _auth = AuthService();
   User _user;
   String _groupName = '';
   String _userName = '';
@@ -86,7 +85,7 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   _getUserAuthAndJoinedGroups() async {
-    _user = await FirebaseAuth.instance.currentUser;
+    _user = FirebaseAuth.instance.currentUser;
     await SideFunctions.getUserNameSharedPreference().then((value) {
       setState(() {
         _userName = value;
