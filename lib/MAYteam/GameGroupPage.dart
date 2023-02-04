@@ -35,9 +35,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            GestureDetector(
-                child: Icon(Icons.search, color: Colors.grey, size: 75.0)
-            ),
+            Icon(Icons.search, color: Colors.grey, size: 75.0),
             SizedBox(height: 20.0),
             Text("You've not joined any group, tap on the 'search' icon"),
           ],
@@ -103,7 +101,7 @@ class _HomePageState extends State<HomePage> {
   String _destructureName(String res) {
     return res.substring(res.indexOf('_') + 1);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
