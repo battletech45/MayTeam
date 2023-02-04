@@ -36,9 +36,6 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-                onTap: () {
-                  _popupDialog(context);
-                },
                 child: Icon(Icons.search, color: Colors.grey, size: 75.0)
             ),
             SizedBox(height: 20.0),
@@ -106,53 +103,7 @@ class _HomePageState extends State<HomePage> {
   String _destructureName(String res) {
     return res.substring(res.indexOf('_') + 1);
   }
-
-  void _popupDialog(BuildContext context) {
-    Widget cancelButton = ElevatedButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.of(context).pop();
-      },
-    );
-    Widget createButton = ElevatedButton(
-      child: Text("Create"),
-      onPressed:  () async {
-        if(_groupName != null) {
-          await SideFunctions.getUserNameSharedPreference().then((val) {
-            FirebaseFunctions(userID: _user.uid).createGroup(val, _groupName);
-          });
-          Navigator.of(context).pop();
-        }
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: Text("Create a group"),
-      content: TextField(
-          onChanged: (val) {
-            _groupName = val;
-          },
-          style: TextStyle(
-              fontSize: 15.0,
-              height: 2.0,
-              color: Colors.black
-          )
-      ),
-      actions: [
-        cancelButton,
-        createButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
