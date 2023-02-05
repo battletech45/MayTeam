@@ -15,6 +15,7 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController searchEditingController = new TextEditingController();
   QuerySnapshot searchResultSnapshot;
   Stream<QuerySnapshot> allGroupsSnapshot;
+  ScrollController _controller;
   bool isLoading = false;
   bool hasUserJoined = false;
   String _userName = '';
@@ -26,6 +27,7 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     _getCurrentUserNameAndUserID();
     _getAllGroups();
+    _controller = ScrollController();
   }
 
   _getCurrentUserNameAndUserID() async {
@@ -135,7 +137,7 @@ class _SearchPageState extends State<SearchPage> {
       stream: allGroupsSnapshot,
         builder: (context, snapshot) {
         return snapshot.hasData ? ListView.builder(
-          physics: BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
@@ -177,51 +179,58 @@ class _SearchPageState extends State<SearchPage> {
         title: Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
       ),
       body: Container(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              SizedBox(height: 20.0),
-              Container(
-                decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: searchEditingController,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                            hintText: "Search groups...",
-                            hintStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                            border: InputBorder.none
+        child: Scrollbar(
+          interactive: true,
+          thickness: 7.5,
+          trackVisibility: true,
+          controller: _controller,
+          child: SingleChildScrollView(
+            controller: _controller,
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                SizedBox(height: 20.0),
+                Container(
+                  decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: searchEditingController,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                              hintText: "Search groups...",
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                              border: InputBorder.none
+                          ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                        onTap: (){
-                          _initiateSearch();
-                        },
-                        child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(40)
-                            ),
-                            child: Icon(Icons.search, color: Colors.white)
-                        )
-                    )
-                  ],
+                      GestureDetector(
+                          onTap: (){
+                            _initiateSearch();
+                          },
+                          child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(40)
+                              ),
+                              child: Icon(Icons.search, color: Colors.white)
+                          )
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              isLoading ? Container(child: Center(child: CircularProgressIndicator())) : groupList()
-            ],
+                isLoading ? Container(child: Center(child: CircularProgressIndicator())) : groupList()
+              ],
+            ),
           ),
         ),
       ),
