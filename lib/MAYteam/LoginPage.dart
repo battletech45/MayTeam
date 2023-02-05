@@ -29,22 +29,51 @@ class _SignInPageState extends State<SignInPage> {
   String password = '';
   String error = '';
 
+  void _showPopupDialog() {
+    Widget okButton = MaterialButton(
+      child: Text("OK"),
+      color: Colors.black,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      splashColor: Colors.red[900],
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      icon: Icon(Icons.app_registration),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      title: Text("Email or password is wrong !"),
+      content: Text('You entered wrong email or password. Please check.', textAlign: TextAlign.center),
+      actions: <Widget>[okButton],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   _onSignIn() async {
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
       });
 
+      try {
       await _auth.signInWithEmailAndPassWord(email, password).then((
           result) async {
-        if(_user.currentUser.emailVerified) {
+        if (_user.currentUser.emailVerified) {
           if (result != null) {
             QuerySnapshot userInfoSnapshot = await FirebaseFunctions()
                 .getUserData(email);
 
             await SideFunctions.saveUserLoggedInSharedPreference(true);
             await SideFunctions.saverUserEmailSharedPreference(email);
-            await SideFunctions.saveUserNameSharedPreference(userInfoSnapshot.docs[0].get('fullName'));
+            await SideFunctions.saveUserNameSharedPreference(
+                userInfoSnapshot.docs[0].get('fullName'));
 
             if (email == 'taneri862@gmail.com') {
               Navigator.of(context).pushReplacement(
@@ -64,10 +93,19 @@ class _SignInPageState extends State<SignInPage> {
         }
         else {
           _user.currentUser.sendEmailVerification();
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerificationPage()));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => VerificationPage()));
           print("mail sent");
         }
       });
+    }
+    catch (e) {
+        print(e);
+        _showPopupDialog();
+        setState(() {
+          _isLoading = false;
+        });
+    }
     }
   }
 
@@ -124,7 +162,7 @@ class _SignInPageState extends State<SignInPage> {
                       style: TextStyle(color: Colors.white),
                       validator: (val) =>
                       val.length < 6
-                          ? 'Password not strong enough'
+                          ?  val.length == 0 ? 'Please enter a valid password' : 'Password not strong enough'
                           : null,
                       obscureText: true,
                       onChanged: (val) {
