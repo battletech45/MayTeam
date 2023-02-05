@@ -14,6 +14,7 @@ class _VerificationPageState extends State<VerificationPage> {
   final _user = FirebaseAuth.instance;
   bool _isVerified = false;
   String _userName = '';
+  bool _isLoading = false;
 
 
   _getUserName() async {
@@ -28,19 +29,27 @@ class _VerificationPageState extends State<VerificationPage> {
   }
 
   _getVerificationValue() async {
+    setState(() {
+      _isLoading = true;
+    });
     await _user.currentUser.reload();
     setState(() {
       _isVerified = _user.currentUser.emailVerified;
     });
-    print(_isVerified);
-    print(_user.currentUser.email);
-    print(_user.currentUser.uid);
-    if(_isVerified) {
+       if(_isVerified) {
       await SideFunctions.saveUserLoggedInSharedPreference(true);
       await SideFunctions.saverUserEmailSharedPreference(_user.currentUser.email);
       await SideFunctions.saveUserNameSharedPreference(_userName);
+      setState(() {
+        _isLoading = false;
+      });
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
     }
+       else {
+         setState(() {
+           _isLoading = false;
+         });
+       }
   }
 
   @override
@@ -65,9 +74,10 @@ class _VerificationPageState extends State<VerificationPage> {
             MaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                 color: Colors.red,
-                child: Text('Check Verification'),
+                child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Check Verification'),
                   onPressed: _getVerificationValue
-            ),MaterialButton(
+            ),
+            MaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                 color: Colors.black,
                 child: Text('Back'),

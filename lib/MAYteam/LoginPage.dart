@@ -142,8 +142,7 @@ class _SignInPageState extends State<SignInPage> {
                           color: Colors.red,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(80.0)),
-                          child: Text('Sign In', style: TextStyle(
-                              color: Colors.white, fontSize: 16.0)),
+                          child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Sign In', style: TextStyle(color: Colors.white, fontSize: 16.0)),
                           onPressed: () {
                             _onSignIn();
                           }

@@ -156,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           elevation: 0.0,
                           color: Colors.red,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                          child: Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
+                          child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
                           onPressed: () {
                             _onRegister();
                           }
