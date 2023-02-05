@@ -102,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
             alignment: Alignment.center,
             color: Colors.brown[900],
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 60.0),
+              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
               children: <Widget>[
                 Column(
                   children: <Widget>[
@@ -113,6 +113,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         hintText: 'NAME'
                       ),
+                      validator: (val) {
+                        if(val.length == 0) {
+                          return 'Please enter a valid user name';
+                        }
+                        else {
+                          if(val.length > 0) {
+                            if(_isUserUnique == false) {
+                              return 'Please enter a unique username';
+                            }
+                          }
+                          return null;
+                        }
+                      },
                       style: TextStyle(color: Colors.white),
                       onChanged: (val) {
                         setState(() {
@@ -142,6 +155,17 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       style: TextStyle(color: Colors.white),
                       obscureText: true,
+                      validator: (val) {
+                        if(val.length == 0) {
+                          return 'Please enter a valid password';
+                        }
+                        else {
+                          if(val.length < 6) {
+                            return 'Please enter stronger password';
+                          }
+                          return null;
+                        }
+                      },
                       onChanged: (val) {
                         setState(() {
                           password = val;
