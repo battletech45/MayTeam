@@ -49,7 +49,34 @@ class _VerificationPageState extends State<VerificationPage> {
          setState(() {
            _isLoading = false;
          });
+         _showPopupDialog();
        }
+  }
+
+  void _showPopupDialog() {
+    Widget okButton = MaterialButton(
+      child: Text("OK"),
+      color: Colors.black,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+      splashColor: Colors.red[900],
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      icon: Icon(Icons.mark_email_unread),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      title: Text("Please check your mailbox for verification !"),
+      actions: <Widget>[okButton],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
