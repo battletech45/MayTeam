@@ -68,6 +68,14 @@ class _SearchPageState extends State<SearchPage> {
         Navigator.of(context).pop();
       },
     );
+    AlertDialog userAlert = AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      title: Text("Already Joined !"),
+      content: Text('You already joined to group $groupName.'),
+      actions: [
+        cancelButton
+      ],
+    );
     Widget joinButton = MaterialButton(
       child: Text("Join"),
       elevation: 5.0,
@@ -75,21 +83,27 @@ class _SearchPageState extends State<SearchPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.red[900],
       onPressed: () async {
-        await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(groupID, groupName, userName);
         bool val = await FirebaseFunctions(userID: _user.uid).isUserJoined(groupID, groupName, userName);
-        if(val) {
-          Future.delayed(Duration(milliseconds: 2000), () {
+        if(!val) {
+          await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(groupID, groupName, userName);
+          Future.delayed(Duration(milliseconds: 1000), () {
+            Navigator.of(context).pop();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName)));
           });
         }
-        Navigator.of(context).pop();
+        else {
+          Navigator.of(context).pop();
+          showDialog(context: context, builder: (BuildContext context) {
+            return userAlert;
+          });
+        }
       },
     );
 
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       title: Text("You will join: $groupName"),
-      content: Text('If you already joined this group, this action will remove you from group !!!'),
+      content: Text('Are you sure to join group $groupName ?'),
       actions: [
         cancelButton,
         joinButton,
