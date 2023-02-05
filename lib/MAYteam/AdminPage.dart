@@ -196,7 +196,7 @@ class _AdminPageState extends State<AdminPage> {
             DrawerHeader(
               decoration: BoxDecoration(
                   image: DecorationImage(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight)),
-                child: Text("MAY TEAM")
+
             ),
             ListTile(
                 title: Text("Profile"),

@@ -126,7 +126,6 @@ class _HomePageState extends State<HomePage> {
             DrawerHeader(
                 decoration: BoxDecoration(
                     image: DecorationImage(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight)),
-                child: Text("MAY TEAM")
             ),
             ListTile(
               title: Text("Profile"),
