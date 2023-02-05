@@ -36,12 +36,7 @@ class _AdminPageState extends State<AdminPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            GestureDetector(
-                onTap: () {
-                  _popupDialog(context);
-                },
-                child: Icon(Icons.add_circle, color: Colors.white, size: 80.0)
-            ),
+            Icon(Icons.add_circle, color: Colors.white, size: 80.0),
             SizedBox(height: 20.0),
             Text("You've not joined any group, tap on the 'add' icon"),
           ],
