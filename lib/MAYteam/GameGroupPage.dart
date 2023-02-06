@@ -20,11 +20,13 @@ class _HomePageState extends State<HomePage> {
   String _userName = '';
   String _email = '';
   Stream<DocumentSnapshot> _groups ;
+  ScrollController _controller;
 
   @override
   void initState() {
     super.initState();
     _getUserAuthAndJoinedGroups();
+    _controller = ScrollController();
   }
 
   Widget noGroupWidget() {
@@ -50,14 +52,21 @@ class _HomePageState extends State<HomePage> {
           var data = snapshot.data;
           if(data['groups'] != null) {
             if(data['groups'].length != 0) {
-              return ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: data['groups'].length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    int reqIndex = data['groups'].length - index - 1;
-                    return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]));
-                  }
+              return Scrollbar(
+                interactive: true,
+                thickness: 5.5,
+                trackVisibility: true,
+                controller: _controller,
+                child: ListView.builder(
+                    controller: _controller,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: data['groups'].length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      int reqIndex = data['groups'].length - index - 1;
+                      return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]));
+                    }
+                ),
               );
             }
             else {

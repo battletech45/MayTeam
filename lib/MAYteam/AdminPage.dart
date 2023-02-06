@@ -21,11 +21,13 @@ class _AdminPageState extends State<AdminPage> {
   String _userName = '';
   String _email = '';
   Stream<DocumentSnapshot> _groups ;
+  ScrollController _controller;
 
   @override
   void initState() {
     super.initState();
     _getUserAuthAndJoinedGroups();
+    _controller = ScrollController();
   }
 
 
@@ -52,14 +54,21 @@ class _AdminPageState extends State<AdminPage> {
           var data = snapshot.data;
           if(data['groups'] != null) {
             if(data['groups'].length != 0) {
-              return ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: data['groups'].length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    int reqIndex = data['groups'].length - index - 1;
-                    return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]));
-                  }
+              return Scrollbar(
+                interactive: true,
+                trackVisibility: true,
+                thickness: 7.5,
+                controller: _controller,
+                child: ListView.builder(
+                    controller: _controller,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: data['groups'].length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      int reqIndex = data['groups'].length - index - 1;
+                      return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]));
+                    }
+                ),
               );
             }
             else {
