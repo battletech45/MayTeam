@@ -197,6 +197,9 @@ class _SearchPageState extends State<SearchPage> {
                     children: [
                       Expanded(
                         child: TextField(
+                          onSubmitted: (val) => {
+                            _initiateSearch()
+                            },
                           controller: searchEditingController,
                           style: TextStyle(
                             color: Colors.white,
