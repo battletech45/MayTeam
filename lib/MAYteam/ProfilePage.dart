@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'GameGroupPage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 
 class ProfilePage extends StatefulWidget{
@@ -16,10 +18,12 @@ class ProfilePageState extends State<ProfilePage> {
   String userName = '';
   String userEmail = '';
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+  DefaultCacheManager manager = new DefaultCacheManager();
   ImagePicker _picker = ImagePicker();
   FirebaseAuth _user = FirebaseAuth.instance;
+  bool _isLoading = false;
   File _photo;
-  String _photoLink;
+  String link;
   bool _isPhotoExist = false;
   String _activeGroup;
 
@@ -49,8 +53,15 @@ class ProfilePageState extends State<ProfilePage> {
     final destination = '$userID';
 
     try {
+      setState(() {
+        _isLoading = true;
+      });
       final ref = FirebaseStorage.instance.ref(destination).child(userID);
       await ref.putFile(_photo);
+      setState(() {
+        _isLoading = false;
+      });
+      manager.emptyCache();
     }
     catch (e) {
       print("error occurred");
@@ -60,18 +71,15 @@ class ProfilePageState extends State<ProfilePage> {
   _getImage() async {
     var userID = _user.currentUser.uid;
     final destination = '$userID';
-    String link;
     try {
       final ref = FirebaseStorage.instance.ref(destination).child(userID);
       link = await ref.getDownloadURL();
     }
     catch (e) {
       print('error occurred on url');
-      print(link);
     }
     if(link != null) {
       setState(() {
-        _photoLink = link;
         _isPhotoExist = true;
       });
     }
@@ -133,7 +141,7 @@ class ProfilePageState extends State<ProfilePage> {
                 child: Center(
                   child: CircleAvatar(
                     radius: 95,
-                    child: _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: NetworkImage(_photoLink)) : Icon(Icons.person,size: 80.0),
+                    child: _isLoading ? CircularProgressIndicator(color: Colors.red) : _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link)) : Icon(Icons.person,size: 80.0),
                   ),
                 ),
               ),
