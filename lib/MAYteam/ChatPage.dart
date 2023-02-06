@@ -198,6 +198,7 @@ class _ChatPageState extends State<ChatPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextField(
+                          onSubmitted: _sendMessage(),
                           controller: messageEditingController,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
