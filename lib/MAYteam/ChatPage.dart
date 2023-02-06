@@ -191,9 +191,10 @@ class _ChatPageState extends State<ChatPage> {
               Container(
                 alignment: Alignment.bottomCenter,
                 width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
                 child: Container(
                   decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
-                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.5),
                   child: Row(
                     children: <Widget>[
                       Expanded(
