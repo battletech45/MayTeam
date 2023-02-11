@@ -165,7 +165,7 @@ class _SearchPageState extends State<SearchPage> {
       title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Text("Admin: $admin"),
       onTap: () => _showPopupDialog(context, groupName, groupID, userName),
-      trailing: Icon(Icons.chat_outlined),
+      trailing: Icon(Icons.add_circle, size: 30.0),
     );
   }
 
