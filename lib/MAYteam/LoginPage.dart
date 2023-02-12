@@ -6,7 +6,7 @@ import 'package:MayTeam/MAYteam/AdminPage.dart';
 import 'package:MayTeam/MAYteam/Auth_functions.dart';
 import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
-import 'package:MayTeam/MAYteam/SignUpPage.dart';
+import 'package:MayTeam/MAYteam/ForgetPasswordPage.dart';
 import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
 import 'GameGroupPage.dart';
@@ -189,18 +189,18 @@ class _SignInPageState extends State<SignInPage> {
                     SizedBox(height: 25.0),
                     Text.rich(
                       TextSpan(
-                        text: "Don't have an account? ",
+                        text: "Forgot Password ? ",
                         style: TextStyle(color: Colors.white, fontSize: 14.0),
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Register here',
+                            text: 'Click here',
                             style: TextStyle(
                                 color: Colors.white,
                                 decoration: TextDecoration.underline
                             ),
                             recognizer: TapGestureRecognizer()
                           ..onTap = ()  {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterPage()));
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ForgetPasswordPage()));
                           },
                           ),
                         ],
