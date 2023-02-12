@@ -30,6 +30,13 @@ class FirebaseFunctions {
     });
   }
 
+  updateUserPassword(String password) async {
+    print(userID);
+    return await userCollection.doc(userID).update({
+      'password': password
+    });
+  }
+
   Future createGroup(String userName, String groupName) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
