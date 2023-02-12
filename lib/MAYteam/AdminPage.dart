@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/ProfilePage.dart';
 import '../main.dart';
+import 'ForgetPasswordPage.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'SearchPage.dart';
@@ -212,7 +213,14 @@ class _AdminPageState extends State<AdminPage> {
                 onTap: (){
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
                 }
-            ),ListTile(
+            ),
+            ListTile(
+                title: Text("Reset Password"),
+                onTap: (){
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ForgetPasswordPage()));
+                }
+            ),
+            ListTile(
                 title: Text("Sign Out"),
                 onTap: (){
                   AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp())));

@@ -90,7 +90,6 @@ class _VerificationPageState extends State<VerificationPage> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        color:Colors.brown [900],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
