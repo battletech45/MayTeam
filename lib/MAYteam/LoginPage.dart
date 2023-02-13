@@ -6,9 +6,9 @@ import 'package:MayTeam/MAYteam/AdminPage.dart';
 import 'package:MayTeam/MAYteam/Auth_functions.dart';
 import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
-import 'package:MayTeam/MAYteam/ResetPasswordPage.dart';
 import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
+import 'ForgetPasswordPage.dart';
 import 'GameGroupPage.dart';
 
 class SignInPage extends StatefulWidget {

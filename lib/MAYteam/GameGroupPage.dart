@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/ProfilePage.dart';
-import 'ResetPasswordPage.dart';
+import 'ForgetPasswordPage.dart';
 import '../main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';

@@ -1,9 +1,7 @@
 import 'package:MayTeam/MAYteam/AdminPage.dart';
-import 'package:MayTeam/MAYteam/Auth_functions.dart';
 import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:MayTeam/MAYteam/GameGroupPage.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
