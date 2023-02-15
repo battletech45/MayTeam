@@ -10,6 +10,7 @@ import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
 import 'ForgetPasswordPage.dart';
 import 'GameGroupPage.dart';
+import 'ResetPasswordPage.dart';
 
 class SignInPage extends StatefulWidget {
   final Function toggleView;
@@ -74,6 +75,9 @@ class _SignInPageState extends State<SignInPage> {
             await SideFunctions.saverUserEmailSharedPreference(email);
             await SideFunctions.saveUserNameSharedPreference(
                 userInfoSnapshot.docs[0].get('fullName'));
+            if(userInfoSnapshot.docs[0].get('password') != password) {
+              await FirebaseFunctions(userID: _user.currentUser.uid).updateUserPassword(password);
+            }
 
             if (email == 'taneri862@gmail.com') {
               Navigator.of(context).pushReplacement(
@@ -200,7 +204,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                             recognizer: TapGestureRecognizer()
                           ..onTap = ()  {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ForgetPasswordPage()));
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordPage()));
                           },
                           ),
                         ],
