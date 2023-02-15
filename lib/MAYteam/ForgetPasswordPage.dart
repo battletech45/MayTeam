@@ -71,7 +71,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 100.0),
+                SizedBox(height: 50.0),
                 Text('Forget Password', style: TextStyle(color: Colors.white, fontSize: 25.0)),
                 SizedBox(height: 30.0),
                 Icon(Icons.key, size: 100.0),
