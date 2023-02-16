@@ -148,14 +148,14 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 50.0),
               Container(
                 height: 40,
-                decoration: BoxDecoration(color:Colors.purple[900], borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color:Colors.teal[900], borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 30.0),
                 child:Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Icon(Icons.person_outline_rounded,size: 25.0,),
                     SizedBox(width: 70.0,),
-                    Text("$userName",style: TextStyle(fontSize: 15),),
+                    Text("$userName",style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                     SizedBox(width: 120.0,),
 
                   ],
