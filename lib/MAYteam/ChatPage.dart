@@ -73,6 +73,18 @@ class _ChatPageState extends State<ChatPage> {
       _user = FirebaseAuth.instance.currentUser;
     }
 
+    _deleteEmptyGroup() async {
+      FirebaseFunctions().getAllGroups().then((value) => value.forEach((element) {
+        for(var i = 0; i < element.docs.length; i++) {
+          List<dynamic> doc = element.docs.elementAt(i).get('members');
+          if(doc.isEmpty) {
+            print(i);
+            FirebaseFirestore.instance.runTransaction((transaction) async => transaction.delete(FirebaseFunctions().groupCollection.doc(element.docs.elementAt(i).id)));
+          }
+        }
+      }));
+    }
+
     void _popupGroupMemberLists(BuildContext context) {
       Widget backButton = MaterialButton(
         child: Text("Back"),
