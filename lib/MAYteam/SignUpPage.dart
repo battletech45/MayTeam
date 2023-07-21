@@ -11,7 +11,7 @@ import 'GameGroupPage.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function toggleView;
-  RegisterPage({this.toggleView});
+  RegisterPage({required this.toggleView});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -30,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String error = '';
 
   _onRegister() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
@@ -38,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await _checkUserNameExistence(fullName);
       if(_isUserUnique) {
         await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
-          if (_user.currentUser.emailVerified) {
+          if (_user.currentUser!.emailVerified) {
             if (result != null) {
               await SideFunctions.saveUserLoggedInSharedPreference(true);
               await SideFunctions.saverUserEmailSharedPreference(email);
@@ -55,7 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
             }
           }
           else {
-            _user.currentUser.sendEmailVerification();
+            _user.currentUser!.sendEmailVerification();
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => VerificationPage()));
             print("mail sent");
@@ -114,7 +114,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintText: 'NAME'
                       ),
                       validator: (val) {
-                        if(val.length == 0) {
+                        if(val!.length == 0) {
                           return 'Please enter a valid user name';
                         }
                         else {
@@ -140,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       style: TextStyle(color: Colors.white),
                       validator: (val) {
-                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null : "Please enter a valid email";
+                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val!) ? null : "Please enter a valid email";
                       },
                       onChanged: (val) {
                         setState(() {
@@ -156,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: TextStyle(color: Colors.white),
                       obscureText: true,
                       validator: (val) {
-                        if(val.length == 0) {
+                        if(val!.length == 0) {
                           return 'Please enter a valid password';
                         }
                         else {

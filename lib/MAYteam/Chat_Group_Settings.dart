@@ -6,7 +6,7 @@ class GroupTile extends StatelessWidget {
   final String groupID;
   final String groupName;
 
-  GroupTile({this.userName, this.groupID, this.groupName});
+  GroupTile({required this.userName, required this.groupID, required this.groupName});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class MemberTile extends StatelessWidget {
   final String userName;
   final String groupName;
 
-  MemberTile({this.userName, this.groupName});
+  MemberTile({required this.userName, required this.groupName});
 
   @override
   Widget build(BuildContext context) {

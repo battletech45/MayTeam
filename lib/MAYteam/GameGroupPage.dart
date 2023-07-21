@@ -17,11 +17,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  User _user;
+  late User _user;
   String _userName = '';
   String _email = '';
-  Stream<DocumentSnapshot> _groups ;
-  ScrollController _controller;
+  late Stream<DocumentSnapshot> _groups ;
+  late ScrollController _controller;
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if(snapshot.hasData) {
           var data = snapshot.data;
-          if(data['groups'] != null) {
+          if(data!['groups'] != null) {
             if(data['groups'].length != 0) {
               return Scrollbar(
                 interactive: true,
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _getUserAuthAndJoinedGroups() async {
-    _user = FirebaseAuth.instance.currentUser;
+    _user = FirebaseAuth.instance.currentUser!;
     await SideFunctions.getUserNameSharedPreference().then((value) {
       setState(() {
         _userName = value;
@@ -134,8 +134,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-                decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight)),
+                child: Image(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight),
             ),
             ListTile(
               title: Text("Profile"),

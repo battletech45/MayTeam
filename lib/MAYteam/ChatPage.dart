@@ -12,17 +12,17 @@ class ChatPage extends StatefulWidget {
   final String userName;
   final String groupName;
 
-  ChatPage({this.groupID, this.userName, this.groupName});
+  ChatPage({required this.groupID, required this.userName, required this.groupName});
 
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-    Stream<QuerySnapshot> _chats;
-    Stream<DocumentSnapshot> _groupMembers;
+    late Stream<QuerySnapshot> _chats;
+    late Stream<DocumentSnapshot> _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
-    User _user;
+    late User _user;
 
     Widget _chatMessages() {
       return StreamBuilder <QuerySnapshot>(
@@ -31,12 +31,12 @@ class _ChatPageState extends State<ChatPage> {
           return snapshot.hasData ? ListView.builder(
               physics: BouncingScrollPhysics(),
             reverse: true,
-              itemCount: snapshot.data.docs.length,
+              itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 return MessageTile(
-                  message: snapshot.data.docs[snapshot.data.docs.length - index - 1].get("message"),
-                  sender: snapshot.data.docs[snapshot.data.docs.length - index - 1].get("sender"),
-                  sentByMe: widget.userName == snapshot.data.docs[snapshot.data.docs.length - index - 1].get("sender"),
+                  message: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("message"),
+                  sender: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
+                  sentByMe: widget.userName == snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
                 );
               }
           ) : Container();
@@ -70,7 +70,7 @@ class _ChatPageState extends State<ChatPage> {
           _groupMembers = val;
         });
       });
-      _user = FirebaseAuth.instance.currentUser;
+      _user = FirebaseAuth.instance.currentUser!;
     }
 
     _deleteEmptyGroup() async {
@@ -129,7 +129,7 @@ class _ChatPageState extends State<ChatPage> {
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if(snapshot.hasData) {
                   var data = snapshot.data;
-                  if(data['members'] != null) {
+                  if(data!['members'] != null) {
                     if(data['members'].length != 0) {
                       return ListView.builder(
                           physics: BouncingScrollPhysics(),

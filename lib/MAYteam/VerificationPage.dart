@@ -18,9 +18,9 @@ class _VerificationPageState extends State<VerificationPage> {
 
 
   _getUserName() async {
-    var snapshot = await FirebaseFunctions().getUserData(_user.currentUser.email);
+    var snapshot = await FirebaseFunctions().getUserData(_user.currentUser!.email!);
     for(int i = 0; i < snapshot.docs.length; i++) {
-      if(snapshot.docs[i].get("email") == _user.currentUser.email) {
+      if(snapshot.docs[i].get("email") == _user.currentUser!.email) {
         setState(() {
           _userName = snapshot.docs[i].get("fullName");
         });
@@ -32,13 +32,13 @@ class _VerificationPageState extends State<VerificationPage> {
     setState(() {
       _isLoading = true;
     });
-    await _user.currentUser.reload();
+    await _user.currentUser!.reload();
     setState(() {
-      _isVerified = _user.currentUser.emailVerified;
+      _isVerified = _user.currentUser!.emailVerified;
     });
        if(_isVerified) {
       await SideFunctions.saveUserLoggedInSharedPreference(true);
-      await SideFunctions.saverUserEmailSharedPreference(_user.currentUser.email);
+      await SideFunctions.saverUserEmailSharedPreference(_user.currentUser!.email!);
       await SideFunctions.saveUserNameSharedPreference(_userName);
       setState(() {
         _isLoading = false;

@@ -4,7 +4,7 @@ class FirebaseFunctions {
   final String userID;
 
   FirebaseFunctions({
-    this.userID,
+    required this.userID,
   });
 
   final CollectionReference userCollection =

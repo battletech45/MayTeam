@@ -22,34 +22,34 @@ class ProfilePageState extends State<ProfilePage> {
   ImagePicker _picker = ImagePicker();
   FirebaseAuth _user = FirebaseAuth.instance;
   bool _isLoading = false;
-  File _photo;
-  String link;
+  late File _photo;
+  late String link;
   bool _isPhotoExist = false;
-  String _activeGroup;
+  late String _activeGroup;
 
   _getUserName() async {
     var name = await SideFunctions.getUserNameSharedPreference();
     setState(() {
-      userName = name;
+      userName = name!;
     });
     var email = await SideFunctions.getUserEmailSharedPreference();
     setState(() {
-      userEmail = email;
+      userEmail = email!;
     });
   }
 
   _getActiveGroup() async {
-    var userData = await FirebaseFirestore.instance.collection('users').doc(_user.currentUser.uid).get();
+    var userData = await FirebaseFirestore.instance.collection('users').doc(_user.currentUser!.uid).get();
     var data = userData.data();
 
     setState(() {
-      _activeGroup = data['activeGroup'];
+      _activeGroup = data!['activeGroup'];
     });
   }
 
   _uploadImage() async {
     if (_photo == null) return;
-    var userID = _user.currentUser.uid;
+    var userID = _user.currentUser!.uid;
     final destination = '$userID';
 
     try {
@@ -69,7 +69,7 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   _getImage() async {
-    var userID = _user.currentUser.uid;
+    var userID = _user.currentUser!.uid;
     final destination = '$userID';
     try {
       final ref = FirebaseStorage.instance.ref(destination).child(userID);

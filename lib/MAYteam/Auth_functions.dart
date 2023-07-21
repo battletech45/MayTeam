@@ -6,22 +6,22 @@ class ModelUser {
   final String userID;
 
   ModelUser({
-    this.userID
+    required this.userID
   });
 }
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  ModelUser _userFromFirebaseUser(User user) {
+  ModelUser? _userFromFirebaseUser(User user) {
     return (user != null) ? ModelUser(userID: user.uid) : null;
   }
 
   Future signInWithEmailAndPassWord(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
-      return _userFromFirebaseUser(user);
+      User? user = result.user;
+      return _userFromFirebaseUser(user!);
     }
     catch(e) {
       print(e.toString());
@@ -32,9 +32,9 @@ class AuthService {
   Future registerWithEmailAndPassword(String fullName, String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
+      User? user = result.user;
 
-      await FirebaseFunctions(userID: user.uid).updateUserData(fullName, email, password);
+      await FirebaseFunctions(userID: user!.uid).updateUserData(fullName, email, password);
       return _userFromFirebaseUser(user);
     }
     catch(e) {

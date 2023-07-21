@@ -22,10 +22,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     setState(() {
       _isLoading = true;
     });
-    final _credential = EmailAuthProvider.credential(email: _user.currentUser.email, password: oldPassword);
-    await _user.currentUser.reauthenticateWithCredential(_credential);
-    await _user.currentUser.updatePassword(newPassword);
-    await FirebaseFunctions(userID: _user.currentUser.uid).updateUserPassword(newPassword);
+    final _credential = EmailAuthProvider.credential(email: _user.currentUser!.email!, password: oldPassword);
+    await _user.currentUser?.reauthenticateWithCredential(_credential);
+    await _user.currentUser?.updatePassword(newPassword);
+    await FirebaseFunctions(userID: _user.currentUser!.uid).updateUserPassword(newPassword);
     setState(() {
       _isLoading = false;
     });
@@ -85,7 +85,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                   style: TextStyle(color: Colors.white),
                   obscureText: true,
                   validator: (val) {
-                    if(val.length == 0) {
+                    if(val!.length == 0) {
                       return 'Please enter a valid password';
                     }
                     else {
@@ -109,7 +109,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                   style: TextStyle(color: Colors.white),
                   obscureText: true,
                   validator: (val) {
-                    if(val.length == 0) {
+                    if(val!.length == 0) {
                       return 'Please enter a valid password';
                     }
                     else {
@@ -139,7 +139,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     color: Colors.black,
                     child: Text('Back'),
                     onPressed: () => {
-                      if(_user.currentUser.email == 'taneri862@gmail.com') {
+                      if(_user.currentUser!.email == 'taneri862@gmail.com') {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>AdminPage()))
                       }
                       else {

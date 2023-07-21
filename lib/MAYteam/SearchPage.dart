@@ -13,13 +13,13 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
 
   TextEditingController searchEditingController = new TextEditingController();
-  QuerySnapshot searchResultSnapshot;
-  Stream<QuerySnapshot> allGroupsSnapshot;
-  ScrollController _controller;
+  late QuerySnapshot searchResultSnapshot;
+  late Stream<QuerySnapshot> allGroupsSnapshot;
+  late ScrollController _controller;
   bool isLoading = false;
   bool hasUserJoined = false;
   String _userName = '';
-  User _user;
+  late User _user;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -34,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
     await SideFunctions.getUserNameSharedPreference().then((value) {
       _userName = value;
     });
-    _user = FirebaseAuth.instance.currentUser;
+    _user = FirebaseAuth.instance.currentUser!;
   }
 
   _initiateSearch() async {
@@ -139,13 +139,13 @@ class _SearchPageState extends State<SearchPage> {
         return snapshot.hasData ? ListView.builder(
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
-              itemCount: snapshot.data.docs.length,
+              itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 return groupTile(
                   _userName,
-                  snapshot.data.docs[index].get("groupID"),
-                  snapshot.data.docs[index].get("groupName"),
-                  snapshot.data.docs[index].get("admin"),
+                  snapshot.data!.docs[index].get("groupID"),
+                  snapshot.data!.docs[index].get("groupName"),
+                  snapshot.data!.docs[index].get("admin"),
                 );
               }
           ) :

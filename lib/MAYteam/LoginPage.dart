@@ -14,7 +14,7 @@ import 'ResetPasswordPage.dart';
 
 class SignInPage extends StatefulWidget {
   final Function toggleView;
-  SignInPage({this.toggleView});
+  SignInPage({required this.toggleView});
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -58,7 +58,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   _onSignIn() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
@@ -66,7 +66,7 @@ class _SignInPageState extends State<SignInPage> {
       try {
       await _auth.signInWithEmailAndPassWord(email, password).then((
           result) async {
-        if (_user.currentUser.emailVerified) {
+        if (_user.currentUser!.emailVerified) {
           if (result != null) {
             QuerySnapshot userInfoSnapshot = await FirebaseFunctions()
                 .getUserData(email);
@@ -76,7 +76,7 @@ class _SignInPageState extends State<SignInPage> {
             await SideFunctions.saveUserNameSharedPreference(
                 userInfoSnapshot.docs[0].get('fullName'));
             if(userInfoSnapshot.docs[0].get('password') != password) {
-              await FirebaseFunctions(userID: _user.currentUser.uid).updateUserPassword(password);
+              await FirebaseFunctions(userID: _user.currentUser!.uid).updateUserPassword(password);
             }
 
             if (email == 'taneri862@gmail.com') {
@@ -96,7 +96,7 @@ class _SignInPageState extends State<SignInPage> {
           }
         }
         else {
-          _user.currentUser.sendEmailVerification();
+          _user.currentUser!.sendEmailVerification();
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => VerificationPage()));
           print("mail sent");
@@ -148,7 +148,7 @@ class _SignInPageState extends State<SignInPage> {
                       validator: (val) {
                         return RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(val)
+                            .hasMatch(val!)
                             ? null
                             : "Please enter a valid email";
                       },
@@ -165,7 +165,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       style: TextStyle(color: Colors.white),
                       validator: (val) =>
-                      val.length < 6
+                      val!.length < 6
                           ?  val.length == 0 ? 'Please enter a valid password' : 'Password not strong enough'
                           : null,
                       obscureText: true,

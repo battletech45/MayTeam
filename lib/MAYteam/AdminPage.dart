@@ -17,12 +17,12 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
 
-  User _user;
+  User? _user;
   String _groupName = '';
   String _userName = '';
   String _email = '';
-  Stream<DocumentSnapshot> _groups ;
-  ScrollController _controller;
+  Stream<DocumentSnapshot>? _groups;
+  ScrollController? _controller;
 
   @override
   void initState() {
@@ -53,8 +53,8 @@ class _AdminPageState extends State<AdminPage> {
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if(snapshot.hasData) {
           var data = snapshot.data;
-          if(data['groups'] != null) {
-            if(data['groups'].length != 0) {
+          if(data?['groups'] != null) {
+            if(data?['groups'].length != 0) {
               return Scrollbar(
                 interactive: true,
                 trackVisibility: true,
@@ -63,11 +63,11 @@ class _AdminPageState extends State<AdminPage> {
                 child: ListView.builder(
                     controller: _controller,
                     physics: BouncingScrollPhysics(),
-                    itemCount: data['groups'].length,
+                    itemCount: data?['groups'].length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      int reqIndex = data['groups'].length - index - 1;
-                      return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]));
+                      int reqIndex = data?['groups'].length - index - 1;
+                      return GroupTile(userName: data?['fullName'], groupID: _destructureId(data?['groups'][reqIndex]), groupName: _destructureName(data?['groups'][reqIndex]));
                     }
                 ),
               );
@@ -96,7 +96,7 @@ class _AdminPageState extends State<AdminPage> {
         _userName = value;
       });
     });
-    FirebaseFunctions(userID: _user.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
+    FirebaseFunctions(userID: _user!.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
       });
@@ -136,7 +136,7 @@ class _AdminPageState extends State<AdminPage> {
       onPressed: () async {
         if(_groupName != null) {
           await SideFunctions.getUserNameSharedPreference().then((val) {
-            FirebaseFunctions(userID: _user.uid).createGroup(val, _groupName);
+            FirebaseFunctions(userID: _user!.uid).createGroup(val, _groupName);
           });
           Navigator.of(context).pop();
         }
@@ -204,9 +204,7 @@ class _AdminPageState extends State<AdminPage> {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight)),
-
+              child: Image(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight)
             ),
             ListTile(
                 title: Text("Profile"),

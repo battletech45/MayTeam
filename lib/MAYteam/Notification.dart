@@ -36,8 +36,8 @@ class FCM {
           streamCtlr.sink.add(message.data['notification']);
         }
         // Or do other work.
-        titleCtlr.sink.add(message.notification.title);
-        bodyCtlr.sink.add(message.notification.body);
+        titleCtlr.sink.add(message.notification!.title!);
+        bodyCtlr.sink.add(message.notification!.body!);
       },
     );
     // With this token you can test it easily on your phone
