@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseFunctions {
-  final String userID;
+  final String? userID;
 
   FirebaseFunctions({
-    required this.userID,
+    this.userID,
   });
 
   final CollectionReference userCollection =
@@ -49,7 +49,7 @@ class FirebaseFunctions {
     });
 
     await groupDocRef.update({
-      'members': FieldValue.arrayUnion([userID + '_' + userName]),
+      'members': FieldValue.arrayUnion([userID! + '_' + userName]),
       'groupID': groupDocRef.id
     });
 
@@ -74,7 +74,7 @@ class FirebaseFunctions {
       });
 
       await groupDocRef.update({
-        'members': FieldValue.arrayRemove([userID + '_' + userName])
+        'members': FieldValue.arrayRemove([userID! + '_' + userName])
       });
     } else {
       await userDocRef.update({
@@ -82,7 +82,7 @@ class FirebaseFunctions {
       });
 
       await groupDocRef.update({
-        'members': FieldValue.arrayUnion([userID + '_' + userName])
+        'members': FieldValue.arrayUnion([userID! + '_' + userName])
       });
     }
   }

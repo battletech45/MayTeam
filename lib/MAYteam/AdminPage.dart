@@ -93,7 +93,7 @@ class _AdminPageState extends State<AdminPage> {
     _user = FirebaseAuth.instance.currentUser;
     await SideFunctions.getUserNameSharedPreference().then((value) {
       setState(() {
-        _userName = value;
+        _userName = value!;
       });
     });
     FirebaseFunctions(userID: _user!.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
@@ -103,7 +103,7 @@ class _AdminPageState extends State<AdminPage> {
     });
     await SideFunctions.getUserEmailSharedPreference().then((value) {
       setState(() {
-        _email = value;
+        _email = value!;
       });
     });
   }
@@ -136,7 +136,7 @@ class _AdminPageState extends State<AdminPage> {
       onPressed: () async {
         if(_groupName != null) {
           await SideFunctions.getUserNameSharedPreference().then((val) {
-            FirebaseFunctions(userID: _user!.uid).createGroup(val, _groupName);
+            FirebaseFunctions(userID: _user!.uid).createGroup(val!, _groupName);
           });
           Navigator.of(context).pop();
         }

@@ -10,8 +10,8 @@ import 'Auth_functions.dart';
 import 'GameGroupPage.dart';
 
 class RegisterPage extends StatefulWidget {
-  final Function toggleView;
-  RegisterPage({required this.toggleView});
+  final Function? toggleView;
+  RegisterPage({this.toggleView});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();

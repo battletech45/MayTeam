@@ -85,11 +85,11 @@ class _NotificationPageState extends State<NotificationPage> {
           children: [
             Text(
               notificationTitle,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             Text(
               notificationBody,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ],
         ),

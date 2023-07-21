@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     _user = FirebaseAuth.instance.currentUser!;
     await SideFunctions.getUserNameSharedPreference().then((value) {
       setState(() {
-        _userName = value;
+        _userName = value!;
       });
     });
     FirebaseFunctions(userID: _user.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
     });
     await SideFunctions.getUserEmailSharedPreference().then((value) {
       setState(() {
-        _email = value;
+        _email = value!;
       });
     });
   }

@@ -32,7 +32,7 @@ class _SearchPageState extends State<SearchPage> {
 
   _getCurrentUserNameAndUserID() async {
     await SideFunctions.getUserNameSharedPreference().then((value) {
-      _userName = value;
+      _userName = value!;
     });
     _user = FirebaseAuth.instance.currentUser!;
   }

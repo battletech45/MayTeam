@@ -13,8 +13,8 @@ import 'GameGroupPage.dart';
 import 'ResetPasswordPage.dart';
 
 class SignInPage extends StatefulWidget {
-  final Function toggleView;
-  SignInPage({required this.toggleView});
+  final Function? toggleView;
+  SignInPage({this.toggleView});
 
   @override
   _SignInPageState createState() => _SignInPageState();
