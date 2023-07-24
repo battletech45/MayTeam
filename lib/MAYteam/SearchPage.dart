@@ -13,13 +13,13 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
 
   TextEditingController searchEditingController = new TextEditingController();
-  late QuerySnapshot searchResultSnapshot;
-  late Stream<QuerySnapshot> allGroupsSnapshot;
-  late ScrollController _controller;
+  QuerySnapshot? searchResultSnapshot;
+  Stream<QuerySnapshot>? allGroupsSnapshot;
+  ScrollController? _controller;
   bool isLoading = false;
   bool hasUserJoined = false;
   String _userName = '';
-  late User _user;
+  User? _user;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -85,9 +85,9 @@ class _SearchPageState extends State<SearchPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.red[900],
       onPressed: () async {
-        bool val = await FirebaseFunctions(userID: _user.uid).isUserJoined(groupID, groupName, userName);
+        bool val = await FirebaseFunctions(userID: _user!.uid).isUserJoined(groupID, groupName, userName);
         if(!val) {
-          await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(groupID, groupName, userName);
+          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(groupID, groupName, userName);
           Future.delayed(Duration(milliseconds: 1000), () {
             Navigator.of(context).pop();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName)));
@@ -124,13 +124,13 @@ class _SearchPageState extends State<SearchPage> {
     return hasUserJoined ? ListView.builder(
         physics: BouncingScrollPhysics(),
       shrinkWrap: true,
-      itemCount: searchResultSnapshot.docs.length,
+      itemCount: searchResultSnapshot!.docs.length,
       itemBuilder: (context, index) {
         return groupTile(
           _userName,
-          searchResultSnapshot.docs[index].get("groupID"),
-          searchResultSnapshot.docs[index].get("groupName"),
-          searchResultSnapshot.docs[index].get("admin"),
+          searchResultSnapshot!.docs[index].get("groupID"),
+          searchResultSnapshot!.docs[index].get("groupName"),
+          searchResultSnapshot!.docs[index].get("admin"),
         );
       }
     ) : StreamBuilder <QuerySnapshot>(

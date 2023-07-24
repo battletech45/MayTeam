@@ -19,10 +19,10 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-    late Stream<QuerySnapshot> _chats;
-    late Stream<DocumentSnapshot> _groupMembers;
+    Stream<QuerySnapshot>? _chats;
+    Stream<DocumentSnapshot>? _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
-    late User _user;
+    User? _user;
 
     Widget _chatMessages() {
       return StreamBuilder <QuerySnapshot>(
@@ -61,7 +61,7 @@ class _ChatPageState extends State<ChatPage> {
           });
         });
       }
-      FirebaseFunctions(userID: _user.uid).updateUserLastGroup(widget.groupName);
+      FirebaseFunctions(userID: _user!.uid).updateUserLastGroup(widget.groupName);
     }
 
     _getGroupMembers() async {
@@ -104,8 +104,8 @@ class _ChatPageState extends State<ChatPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         splashColor: Colors.red[900],
         onPressed: () async {
-          await FirebaseFunctions(userID: _user.uid).togglingGroupJoin(widget.groupID, widget.groupName, widget.userName);
-          if(_user.email == "taneri862@gmail.com") {
+          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(widget.groupID, widget.groupName, widget.userName);
+          if(_user!.email == "taneri862@gmail.com") {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminPage()));
           }
           else {

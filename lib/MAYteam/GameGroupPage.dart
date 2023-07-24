@@ -17,11 +17,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late User _user;
+  User? _user;
   String _userName = '';
   String _email = '';
-  late Stream<DocumentSnapshot> _groups ;
-  late ScrollController _controller;
+  Stream<DocumentSnapshot>? _groups ;
+  ScrollController? _controller;
 
   @override
   void initState() {
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         _userName = value!;
       });
     });
-    FirebaseFunctions(userID: _user.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
+    FirebaseFunctions(userID: _user!.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
       });

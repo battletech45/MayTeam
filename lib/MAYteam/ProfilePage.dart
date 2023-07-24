@@ -22,10 +22,10 @@ class ProfilePageState extends State<ProfilePage> {
   ImagePicker _picker = ImagePicker();
   FirebaseAuth _user = FirebaseAuth.instance;
   bool _isLoading = false;
-  late File _photo;
-  late String link;
+  File? _photo;
+  String? link;
   bool _isPhotoExist = false;
-  late String _activeGroup;
+  String? _activeGroup;
 
   _getUserName() async {
     var name = await SideFunctions.getUserNameSharedPreference();
@@ -57,7 +57,7 @@ class ProfilePageState extends State<ProfilePage> {
         _isLoading = true;
       });
       final ref = FirebaseStorage.instance.ref(destination).child(userID);
-      await ref.putFile(_photo);
+      await ref.putFile(_photo!);
       setState(() {
         _isLoading = false;
       });
@@ -141,7 +141,7 @@ class ProfilePageState extends State<ProfilePage> {
                 child: Center(
                   child: CircleAvatar(
                     radius: 95,
-                    child: _isLoading ? CircularProgressIndicator(color: Colors.red) : _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link)) : Icon(Icons.person,size: 80.0),
+                    child: _isLoading ? CircularProgressIndicator(color: Colors.red) : _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link!)) : Icon(Icons.person,size: 80.0),
                   ),
                 ),
               ),
