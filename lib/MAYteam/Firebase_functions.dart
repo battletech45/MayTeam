@@ -131,6 +131,15 @@ class FirebaseFunctions {
     });
   }
 
+  void deleteMessage(String groupID, String messageID) {
+    FirebaseFirestore.instance.collection('groups').doc(groupID).collection('messages').doc(messageID).delete();
+  }
+  void editMessage(String groupID, String messageID, String newMessage) {
+    groupCollection.doc(groupID).collection('messages').doc(messageID).update({
+      'message': newMessage
+    });
+  }
+
   Future<Stream<QuerySnapshot>> getChats(String groupID) async {
     return FirebaseFirestore.instance
         .collection('groups')

@@ -37,6 +37,8 @@ class _ChatPageState extends State<ChatPage> {
                   message: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("message"),
                   sender: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
                   sentByMe: widget.userName == snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
+                  groupID: widget.groupID,
+                  messageID: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].id,
                 );
               }
           ) : Container();
