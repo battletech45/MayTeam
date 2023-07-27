@@ -1,3 +1,4 @@
+import 'package:MayTeam/MAYteam/AdminPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
@@ -26,6 +27,7 @@ class ProfilePageState extends State<ProfilePage> {
   String? link;
   bool _isPhotoExist = false;
   String? _activeGroup;
+  bool isAdmin = false;
 
   _getUserName() async {
     var name = await SideFunctions.getUserNameSharedPreference();
@@ -42,8 +44,14 @@ class ProfilePageState extends State<ProfilePage> {
     var userData = await FirebaseFirestore.instance.collection('users').doc(_user.currentUser!.uid).get();
     var data = userData.data();
 
+    if(data!['email'] != null && data['email'] == 'taneri862@gmail.com') {
+      setState(() {
+        isAdmin = true;
+      });
+    }
+
     setState(() {
-      _activeGroup = data!['activeGroup'];
+      _activeGroup = data['activeGroup'];
     });
   }
 
@@ -128,7 +136,7 @@ class ProfilePageState extends State<ProfilePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: Colors.white),
           onPressed: (){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  isAdmin ? AdminPage() : HomePage()));
           },
         ),
       ),
