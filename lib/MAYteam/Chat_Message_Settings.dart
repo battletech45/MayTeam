@@ -17,7 +17,7 @@ class MessageTile extends StatefulWidget {
 
 class _MessageTileState extends State<MessageTile> {
 
-  String newMessage = '';
+  String? newMessage;
 
   void _editMessage() {
     if(widget.sentByMe) {
@@ -27,8 +27,14 @@ class _MessageTileState extends State<MessageTile> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         splashColor: Colors.black,
         onPressed: () {
-          FirebaseFunctions().editMessage(widget.groupID!, widget.messageID!, newMessage);
-          Navigator.of(context).pop();
+          if(newMessage == null) {
+            FirebaseFunctions().editMessage(widget.groupID!, widget.messageID!, widget.message);
+            Navigator.of(context).pop();
+          }
+          else {
+            FirebaseFunctions().editMessage(widget.groupID!, widget.messageID!, newMessage!);
+            Navigator.of(context).pop();
+          }
         },
       );
       Widget delButton = MaterialButton(
