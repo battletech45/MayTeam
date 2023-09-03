@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'MAYteam/GameGroupPage.dart';
+import 'MAYteam/Notification.dart';
 import 'MAYteam/SideFunctions.dart';
 import 'MAYteam/AdminPage.dart';
 import 'MAYteam/LoginPage.dart';
@@ -48,10 +49,22 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  String notificationTitle = 'No Title';
+  String notificationBody = 'No Body';
+
+  _changeBody(String msg) => setState(() => notificationBody = msg);
+  _changeTitle(String msg) => setState(() => notificationTitle = msg);
+
   @override
   void initState() {
     super.initState();
     _checkUserStatus();
+    final _firebaseMessaging = FCM();
+    _firebaseMessaging.setNotifications();
+    NotificationHelper.initialize();
+
+    _firebaseMessaging.bodyCtlr.stream.listen(_changeBody);
+    _firebaseMessaging.titleCtlr.stream.listen(_changeTitle);
   }
 
   @override

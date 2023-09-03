@@ -12,14 +12,15 @@ class FirebaseFunctions {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
 
-  Future updateUserData(String fullName, String email, String password) async {
+  Future updateUserData(String fullName, String email, String password, String token) async {
     return await userCollection.doc(userID).set({
       'fullName': fullName,
       'email': email,
       'password': password,
       'groups': [],
       'profilePic': '',
-      'activeGroup': ''
+      'activeGroup': '',
+      'token': token
     });
   }
 

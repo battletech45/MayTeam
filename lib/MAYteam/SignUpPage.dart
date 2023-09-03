@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:MayTeam/MAYteam/LoginPage.dart';
@@ -28,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String email = '';
   String password = '';
   String error = '';
+  String? token;
 
   _onRegister() async {
     if (_formKey.currentState!.validate()) {
@@ -36,8 +38,10 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       await _checkUserNameExistence(fullName);
+      token = await FirebaseMessaging.instance.getToken();
       if(_isUserUnique) {
-        await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
+        print(token!);
+        await _auth.registerWithEmailAndPassword(fullName, email, password, token!).then((result) async {
           if (_user.currentUser!.emailVerified) {
             if (result != null) {
               await SideFunctions.saveUserLoggedInSharedPreference(true);
