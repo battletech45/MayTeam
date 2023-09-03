@@ -5,14 +5,15 @@ class GroupTile extends StatelessWidget {
   final String userName;
   final String groupID;
   final String groupName;
+  final String userToken;
 
-  GroupTile({required this.userName, required this.groupID, required this.groupName});
+  GroupTile({required this.userName, required this.groupID, required this.groupName, required this.userToken});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName, userToken: userToken)));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),

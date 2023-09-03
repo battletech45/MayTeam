@@ -19,6 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   bool isLoading = false;
   bool hasUserJoined = false;
   String _userName = '';
+  String? token;
   User? _user;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -35,6 +36,10 @@ class _SearchPageState extends State<SearchPage> {
       _userName = value!;
     });
     _user = FirebaseAuth.instance.currentUser!;
+    var data = await FirebaseFunctions().getUserData(_user!.email!);
+    setState(() {
+      token = data.docs[0].get('token');
+    });
   }
 
   _initiateSearch() async {
@@ -87,10 +92,10 @@ class _SearchPageState extends State<SearchPage> {
       onPressed: () async {
         bool val = await FirebaseFunctions(userID: _user!.uid).isUserJoined(groupID, groupName, userName);
         if(!val) {
-          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(groupID, groupName, userName);
+          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(groupID, groupName, userName, token!);
           Future.delayed(Duration(milliseconds: 1000), () {
             Navigator.of(context).pop();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName)));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName, userToken: token!)));
           });
         }
         else {

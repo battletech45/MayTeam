@@ -11,8 +11,9 @@ class ChatPage extends StatefulWidget {
   final String groupID;
   final String userName;
   final String groupName;
+  final String userToken;
 
-  ChatPage({required this.groupID, required this.userName, required this.groupName});
+  ChatPage({required this.groupID, required this.userName, required this.groupName, required this.userToken});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -106,7 +107,7 @@ class _ChatPageState extends State<ChatPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         splashColor: Colors.red[900],
         onPressed: () async {
-          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(widget.groupID, widget.groupName, widget.userName);
+          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(widget.groupID, widget.groupName, widget.userName, widget.userToken!);
           if(_user!.email == "taneri862@gmail.com") {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminPage()));
           }

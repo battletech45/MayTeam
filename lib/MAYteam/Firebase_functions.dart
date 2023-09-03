@@ -61,7 +61,7 @@ class FirebaseFunctions {
   }
 
   Future<void> togglingGroupJoin(
-      String groupID, String groupName, String userName) async {
+      String groupID, String groupName, String userName, String token) async {
     DocumentReference userDocRef = userCollection.doc(userID);
     DocumentSnapshot userDocSnapshot = await userDocRef.get();
 
@@ -75,7 +75,8 @@ class FirebaseFunctions {
       });
 
       await groupDocRef.update({
-        'members': FieldValue.arrayRemove([userID! + '_' + userName])
+        'members': FieldValue.arrayRemove([userID! + '_' + userName]),
+        'tokens': FieldValue.arrayRemove([token])
       });
     } else {
       await userDocRef.update({
@@ -83,7 +84,8 @@ class FirebaseFunctions {
       });
 
       await groupDocRef.update({
-        'members': FieldValue.arrayUnion([userID! + '_' + userName])
+        'members': FieldValue.arrayUnion([userID! + '_' + userName]),
+        'tokens': FieldValue.arrayUnion([token])
       });
     }
   }

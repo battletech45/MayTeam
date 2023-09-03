@@ -67,7 +67,7 @@ class _AdminPageState extends State<AdminPage> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       int reqIndex = data?['groups'].length - index - 1;
-                      return GroupTile(userName: data?['fullName'], groupID: _destructureId(data?['groups'][reqIndex]), groupName: _destructureName(data?['groups'][reqIndex]));
+                      return GroupTile(userName: data?['fullName'], groupID: _destructureId(data?['groups'][reqIndex]), groupName: _destructureName(data?['groups'][reqIndex]), userToken: data?['token']);
                     }
                 ),
               );
