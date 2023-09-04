@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/AdminPage.dart';
@@ -8,7 +9,6 @@ import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
-import 'ForgetPasswordPage.dart';
 import 'GameGroupPage.dart';
 import 'ResetPasswordPage.dart';
 
@@ -29,6 +29,7 @@ class _SignInPageState extends State<SignInPage> {
   String email = '';
   String password = '';
   String error = '';
+  String? token;
 
   void _showPopupDialog() {
     Widget okButton = MaterialButton(
@@ -77,6 +78,10 @@ class _SignInPageState extends State<SignInPage> {
                 userInfoSnapshot.docs[0].get('fullName'));
             if(userInfoSnapshot.docs[0].get('password') != password) {
               await FirebaseFunctions(userID: _user.currentUser!.uid).updateUserPassword(password);
+            }
+            token = await FirebaseMessaging.instance.getToken();
+            if(userInfoSnapshot.docs[0].get('token') != token) {
+              await FirebaseFunctions(userID: _user.currentUser!.uid).updateUserToken(token!);
             }
 
             if (email == 'taneri862@gmail.com') {

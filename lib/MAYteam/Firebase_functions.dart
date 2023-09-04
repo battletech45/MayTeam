@@ -38,6 +38,12 @@ class FirebaseFunctions {
     });
   }
 
+  updateUserToken(String token) async {
+    return await userCollection.doc(userID).update({
+      'token': token
+    });
+  }
+
   Future createGroup(String userName, String groupName) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
