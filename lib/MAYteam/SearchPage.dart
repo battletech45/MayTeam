@@ -39,6 +39,7 @@ class _SearchPageState extends State<SearchPage> {
     var data = await FirebaseFunctions().getUserData(_user!.email!);
     setState(() {
       token = data.docs[0].get('token');
+      print(token);
     });
   }
 

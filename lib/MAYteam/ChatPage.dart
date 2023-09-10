@@ -1,3 +1,4 @@
+import 'package:MayTeam/MAYteam/Notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -230,6 +231,8 @@ class _ChatPageState extends State<ChatPage> {
                       GestureDetector(
                         onTap: () {
                           _sendMessage();
+                          print(widget.userToken);
+                          FCM().sendNotification(widget.userName, messageEditingController.text, widget.userToken);
                         },
                         child: Container(
                           height: 50.0,
