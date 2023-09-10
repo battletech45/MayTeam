@@ -73,7 +73,6 @@ class FCM {
   Future<void> sendNotification(String title, String body, String targetToken) async {
 
     String? fcmToken = await FirebaseMessaging.instance.getToken();
-    print(fcmToken);
 
     final Map<String, dynamic> notificationData = {
       'notification': {
@@ -86,7 +85,7 @@ class FCM {
 
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'key=AAAAql75Hzc:APA91bHjN2iv42ZYYA_hDKVKEC3fhOKmmDsD36YQPA7WLJSiuQpP9xnZznsMuekHFj2Idkt25_SMTbnNN4kY3shHgD6fGBwiplfPSxfUcvIWHT3XHo4zYpkUexdSobQEtlUiyzjsoZ2m',
+      'Authorization': 'key=AAAATl1qm9Q:APA91bGArOF58ZVfw5lhpMgYecBjK3-ujP41sfRHM9uDGqFopoAxuW39xP670yv1XF3Kd9hYD2s_5fBFRTwKM31l9t0o1caL7i6mOmEU2mbC8QNodygsEUTyoY1g07cV66mou3EC8N75',
     };
 
     final response = await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'), headers: headers, body: jsonEncode(notificationData));
