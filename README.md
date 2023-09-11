@@ -9,5 +9,5 @@ May Team is a group chat application. This project uses Flutter and Firebase tec
 - Group members list and leave group
 - Login and Sign Up (Firebase Auth and Firebase Firestore)
 - Profile photo upload and display
-- Notification (still working on)
+- Notification 
 - Google and Apple sign-in (next feature)
