@@ -22,7 +22,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
     Stream<QuerySnapshot>? _chats;
-    Stream<DocumentSnapshot>? _groupMembers;
+    QuerySnapshot? _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
     User? _user;
 
@@ -69,7 +69,7 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     _getGroupMembers() async {
-      FirebaseFunctions().getGroupMembers(widget.groupID).then((Stream<DocumentSnapshot> val) {
+      FirebaseFunctions().getGroupMembers(widget.groupID).then((QuerySnapshot val) {
         setState(() {
           _groupMembers = val;
         });
@@ -128,12 +128,12 @@ class _ChatPageState extends State<ChatPage> {
           child: Container(
             height: 225.0,
             width:  200.0,
-            child: StreamBuilder <DocumentSnapshot> (
-              stream: _groupMembers,
-              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if(snapshot.hasData) {
-                  var data = snapshot.data;
-                  if(data!['members'] != null) {
+            child: ListView.builder (
+              itemCount: _groupMembers!.size,
+              itemBuilder: (context, index) {
+                if(_groupMembers!.docs[index].exists) {
+                  var data = _groupMembers!.docs[index];
+                  if(data['members'] != null) {
                     if(data['members'].length != 0) {
                       return ListView.builder(
                           physics: BouncingScrollPhysics(),

@@ -123,8 +123,8 @@ class FirebaseFunctions {
           .snapshots();
   }
 
-  Future<Stream<DocumentSnapshot>> getGroupMembers(String groupID) async {
-      return FirebaseFirestore.instance.collection('groups').doc(groupID).snapshots();
+  Future<QuerySnapshot> getGroupMembers(String groupID) async {
+      return groupCollection.where('groupID', isEqualTo: groupID).get();
   }
 
   void sendMessage(String groupID, chatMessageData) {
