@@ -24,6 +24,7 @@ class _ChatPageState extends State<ChatPage> {
     Stream<QuerySnapshot>? _chats;
     QuerySnapshot? _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
+    List userTokens = [];
     User? _user;
 
     Widget _chatMessages() {
@@ -64,6 +65,11 @@ class _ChatPageState extends State<ChatPage> {
             messageEditingController.text = "";
           });
         });
+
+        for(int i = 0; i < userTokens.length; i++) {
+          print('here');
+          FCM().sendNotification(widget.userName, messageEditingController.text, userTokens[i]);
+        }
       }
       FirebaseFunctions(userID: _user!.uid).updateUserLastGroup(widget.groupName);
     }
@@ -73,6 +79,11 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           _groupMembers = val;
         });
+        setState(() {
+        userTokens = _groupMembers!.docs[0].get('memberTokens');
+        userTokens.remove(widget.userToken);
+        });
+        print(userTokens);
       });
       _user = FirebaseAuth.instance.currentUser!;
     }
@@ -231,8 +242,6 @@ class _ChatPageState extends State<ChatPage> {
                       GestureDetector(
                         onTap: () {
                           _sendMessage();
-                          print(widget.userToken);
-                          FCM().sendNotification(widget.userName, messageEditingController.text, widget.userToken);
                         },
                         child: Container(
                           height: 50.0,

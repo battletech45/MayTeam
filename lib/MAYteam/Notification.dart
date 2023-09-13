@@ -72,6 +72,8 @@ class FCM {
 
   Future<void> sendNotification(String title, String body, String targetToken) async {
 
+    var val = await FirebaseMessaging.instance.getToken();
+    print(val);
     final Map<String, dynamic> notificationData = {
       'notification': {
         'title': title,
