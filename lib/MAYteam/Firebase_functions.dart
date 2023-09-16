@@ -82,7 +82,7 @@ class FirebaseFunctions {
 
       await groupDocRef.update({
         'members': FieldValue.arrayRemove([userID! + '_' + userName]),
-        'tokens': FieldValue.arrayRemove([token])
+        'memberTokens': FieldValue.arrayRemove([token])
       });
     } else {
       await userDocRef.update({
@@ -91,7 +91,7 @@ class FirebaseFunctions {
 
       await groupDocRef.update({
         'members': FieldValue.arrayUnion([userID! + '_' + userName]),
-        'tokens': FieldValue.arrayUnion([token])
+        'memberTokens': FieldValue.arrayUnion([token])
       });
     }
   }
