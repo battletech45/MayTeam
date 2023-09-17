@@ -21,6 +21,7 @@ class _AdminPageState extends State<AdminPage> {
   String _groupName = '';
   String _userName = '';
   String _email = '';
+  String userToken = '';
   Stream<DocumentSnapshot>? _groups;
   ScrollController? _controller;
 
@@ -106,6 +107,10 @@ class _AdminPageState extends State<AdminPage> {
         _email = value!;
       });
     });
+    var data = await FirebaseFunctions().getUserData(_email);
+    setState(() {
+      userToken = data.docs[0].get('token');
+    });
   }
 
   String _destructureId(String res) {
@@ -134,12 +139,10 @@ class _AdminPageState extends State<AdminPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.black,
       onPressed: () async {
-        if(_groupName != null) {
           await SideFunctions.getUserNameSharedPreference().then((val) {
-            FirebaseFunctions(userID: _user!.uid).createGroup(val!, _groupName);
+            FirebaseFunctions(userID: _user!.uid).createGroup(val!, _groupName, userToken);
           });
           Navigator.of(context).pop();
-        }
       },
     );
 
