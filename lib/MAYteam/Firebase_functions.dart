@@ -44,12 +44,13 @@ class FirebaseFunctions {
     });
   }
 
-  Future createGroup(String userName, String groupName) async {
+  Future createGroup(String userName, String groupName, String userToken) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
       'groupIcon': '',
       'admin': userName,
       'members': [],
+      'memberTokens': [],
       'groupID': '',
       'recentMessage': '',
       'recentMessageSender': ''
@@ -57,7 +58,8 @@ class FirebaseFunctions {
 
     await groupDocRef.update({
       'members': FieldValue.arrayUnion([userID! + '_' + userName]),
-      'groupID': groupDocRef.id
+      'groupID': groupDocRef.id,
+      'memberTokens': FieldValue.arrayUnion([userToken])
     });
 
     DocumentReference userDocRef = userCollection.doc(userID);
