@@ -3,9 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:MayTeam/MAYteam/LoginPage.dart';
+import 'package:MayTeam/screens/login/LoginPage.dart';
 import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
+import 'package:get/get.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'GameGroupPage.dart';
@@ -39,9 +40,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
       await _checkUserNameExistence(fullName);
       token = await FirebaseMessaging.instance.getToken();
-      if(_isUserUnique) {
+      if (_isUserUnique) {
         print(token!);
-        await _auth.registerWithEmailAndPassword(fullName, email, password, token!).then((result) async {
+        await _auth
+            .registerWithEmailAndPassword(fullName, email, password, token!)
+            .then((result) async {
           if (_user.currentUser!.emailVerified) {
             if (result != null) {
               await SideFunctions.saveUserLoggedInSharedPreference(true);
@@ -50,23 +53,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => HomePage()));
-            }
-            else {
+            } else {
               setState(() {
                 error = 'Error while registering the user!';
                 _isLoading = false;
               });
             }
-          }
-          else {
+          } else {
             _user.currentUser!.sendEmailVerification();
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => VerificationPage()));
             print("mail sent");
           }
         });
-      }
-      else {
+      } else {
         setState(() {
           error = 'UserName is not unique !';
         });
@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
       _isUserUnique = true;
     });
     var snapshot = await FirebaseFirestore.instance.collection("users").get();
-    for (var i = 0; i < snapshot.docs.length; i ++) {
+    for (var i = 0; i < snapshot.docs.length; i++) {
       if (snapshot.docs[i].get("fullName") == userName) {
         setState(() {
           _isUserUnique = false;
@@ -96,8 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: Colors.brown[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp()),
-          ),
+          onPressed: () => Get.back(),
         ),
       ),
       body: Form(
@@ -111,19 +110,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 Column(
                   children: <Widget>[
                     SizedBox(height: 30.0),
-                    Text("Register", style: TextStyle(color: Colors.white, fontSize: 25.0)),
+                    Text("Register",
+                        style: TextStyle(color: Colors.white, fontSize: 25.0)),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'NAME'
-                      ),
+                      decoration: InputDecoration(hintText: 'NAME'),
                       validator: (val) {
-                        if(val!.length == 0) {
+                        if (val!.length == 0) {
                           return 'Please enter a valid user name';
-                        }
-                        else {
-                          if(val.length > 0) {
-                            if(_isUserUnique == false) {
+                        } else {
+                          if (val.length > 0) {
+                            if (_isUserUnique == false) {
                               return 'Please enter a unique username';
                             }
                           }
@@ -144,7 +141,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       style: TextStyle(color: Colors.white),
                       validator: (val) {
-                        return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val!) ? null : "Please enter a valid email";
+                        return RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(val!)
+                            ? null
+                            : "Please enter a valid email";
                       },
                       onChanged: (val) {
                         setState(() {
@@ -154,17 +155,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     SizedBox(height: 15.0),
                     TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'PASSWORD'
-                      ),
+                      decoration: InputDecoration(hintText: 'PASSWORD'),
                       style: TextStyle(color: Colors.white),
                       obscureText: true,
                       validator: (val) {
-                        if(val!.length == 0) {
+                        if (val!.length == 0) {
                           return 'Please enter a valid password';
-                        }
-                        else {
-                          if(val.length < 6) {
+                        } else {
+                          if (val.length < 6) {
                             return 'Please enter stronger password';
                           }
                           return null;
@@ -183,12 +181,17 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: MaterialButton(
                           elevation: 0.0,
                           color: Colors.red,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                          child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: _isLoading
+                              ? CircularProgressIndicator(
+                                  color: Colors.black, strokeWidth: 3.5)
+                              : Text('Register',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16.0)),
                           onPressed: () {
                             _onRegister();
-                          }
-                      ),
+                          }),
                     ),
                     SizedBox(height: 25.0),
                     Text.rich(
@@ -198,22 +201,27 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: <TextSpan>[
                           TextSpan(
                             text: 'Sign In',
-                            style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
-                            recognizer: TapGestureRecognizer()..onTap = () {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
-                            },
+                            style: TextStyle(
+                                color: Colors.white,
+                                decoration: TextDecoration.underline),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => SignInPage()));
+                              },
                           ),
                         ],
                       ),
                     ),
                     SizedBox(height: 10.0),
-                    Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0)),
+                    Text(error,
+                        style: TextStyle(color: Colors.red, fontSize: 14.0)),
                   ],
                 ),
               ],
             ),
-          )
-      ),
+          )),
     );
   }
 }
