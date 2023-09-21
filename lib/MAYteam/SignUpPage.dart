@@ -43,7 +43,8 @@ class _RegisterPageState extends State<RegisterPage> {
       if (_isUserUnique) {
         print(token!);
         await _auth
-            .registerWithEmailAndPassword(fullName, email, password, token!)
+            .registerWithEmailAndPassword(
+                fullName, email, password, token!, false)
             .then((result) async {
           if (_user.currentUser!.emailVerified) {
             if (result != null) {

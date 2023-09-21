@@ -3,6 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirebaseFunctions {
   final String? userID;
 
+  static FirebaseFunctions? _instance;
+  static FirebaseFunctions get instance {
+    return _instance ?? (_instance = FirebaseFunctions());
+  }
+
   FirebaseFunctions({
     this.userID,
   });
@@ -12,7 +17,8 @@ class FirebaseFunctions {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection('groups');
 
-  Future updateUserData(String fullName, String email, String password, String token) async {
+  Future updateUserData(String fullName, String email, String password,
+      String token, bool isAdmin) async {
     return await userCollection.doc(userID).set({
       'fullName': fullName,
       'email': email,
@@ -20,31 +26,27 @@ class FirebaseFunctions {
       'groups': [],
       'profilePic': '',
       'activeGroup': '',
+      'isAdmin': isAdmin,
       'token': token
     });
   }
 
   updateUserLastGroup(String groupName) async {
     print(userID);
-    return await userCollection.doc(userID).update({
-      'activeGroup': groupName
-    });
+    return await userCollection.doc(userID).update({'activeGroup': groupName});
   }
 
   updateUserPassword(String password) async {
     print(userID);
-    return await userCollection.doc(userID).update({
-      'password': password
-    });
+    return await userCollection.doc(userID).update({'password': password});
   }
 
   updateUserToken(String token) async {
-    return await userCollection.doc(userID).update({
-      'token': token
-    });
+    return await userCollection.doc(userID).update({'token': token});
   }
 
-  Future createGroup(String userName, String groupName, String userToken) async {
+  Future createGroup(
+      String userName, String groupName, String userToken) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
       'groupIcon': '',
@@ -112,21 +114,21 @@ class FirebaseFunctions {
     }
   }
 
-   Future<QuerySnapshot> getUserData(String email) async {
-      QuerySnapshot snapshot =
-          await userCollection.where('email', isEqualTo: email).get();
-      return snapshot;
+  Future<QuerySnapshot> getUserData(String email) async {
+    QuerySnapshot snapshot =
+        await userCollection.where('email', isEqualTo: email).get();
+    return snapshot;
   }
 
   Future<Stream<DocumentSnapshot>> getUserGroups() async {
-      return FirebaseFirestore.instance
-          .collection('users')
-          .doc(userID)
-          .snapshots();
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .snapshots();
   }
 
   Future<QuerySnapshot> getGroupMembers(String groupID) async {
-      return groupCollection.where('groupID', isEqualTo: groupID).get();
+    return groupCollection.where('groupID', isEqualTo: groupID).get();
   }
 
   void sendMessage(String groupID, chatMessageData) {
@@ -143,12 +145,20 @@ class FirebaseFunctions {
   }
 
   void deleteMessage(String groupID, String messageID) {
-    FirebaseFirestore.instance.collection('groups').doc(groupID).collection('messages').doc(messageID).delete();
+    FirebaseFirestore.instance
+        .collection('groups')
+        .doc(groupID)
+        .collection('messages')
+        .doc(messageID)
+        .delete();
   }
+
   void editMessage(String groupID, String messageID, String newMessage) {
-    groupCollection.doc(groupID).collection('messages').doc(messageID).update({
-      'message': newMessage
-    });
+    groupCollection
+        .doc(groupID)
+        .collection('messages')
+        .doc(messageID)
+        .update({'message': newMessage});
   }
 
   Future<Stream<QuerySnapshot>> getChats(String groupID) async {
@@ -165,6 +175,11 @@ class FirebaseFunctions {
         .collection('groups')
         .where('groupName', isEqualTo: groupName)
         .get();
+  }
+
+  Future<bool> isUserAdmin(String email) async {
+    QuerySnapshot<Object?> userObj = await getUserData(email);
+    return userObj.docs[0].get('isAdmin');
   }
 
   Future<Stream<QuerySnapshot>> getAllGroups() async {

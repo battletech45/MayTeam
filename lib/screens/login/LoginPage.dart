@@ -1,3 +1,4 @@
+import 'package:MayTeam/screens/login/login_page_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,6 +17,7 @@ import '../../MAYteam/ResetPasswordPage.dart';
 class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LoginPageController controller = Get.put(LoginPageController());
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -39,6 +41,7 @@ class SignInPage extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 25.0)),
                 SizedBox(height: 20.0),
                 TextFormField(
+                  controller: controller.emailController,
                   decoration: InputDecoration(hintText: 'EMAIL'),
                   style: TextStyle(color: Colors.white),
                   validator: (val) {
@@ -52,6 +55,7 @@ class SignInPage extends StatelessWidget {
                 SizedBox(height: 15.0),
                 TextFormField(
                   decoration: InputDecoration(hintText: 'PASSWORD'),
+                  controller: controller.passwordController,
                   style: TextStyle(color: Colors.white),
                   validator: (val) => val!.length < 6
                       ? val.length == 0
@@ -64,20 +68,20 @@ class SignInPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 50.0,
-                  child: MaterialButton(
-                      elevation: 0.0,
-                      color: Colors.red,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80.0)),
-                      child:
-                          // _isLoading
-                          //     ? CircularProgressIndicator(
-                          //         color: Colors.black, strokeWidth: 3.5)
-                          //     :
-                          Text('Sign In',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16.0)),
-                      onPressed: () {}),
+                  child: Obx(() {
+                    return MaterialButton(
+                        elevation: 0.0,
+                        color: Colors.red,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        child: controller.signInProgress.value
+                            ? CircularProgressIndicator(
+                                color: Colors.black, strokeWidth: 3.5)
+                            : Text('Sign In',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16.0)),
+                        onPressed: () => controller.onSignIn());
+                  }),
                 ),
                 SizedBox(height: 25.0),
                 Text.rich(
@@ -99,8 +103,6 @@ class SignInPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                Text("error",
-                    style: TextStyle(color: Colors.red, fontSize: 14.0)),
               ],
             ),
           ],

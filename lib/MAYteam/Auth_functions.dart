@@ -5,39 +5,49 @@ import 'Firebase_functions.dart';
 class ModelUser {
   final String userID;
 
-  ModelUser({
-    required this.userID
-  });
+  ModelUser({required this.userID});
 }
 
 class AuthService {
+  static AuthService? _instance;
+  static AuthService get instance {
+    return _instance ?? (_instance = AuthService());
+  }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  ModelUser? _userFromFirebaseUser(User user) {
-    return (user != null) ? ModelUser(userID: user.uid) : null;
+  ModelUser _userFromFirebaseUser(User user) {
+    return ModelUser(userID: user.uid);
   }
 
-  Future signInWithEmailAndPassWord(String email, String password) async {
+  Future<ModelUser> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
-      return _userFromFirebaseUser(user!);
-    }
-    catch(e) {
+      if (user != null) {
+        return _userFromFirebaseUser(user);
+      } else {
+        return ModelUser(userID: "");
+      }
+    } catch (e) {
       print(e.toString());
-      return null;
+      return ModelUser(userID: "");
     }
   }
 
-  Future registerWithEmailAndPassword(String fullName, String email, String password, String token) async {
+  Future registerWithEmailAndPassword(String fullName, String email,
+      String password, String token, bool isAdmin) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
 
-      await FirebaseFunctions(userID: user!.uid).updateUserData(fullName, email, password, token);
+      await FirebaseFunctions(userID: user!.uid)
+          .updateUserData(fullName, email, password, token, isAdmin);
       return _userFromFirebaseUser(user);
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -61,8 +71,7 @@ class AuthService {
           print("Name: $value");
         });
       });
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
       return null;
     }
