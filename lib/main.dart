@@ -3,7 +3,6 @@ import 'package:MayTeam/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'MAYteam/GameGroupPage.dart';
 import 'MAYteam/Notification.dart';
 import 'MAYteam/SideFunctions.dart';
@@ -11,7 +10,6 @@ import 'MAYteam/AdminPage.dart';
 import 'screens/login/LoginPage.dart';
 import 'MAYteam/SignUpPage.dart';
 import 'firebase_options.dart';
-import './widgets/custom_button.dart';
 import 'package:get/get.dart';
 
 void main() async {
