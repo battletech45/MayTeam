@@ -39,6 +39,7 @@ dependencies:
   cached_network_image: ^3.2.3
   flutter_cache_manager: ^3.3.0
   flutter_local_notifications: ^15.1.0+1
+  flutter_dotenv: ^5.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -72,6 +73,7 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
      - images/logo.png
+     - lib/.env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

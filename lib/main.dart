@@ -11,6 +11,8 @@ import 'screens/login/LoginPage.dart';
 import 'MAYteam/SignUpPage.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +20,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await dotenv.load(fileName: "lib/.env");
   runApp(MyApp());
 }
 
