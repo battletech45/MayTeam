@@ -1,5 +1,3 @@
-import 'package:MayTeam/screens/login/LoginPage.dart';
-import 'package:MayTeam/MAYteam/SignUpPage.dart';
 import 'package:MayTeam/constants/routes.dart';
 import 'package:MayTeam/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
