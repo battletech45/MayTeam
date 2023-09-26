@@ -4,4 +4,5 @@ class Routes {
   static String login = '/login';
   static String home = '/home';
   static String admin = '/admin';
+  static String verification = '/verification';
 }
