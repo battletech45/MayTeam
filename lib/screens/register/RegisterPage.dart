@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatelessWidget {
-
-  RegisterPageController controller = RegisterPageController();
-
   @override
   Widget build(BuildContext context) {
+    RegisterPageController controller = Get.put(RegisterPageController());
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
