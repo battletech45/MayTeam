@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NotificationHelper {
   static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -72,6 +73,11 @@ class FCM {
 
   Future<void> sendNotification(String title, String body, String targetToken) async {
 
+    await dotenv.load(fileName: 'lib/.env');
+
+    String? apiKey = dotenv.get('firebase_api_key', fallback: null);
+    print(apiKey);
+
     var val = await FirebaseMessaging.instance.getToken();
     print(val);
     final Map<String, dynamic> notificationData = {
@@ -85,7 +91,7 @@ class FCM {
 
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'key=AAAATl1qm9Q:APA91bGArOF58ZVfw5lhpMgYecBjK3-ujP41sfRHM9uDGqFopoAxuW39xP670yv1XF3Kd9hYD2s_5fBFRTwKM31l9t0o1caL7i6mOmEU2mbC8QNodygsEUTyoY1g07cV66mou3EC8N75',
+      'Authorization': 'key=$apiKey',
     };
 
     final response = await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'), headers: headers, body: jsonEncode(notificationData));
