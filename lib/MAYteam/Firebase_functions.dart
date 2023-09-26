@@ -185,4 +185,14 @@ class FirebaseFunctions {
   Future<Stream<QuerySnapshot>> getAllGroups() async {
     return groupCollection.snapshots();
   }
+
+  Future<bool> checkUserNameExistence(String userName) async {
+    var snapshot = await FirebaseFirestore.instance.collection("users").get();
+    for (var i = 0; i < snapshot.docs.length; i++) {
+      if (snapshot.docs[i].get("fullName") == userName) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
