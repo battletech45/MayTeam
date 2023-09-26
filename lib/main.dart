@@ -1,5 +1,7 @@
+import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/constants/routes.dart';
 import 'package:MayTeam/screens/landing_screen.dart';
+import 'package:MayTeam/screens/register/RegisterPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +10,6 @@ import 'MAYteam/Notification.dart';
 import 'MAYteam/SideFunctions.dart';
 import 'MAYteam/AdminPage.dart';
 import 'screens/login/LoginPage.dart';
-import 'MAYteam/SignUpPage.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -77,14 +78,12 @@ class _MyAppState extends State<MyApp> {
       ),
       home: LandingScreen(),
       getPages: [
-        GetPage(
-          name: Routes.landing,
-          page: () => LandingScreen(),
-        ),
+        GetPage(name: Routes.landing, page: () => LandingScreen()),
         GetPage(name: Routes.register, page: () => RegisterPage()),
         GetPage(name: Routes.login, page: () => SignInPage()),
         GetPage(name: Routes.home, page: () => HomePage()),
         GetPage(name: Routes.admin, page: () => AdminPage()),
+        GetPage(name: Routes.verification, page: () => VerificationPage()),
       ],
     );
   }
