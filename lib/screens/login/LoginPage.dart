@@ -1,17 +1,7 @@
 import 'package:MayTeam/screens/login/login_page_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:MayTeam/MAYteam/AdminPage.dart';
-import 'package:MayTeam/MAYteam/Auth_functions.dart';
-import 'package:MayTeam/MAYteam/Firebase_functions.dart';
-import 'package:MayTeam/MAYteam/SideFunctions.dart';
-import 'package:MayTeam/MAYteam/VerificationPage.dart';
-import 'package:MayTeam/main.dart';
 import 'package:get/get.dart';
-import '../../MAYteam/GameGroupPage.dart';
 import '../../MAYteam/ResetPasswordPage.dart';
 
 class SignInPage extends StatelessWidget {
