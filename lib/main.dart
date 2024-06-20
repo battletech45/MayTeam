@@ -1,108 +1,53 @@
+import 'package:MayTeam/core/constant/color.dart';
+import 'package:MayTeam/core/constant/router_config.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'MAYteam/GameGroupPage.dart';
-import 'MAYteam/Notification.dart';
-import 'MAYteam/SideFunctions.dart';
-import 'MAYteam/AdminPage.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'MAYteam/LoginPage.dart';
 import 'MAYteam/SignUpPage.dart';
 import 'firebase_options.dart';
 
-final loginProvider = Provider((_) => 'LOGIN');
-final signUpProvider = Provider((_) => 'SIGN UP');
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(
-      ProviderScope(child: MyApp())
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Future.delayed(const Duration(seconds: 1));
+  runApp(MayTeam());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  bool isLoggedIn = false;
-  bool isAdmin = false;
-
-  _checkUserStatus() async {
-    var savedLoggedIn = await SideFunctions.getUserLoggedInSharedPreference();
-    print(isLoggedIn);
-    if(savedLoggedIn != null){
-      setState(() {
-        isLoggedIn = savedLoggedIn;
-      });
-    }
-    print(isLoggedIn);
-    var savedEmail = await SideFunctions.getUserEmailSharedPreference();
-    if(savedEmail == "taneri862@gmail.com") {
-      setState(() {
-        isAdmin = true;
-      });
-    }
-  }
-
-  String notificationTitle = 'No Title';
-  String notificationBody = 'No Body';
-
-  _changeBody(String msg) => setState(() => notificationBody = msg);
-  _changeTitle(String msg) => setState(() => notificationTitle = msg);
-
-  @override
-  void initState() {
-    super.initState();
-    _checkUserStatus();
-    final _firebaseMessaging = FCM();
-    _firebaseMessaging.setNotifications();
-    NotificationHelper.initialize();
-
-    _firebaseMessaging.bodyCtlr.stream.listen(_changeBody);
-    _firebaseMessaging.titleCtlr.stream.listen(_changeTitle);
-  }
+class MayTeam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-       return !isLoggedIn ? MaterialApp(
-         debugShowCheckedModeBanner: false,
-        title: 'M.A.Y. TEAM',
-        theme: ThemeData(
-          brightness: Brightness.dark,
-        ),
-        home: Scaffold(
-          body: new Container(
-            alignment: Alignment.center,
-            color: Colors.brown[900],
-            child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('images/logo.png', width: 200, height: 200),
-                  SizedBox(height: 20.0),
-                  loginButton(),
-                  signUpButton()
-                ]
-            ),
-          ),
-        ),
-      ) : MaterialApp(
-         debugShowCheckedModeBanner: false,
-           theme: ThemeData(brightness: Brightness.dark),
-           home: isAdmin ? AdminPage() : HomePage()
+       return ScreenUtilInit(
+         designSize: const Size(393, 808),
+         builder: (context, __) {
+           return MaterialApp.router(
+             color: AppColor.primary,
+             routerConfig: AppRouterConfig.router,
+             debugShowCheckedModeBanner: false,
+             scrollBehavior: const CupertinoScrollBehavior(),
+             builder: (context, child) {
+               return MediaQuery(
+                   data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                   child: child!
+               );
+             },
+           );
+         },
        );
   }
 }
 
 
-class loginButton extends ConsumerWidget {
+class loginButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String text = ref.watch(loginProvider);
+  Widget build(BuildContext context) {
+    final String text = 'Login';
     return MaterialButton(
        child: Text(text),
       elevation: 5.0,
@@ -115,10 +60,10 @@ class loginButton extends ConsumerWidget {
     );
   }
 }
-class signUpButton extends ConsumerWidget {
+class signUpButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String text = ref.watch(signUpProvider);
+  Widget build(BuildContext context) {
+    final String text = 'Sign Up';
     return MaterialButton(
       child: Text(text),
       color: Colors.black,

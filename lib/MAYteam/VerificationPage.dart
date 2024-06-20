@@ -107,7 +107,7 @@ class _VerificationPageState extends State<VerificationPage> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                 color: Colors.black,
                 child: Text('Back'),
-                onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MyApp()))
+                onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MayTeam()))
             ),
           ],
         ),

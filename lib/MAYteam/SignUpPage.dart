@@ -96,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: Colors.brown[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp()),
+          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam()),
           ),
         ),
       ),

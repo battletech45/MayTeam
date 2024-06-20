@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
             ),ListTile(
               title: Text("Sign Out"),
               onTap: (){
-                AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp())));
+                AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
               }
             ),
           ],

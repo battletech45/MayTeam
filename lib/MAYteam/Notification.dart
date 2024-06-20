@@ -8,7 +8,7 @@ class NotificationHelper {
   static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> initialize() async {
-    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()!.requestPermission();
+    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()!.requestNotificationsPermission();
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('mipmap/ic_launcher');
     final InitializationSettings initializationSettings = InitializationSettings(
@@ -18,7 +18,7 @@ class NotificationHelper {
   }
 
   static Future<void> showCustomNotification(RemoteMessage message) async {
-    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()!.requestPermission();
+    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()!.requestNotificationsPermission();
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
       'your_channel_id', // Change this to your own channel ID
