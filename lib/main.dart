@@ -27,7 +27,7 @@ class MayTeam extends StatelessWidget {
          designSize: const Size(393, 808),
          builder: (context, __) {
            return MaterialApp.router(
-             color: AppColor.primary,
+             color: AppColor.secondary,
              routerConfig: AppRouterConfig.router,
              debugShowCheckedModeBanner: false,
              scrollBehavior: const CupertinoScrollBehavior(),

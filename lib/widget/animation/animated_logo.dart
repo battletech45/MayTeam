@@ -1,26 +1,36 @@
+import 'package:MayTeam/core/constant/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AnimatedLogo extends StatefulWidget {
   @override
-  State<AnimatedLogo> createState() => _AnimatedLogoState();
+  _AnimatedChatLogoState createState() => _AnimatedChatLogoState();
 }
 
-class _AnimatedLogoState extends State<AnimatedLogo> with SingleTickerProviderStateMixin {
+class _AnimatedChatLogoState extends State<AnimatedLogo> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _animation;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _rotationAnimation;
+  late Animation<Color?> _colorAnimation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 4),
       vsync: this,
     )..repeat(reverse: true);
 
-    _animation = CurvedAnimation(
-        parent: _controller,
-        curve: Curves.decelerate
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    _rotationAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    _colorAnimation = ColorTween(begin: AppColor.secondary, end: AppColor.primary).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
 
@@ -33,10 +43,25 @@ class _AnimatedLogoState extends State<AnimatedLogo> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ScaleTransition(
-        scale: _animation,
-        child: Image.asset('assets/images/logo.png', width: 200.w, height: 200.h),
-      ),
-    );
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _scaleAnimation.value,
+              child: Transform.rotate(
+                angle: _rotationAnimation.value * 2.0 * 3.14159,
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    _colorAnimation.value!,
+                    BlendMode.modulate,
+                  ),
+                  child: child,
+                ),
+              ),
+            );
+          },
+          child: Image.asset('assets/images/logo.png', width: 300.w, height: 300.h),
+        ),
+      );
   }
 }
