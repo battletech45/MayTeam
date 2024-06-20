@@ -1,11 +1,13 @@
 import 'package:MayTeam/MAYteam/Notification.dart';
+import 'package:MayTeam/core/service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/Chat_Group_Settings.dart';
 import 'package:MayTeam/MAYteam/Chat_Message_Settings.dart';
+import 'package:provider/provider.dart';
+import '../core/service/provider/auth.dart';
 import 'AdminPage.dart';
-import 'Firebase_functions.dart';
 import 'GameGroupPage.dart';
 
 class ChatPage extends StatefulWidget {
@@ -58,8 +60,8 @@ class _ChatPageState extends State<ChatPage> {
               .now()
               .millisecondsSinceEpoch,
         };
-        FirebaseFunctions().sendMessage(widget.groupID, chatMessageMap);
-        FirebaseFunctions().getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
+        FirebaseService.sendMessage(widget.groupID, chatMessageMap);
+        FirebaseService.getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
           setState(() {
             _chats = val;
             messageEditingController.text = "";
@@ -71,11 +73,11 @@ class _ChatPageState extends State<ChatPage> {
           FCM().sendNotification(widget.userName, messageEditingController.text, userTokens[i]);
         }
       }
-      FirebaseFunctions(userID: _user!.uid).updateUserLastGroup(widget.groupName);
+      FirebaseService.updateUserLastGroup(context.read<AutherProvider>().user!.uid, widget.groupName);
     }
 
     _getGroupMembers() async {
-      FirebaseFunctions().getGroupMembers(widget.groupID).then((QuerySnapshot val) {
+      FirebaseService.getGroupMembers(widget.groupID).then((QuerySnapshot val) {
         setState(() {
           _groupMembers = val;
         });
@@ -89,12 +91,12 @@ class _ChatPageState extends State<ChatPage> {
     }
 
     _deleteEmptyGroup() async {
-      FirebaseFunctions().getAllGroups().then((value) => value.forEach((element) {
+      FirebaseService.getAllGroups().then((value) => value.forEach((element) {
         for(var i = 0; i < element.docs.length; i++) {
           List<dynamic> doc = element.docs.elementAt(i).get('members');
           if(doc.isEmpty) {
             print(i);
-            FirebaseFirestore.instance.runTransaction((transaction) async => transaction.delete(FirebaseFunctions().groupCollection.doc(element.docs.elementAt(i).id)));
+            FirebaseFirestore.instance.runTransaction((transaction) async => transaction.delete(FirebaseService.groupCollection.doc(element.docs.elementAt(i).id)));
           }
         }
       }));
@@ -119,7 +121,7 @@ class _ChatPageState extends State<ChatPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         splashColor: Colors.red[900],
         onPressed: () async {
-          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(widget.groupID, widget.groupName, widget.userName, widget.userToken!);
+          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, widget.userName, widget.userToken);
           if(_user!.email == "taneri862@gmail.com") {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminPage()));
           }
@@ -185,7 +187,7 @@ class _ChatPageState extends State<ChatPage> {
     void initState() {
       super.initState();
       _getGroupMembers();
-      FirebaseFunctions().getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
+      FirebaseService.getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
         setState(() {
           _chats = val;
         });

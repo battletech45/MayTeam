@@ -1,4 +1,4 @@
-import 'package:MayTeam/MAYteam/Firebase_functions.dart';
+import 'package:MayTeam/core/service/firebase.dart';
 import 'package:flutter/material.dart';
 
 class MessageTile extends StatefulWidget {
@@ -28,11 +28,11 @@ class _MessageTileState extends State<MessageTile> {
         splashColor: Colors.black,
         onPressed: () {
           if(newMessage == null) {
-            FirebaseFunctions().editMessage(widget.groupID!, widget.messageID!, widget.message);
+            FirebaseService.editMessage(widget.groupID!, widget.messageID!, widget.message);
             Navigator.of(context).pop();
           }
           else {
-            FirebaseFunctions().editMessage(widget.groupID!, widget.messageID!, newMessage!);
+            FirebaseService.editMessage(widget.groupID!, widget.messageID!, newMessage!);
             Navigator.of(context).pop();
           }
         },
@@ -43,7 +43,7 @@ class _MessageTileState extends State<MessageTile> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         splashColor: Colors.red[900],
         onPressed: () {
-         FirebaseFunctions().deleteMessage(widget.groupID!, widget.messageID!);
+         FirebaseService.deleteMessage(widget.groupID!, widget.messageID!);
          Navigator.of(context).pop();
         },
       );

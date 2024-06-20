@@ -19,7 +19,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   final _user = FirebaseAuth.instance;
   bool _isLoading = false;
@@ -41,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
       token = await FirebaseMessaging.instance.getToken();
       if(_isUserUnique) {
         print(token!);
-        await _auth.registerWithEmailAndPassword(fullName, email, password, token!).then((result) async {
+        await AuthService.registerWithEmailAndPassword(fullName, email, password, token!).then((result) async {
           if (_user.currentUser!.emailVerified) {
             if (result != null) {
               await SideFunctions.saveUserLoggedInSharedPreference(true);

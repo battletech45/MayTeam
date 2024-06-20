@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/ProfilePage.dart';
+import 'package:provider/provider.dart';
+import '../core/service/firebase.dart';
+import '../core/service/provider/auth.dart';
 import 'ForgetPasswordPage.dart';
 import '../main.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'SearchPage.dart';
-import 'Firebase_functions.dart';
 import 'Chat_Group_Settings.dart';
 
 class HomePage extends StatefulWidget {
@@ -92,7 +94,7 @@ class _HomePageState extends State<HomePage> {
         _userName = value!;
       });
     });
-    FirebaseFunctions(userID: _user!.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
+    FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid).then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
       });
@@ -149,7 +151,7 @@ class _HomePageState extends State<HomePage> {
             ),ListTile(
               title: Text("Sign Out"),
               onTap: (){
-                AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
+                AuthService.signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
               }
             ),
           ],

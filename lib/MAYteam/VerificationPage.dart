@@ -1,9 +1,10 @@
-import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:MayTeam/MAYteam/GameGroupPage.dart';
 import 'package:MayTeam/main.dart';
+
+import '../core/service/firebase.dart';
 
 class VerificationPage extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _VerificationPageState extends State<VerificationPage> {
 
 
   _getUserName() async {
-    var snapshot = await FirebaseFunctions().getUserData(_user.currentUser!.email!);
+    var snapshot = await FirebaseService.getUserData(_user.currentUser!.email!);
     for(int i = 0; i < snapshot.docs.length; i++) {
       if(snapshot.docs[i].get("email") == _user.currentUser!.email) {
         setState(() {

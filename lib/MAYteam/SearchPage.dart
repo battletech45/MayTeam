@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../core/service/firebase.dart';
+import '../core/service/provider/auth.dart';
 import 'SideFunctions.dart';
 import 'ChatPage.dart';
-import 'Firebase_functions.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -36,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
       _userName = value!;
     });
     _user = FirebaseAuth.instance.currentUser!;
-    var data = await FirebaseFunctions().getUserData(_user!.email!);
+    var data = await FirebaseService.getUserData(_user!.email!);
     setState(() {
       token = data.docs[0].get('token');
       print(token);
@@ -48,7 +50,7 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {
         isLoading = true;
       });
-      await FirebaseFunctions().searchByName(searchEditingController.text).then((snapshot) {
+      await FirebaseService.searchByName(searchEditingController.text).then((snapshot) {
         searchResultSnapshot = snapshot;
         setState(() {
           isLoading = false;
@@ -59,7 +61,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _getAllGroups () async {
-    var val = await FirebaseFunctions().getAllGroups();
+    var val = await FirebaseService.getAllGroups();
     setState(() {
       allGroupsSnapshot = val;
     });
@@ -91,9 +93,9 @@ class _SearchPageState extends State<SearchPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.red[900],
       onPressed: () async {
-        bool val = await FirebaseFunctions(userID: _user!.uid).isUserJoined(groupID, groupName, userName);
+        bool val = await FirebaseService.isUserJoined(context.read<AutherProvider>().user!.uid, groupID, groupName, userName);
         if(!val) {
-          await FirebaseFunctions(userID: _user!.uid).togglingGroupJoin(groupID, groupName, userName, token!);
+          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, groupID, groupName, userName, token!);
           Future.delayed(Duration(milliseconds: 1000), () {
             Navigator.of(context).pop();
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName, userToken: token!)));

@@ -1,8 +1,11 @@
 import 'package:MayTeam/MAYteam/AdminPage.dart';
-import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:MayTeam/MAYteam/GameGroupPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
+import '../core/service/firebase.dart';
+import '../core/service/provider/auth.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
 
@@ -25,7 +28,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     final _credential = EmailAuthProvider.credential(email: _user.currentUser!.email!, password: oldPassword);
     await _user.currentUser?.reauthenticateWithCredential(_credential);
     await _user.currentUser?.updatePassword(newPassword);
-    await FirebaseFunctions(userID: _user.currentUser!.uid).updateUserPassword(newPassword);
+    await FirebaseService.updateUserPassword(context.read<AutherProvider>().user!.uid, newPassword);
     setState(() {
       _isLoading = false;
     });

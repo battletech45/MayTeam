@@ -5,10 +5,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/AdminPage.dart';
 import 'package:MayTeam/MAYteam/Auth_functions.dart';
-import 'package:MayTeam/MAYteam/Firebase_functions.dart';
 import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
+import 'package:provider/provider.dart';
+import '../core/service/firebase.dart';
+import '../core/service/provider/auth.dart';
 import 'GameGroupPage.dart';
 import 'ResetPasswordPage.dart';
 
@@ -21,7 +23,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   final _user = FirebaseAuth.instance;
   bool _isLoading = false;
@@ -65,23 +66,22 @@ class _SignInPageState extends State<SignInPage> {
       });
 
       try {
-      await _auth.signInWithEmailAndPassWord(email, password).then((
+      await AuthService.signInWithEmailAndPassWord(email, password).then((
           result) async {
         if (_user.currentUser!.emailVerified) {
           if (result != null) {
-            QuerySnapshot userInfoSnapshot = await FirebaseFunctions()
-                .getUserData(email);
+            QuerySnapshot userInfoSnapshot = await FirebaseService.getUserData(email);
 
             await SideFunctions.saveUserLoggedInSharedPreference(true);
             await SideFunctions.saverUserEmailSharedPreference(email);
             await SideFunctions.saveUserNameSharedPreference(
                 userInfoSnapshot.docs[0].get('fullName'));
             if(userInfoSnapshot.docs[0].get('password') != password) {
-              await FirebaseFunctions(userID: _user.currentUser!.uid).updateUserPassword(password);
+              await FirebaseService.updateUserPassword(context.read<AutherProvider>().user!.uid, password);
             }
             token = await FirebaseMessaging.instance.getToken();
             if(userInfoSnapshot.docs[0].get('token') != token) {
-              await FirebaseFunctions(userID: _user.currentUser!.uid).updateUserToken(token!);
+              await FirebaseService.updateUserToken(context.read<AutherProvider>().user!.uid, token!);
             }
 
             if (email == 'taneri862@gmail.com') {

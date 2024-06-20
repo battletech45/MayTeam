@@ -1,13 +1,15 @@
+import 'package:MayTeam/core/service/firebase.dart';
+import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/ProfilePage.dart';
+import 'package:provider/provider.dart';
 import '../main.dart';
 import 'ForgetPasswordPage.dart';
 import 'SideFunctions.dart';
 import 'Auth_functions.dart';
 import 'SearchPage.dart';
-import 'Firebase_functions.dart';
 import 'Chat_Group_Settings.dart';
 
 class AdminPage extends StatefulWidget {
@@ -97,7 +99,7 @@ class _AdminPageState extends State<AdminPage> {
         _userName = value!;
       });
     });
-    FirebaseFunctions(userID: _user!.uid).getUserGroups().then((Stream<DocumentSnapshot> snapshots) {
+    FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid).then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
       });
@@ -107,7 +109,7 @@ class _AdminPageState extends State<AdminPage> {
         _email = value!;
       });
     });
-    var data = await FirebaseFunctions().getUserData(_email);
+    var data = await FirebaseService.getUserData(_email);
     setState(() {
       userToken = data.docs[0].get('token');
     });
@@ -140,7 +142,7 @@ class _AdminPageState extends State<AdminPage> {
       splashColor: Colors.black,
       onPressed: () async {
           await SideFunctions.getUserNameSharedPreference().then((val) {
-            FirebaseFunctions(userID: _user!.uid).createGroup(val!, _groupName, userToken);
+            FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, val!, _groupName, userToken);
           });
           Navigator.of(context).pop();
       },
@@ -224,7 +226,7 @@ class _AdminPageState extends State<AdminPage> {
             ListTile(
                 title: Text("Sign Out"),
                 onTap: (){
-                  AuthService().signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
+                  AuthService.signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
                 }
             ),
           ],
