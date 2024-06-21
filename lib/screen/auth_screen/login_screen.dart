@@ -9,20 +9,18 @@ import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
 import 'package:provider/provider.dart';
-import '../core/service/firebase.dart';
-import '../core/service/provider/auth.dart';
-import 'GameGroupPage.dart';
-import 'ResetPasswordPage.dart';
 
-class SignInPage extends StatefulWidget {
-  final Function? toggleView;
-  SignInPage({this.toggleView});
+import '../../core/service/firebase.dart';
+import '../../core/service/provider/auth.dart';
+import 'email_verification_screen.dart';
+
+class LoginScreen extends StatefulWidget {
 
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _user = FirebaseAuth.instance;
   bool _isLoading = false;
@@ -66,55 +64,55 @@ class _SignInPageState extends State<SignInPage> {
       });
 
       try {
-      await AuthService.signInWithEmailAndPassWord(email, password).then((
-          result) async {
-        if (_user.currentUser!.emailVerified) {
-          if (result != null) {
-            QuerySnapshot userInfoSnapshot = await FirebaseService.getUserData(email);
+        await AuthService.signInWithEmailAndPassWord(email, password).then((
+            result) async {
+          if (_user.currentUser!.emailVerified) {
+            if (result != null) {
+              QuerySnapshot userInfoSnapshot = await FirebaseService.getUserData(email);
 
-            await SideFunctions.saveUserLoggedInSharedPreference(true);
-            await SideFunctions.saverUserEmailSharedPreference(email);
-            await SideFunctions.saveUserNameSharedPreference(
-                userInfoSnapshot.docs[0].get('fullName'));
-            if(userInfoSnapshot.docs[0].get('password') != password) {
-              await FirebaseService.updateUserPassword(context.read<AutherProvider>().user!.uid, password);
-            }
-            token = await FirebaseMessaging.instance.getToken();
-            if(userInfoSnapshot.docs[0].get('token') != token) {
-              await FirebaseService.updateUserToken(context.read<AutherProvider>().user!.uid, token!);
-            }
+              await SideFunctions.saveUserLoggedInSharedPreference(true);
+              await SideFunctions.saverUserEmailSharedPreference(email);
+              await SideFunctions.saveUserNameSharedPreference(
+                  userInfoSnapshot.docs[0].get('fullName'));
+              if(userInfoSnapshot.docs[0].get('password') != password) {
+                await FirebaseService.updateUserPassword(context.read<AutherProvider>().user!.uid, password);
+              }
+              token = await FirebaseMessaging.instance.getToken();
+              if(userInfoSnapshot.docs[0].get('token') != token) {
+                await FirebaseService.updateUserToken(context.read<AutherProvider>().user!.uid, token!);
+              }
 
-            if (email == 'taneri862@gmail.com') {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => AdminPage()));
+              if (email == 'taneri862@gmail.com') {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => AdminPage()));
+              }
+              else {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => HomePage()));
+              }
             }
             else {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => HomePage()));
+              setState(() {
+                error = 'Error signing in!';
+                _isLoading = false;
+              });
             }
           }
           else {
-            setState(() {
-              error = 'Error signing in!';
-              _isLoading = false;
-            });
+            _user.currentUser!.sendEmailVerification();
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => VerificationPage()));
+            print("mail sent");
           }
-        }
-        else {
-          _user.currentUser!.sendEmailVerification();
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => VerificationPage()));
-          print("mail sent");
-        }
-      });
-    }
-    catch (e) {
+        });
+      }
+      catch (e) {
         print(e);
         _showPopupDialog();
         setState(() {
           _isLoading = false;
         });
-    }
+      }
     }
   }
 
@@ -147,7 +145,7 @@ class _SignInPageState extends State<SignInPage> {
                     SizedBox(height: 20.0),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: 'EMAIL'
+                          hintText: 'EMAIL'
                       ),
                       style: TextStyle(color: Colors.white),
                       validator: (val) {
@@ -166,7 +164,7 @@ class _SignInPageState extends State<SignInPage> {
                     SizedBox(height: 15.0),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: 'PASSWORD'
+                          hintText: 'PASSWORD'
                       ),
                       style: TextStyle(color: Colors.white),
                       validator: (val) =>
@@ -208,9 +206,9 @@ class _SignInPageState extends State<SignInPage> {
                                 decoration: TextDecoration.underline
                             ),
                             recognizer: TapGestureRecognizer()
-                          ..onTap = ()  {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordPage()));
-                          },
+                              ..onTap = ()  {
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordPage()));
+                              },
                           ),
                         ],
                       ),

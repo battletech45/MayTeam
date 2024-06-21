@@ -1,4 +1,4 @@
-import 'package:MayTeam/MAYteam/Notification.dart';
+import 'package:MayTeam/core/service/notification.dart';
 import 'package:MayTeam/core/service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,23 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:MayTeam/MAYteam/Chat_Group_Settings.dart';
 import 'package:MayTeam/MAYteam/Chat_Message_Settings.dart';
 import 'package:provider/provider.dart';
-import '../core/service/provider/auth.dart';
-import 'AdminPage.dart';
-import 'GameGroupPage.dart';
+import '../../core/service/provider/auth.dart';
+import '../../MAYteam/AdminPage.dart';
+import '../../MAYteam/GameGroupPage.dart';
+import '../../widget/tile/member_tile.dart';
+import '../../widget/tile/message_tile.dart';
 
-class ChatPage extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
   final String groupID;
   final String userName;
   final String groupName;
   final String userToken;
 
-  ChatPage({required this.groupID, required this.userName, required this.groupName, required this.userToken});
+  ChatScreen({required this.groupID, required this.userName, required this.groupName, required this.userToken});
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatScreenState extends State<ChatScreen> {
     Stream<QuerySnapshot>? _chats;
     QuerySnapshot? _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();

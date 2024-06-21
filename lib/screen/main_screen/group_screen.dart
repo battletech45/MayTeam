@@ -1,23 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:MayTeam/MAYteam/ProfilePage.dart';
+import 'package:MayTeam/screen/profile_screen/profile_screen.dart';
 import 'package:provider/provider.dart';
-import '../core/service/firebase.dart';
-import '../core/service/provider/auth.dart';
-import 'ForgetPasswordPage.dart';
-import '../main.dart';
-import 'SideFunctions.dart';
-import 'Auth_functions.dart';
-import 'SearchPage.dart';
-import 'Chat_Group_Settings.dart';
 
-class HomePage extends StatefulWidget {
+import '../../core/service/firebase.dart';
+import '../../core/service/provider/auth.dart';
+
+class MainScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainScreenState extends State<MainScreen> {
 
   User? _user;
   String _userName = '';
@@ -136,23 +131,23 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             DrawerHeader(
-                child: Image(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight),
+              child: Image(image: AssetImage("images/logo.png"), fit: BoxFit.fitHeight),
             ),
             ListTile(
-              title: Text("Profile"),
-              onTap: (){
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
-              }
+                title: Text("Profile"),
+                onTap: (){
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
+                }
             ), ListTile(
-              title: Text("Reset Password"),
-              onTap: (){
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ForgetPasswordPage()));
-              }
+                title: Text("Reset Password"),
+                onTap: (){
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ForgetPasswordPage()));
+                }
             ),ListTile(
-              title: Text("Sign Out"),
-              onTap: (){
-                AuthService.signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
-              }
+                title: Text("Sign Out"),
+                onTap: (){
+                  AuthService.signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
+                }
             ),
           ],
         ),

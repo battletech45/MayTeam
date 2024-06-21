@@ -3,22 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:MayTeam/MAYteam/LoginPage.dart';
-import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
-import 'SideFunctions.dart';
-import 'Auth_functions.dart';
-import 'GameGroupPage.dart';
 
-class RegisterPage extends StatefulWidget {
-  final Function? toggleView;
-  RegisterPage({this.toggleView});
+import '../../MAYteam/Auth_functions.dart';
+import '../../MAYteam/SideFunctions.dart';
+
+class RegisterScreen extends StatefulWidget {
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _user = FirebaseAuth.instance;
   bool _isLoading = false;
@@ -114,7 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(height: 20.0),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: 'NAME'
+                          hintText: 'NAME'
                       ),
                       validator: (val) {
                         if(val!.length == 0) {
@@ -154,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(height: 15.0),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: 'PASSWORD'
+                          hintText: 'PASSWORD'
                       ),
                       style: TextStyle(color: Colors.white),
                       obscureText: true,

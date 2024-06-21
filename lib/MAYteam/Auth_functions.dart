@@ -1,8 +1,6 @@
 import 'package:MayTeam/core/service/firebase.dart';
 import 'package:MayTeam/core/service/log.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../core/service/provider/auth.dart';
-import 'SideFunctions.dart';
 
 class AuthService {
   const AuthService._();
@@ -24,13 +22,18 @@ class AuthService {
     }
   }
 
-  static Future registerWithEmailAndPassword(String fullName, String email, String password, String token) async {
+  static Future<User?> registerWithEmailAndPassword(String fullName, String email, String password, String token) async {
     try {
       UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
-      await FirebaseService.updateUserData(context.read<AutherProvider>().user!.uid, fullName, email, password, token);
-      return user;
+      if(user != null) {
+        await FirebaseService.updateUserData(user.uid, fullName, email, password, token);
+        return user;
+      }
+      else {
+        return null;
+      }
     }
     catch(e) {
       print(e.toString());
@@ -38,24 +41,9 @@ class AuthService {
     }
   }
 
-  static Future signOut() async {
+  static Future<void> signOut() async {
     try {
-      await SideFunctions.saveUserLoggedInSharedPreference(false);
-      await SideFunctions.saverUserEmailSharedPreference('');
-      await SideFunctions.saveUserNameSharedPreference('');
-
-      return await FirebaseAuth.instance.signOut().whenComplete(() async {
-        print("Logged out");
-        await SideFunctions.getUserLoggedInSharedPreference().then((value) {
-          print("Logged in: $value");
-        });
-        await SideFunctions.getUserEmailSharedPreference().then((value) {
-          print("Email: $value");
-        });
-        await SideFunctions.getUserNameSharedPreference().then((value) {
-          print("Name: $value");
-        });
-      });
+      return await FirebaseAuth.instance.signOut();
     }
     catch(e) {
       print(e.toString());

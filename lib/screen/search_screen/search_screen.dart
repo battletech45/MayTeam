@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/service/firebase.dart';
 import '../core/service/firebase.dart';
 import '../core/service/provider/auth.dart';
 import 'SideFunctions.dart';
-import 'ChatPage.dart';
+import '../screen/chat_screen/chat_screen.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -131,20 +132,20 @@ class _SearchPageState extends State<SearchPage> {
   Widget groupList() {
     return hasUserJoined ? ListView.builder(
         physics: BouncingScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: searchResultSnapshot!.docs.length,
-      itemBuilder: (context, index) {
-        return groupTile(
-          _userName,
-          searchResultSnapshot!.docs[index].get("groupID"),
-          searchResultSnapshot!.docs[index].get("groupName"),
-          searchResultSnapshot!.docs[index].get("admin"),
-        );
-      }
+        shrinkWrap: true,
+        itemCount: searchResultSnapshot!.docs.length,
+        itemBuilder: (context, index) {
+          return groupTile(
+            _userName,
+            searchResultSnapshot!.docs[index].get("groupID"),
+            searchResultSnapshot!.docs[index].get("groupName"),
+            searchResultSnapshot!.docs[index].get("admin"),
+          );
+        }
     ) : StreamBuilder <QuerySnapshot>(
-      stream: allGroupsSnapshot,
+        stream: allGroupsSnapshot,
         builder: (context, snapshot) {
-        return snapshot.hasData ? ListView.builder(
+          return snapshot.hasData ? ListView.builder(
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data!.docs.length,
@@ -157,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
                 );
               }
           ) :
-            CircularProgressIndicator();
+          CircularProgressIndicator();
         }
     );
   }
@@ -166,9 +167,9 @@ class _SearchPageState extends State<SearchPage> {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       leading: CircleAvatar(
-        radius: 30.0,
-        backgroundColor: Colors.brown[900],
-        child: Text(groupName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white))
+          radius: 30.0,
+          backgroundColor: Colors.brown[900],
+          child: Text(groupName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white))
       ),
       title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Text("Admin: $admin"),
@@ -207,7 +208,7 @@ class _SearchPageState extends State<SearchPage> {
                         child: TextField(
                           onSubmitted: (val) => {
                             _initiateSearch()
-                            },
+                          },
                           controller: searchEditingController,
                           style: TextStyle(
                             color: Colors.white,

@@ -43,8 +43,8 @@ class _MessageTileState extends State<MessageTile> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         splashColor: Colors.red[900],
         onPressed: () {
-         FirebaseService.deleteMessage(widget.groupID!, widget.messageID!);
-         Navigator.of(context).pop();
+          FirebaseService.deleteMessage(widget.groupID!, widget.messageID!);
+          Navigator.of(context).pop();
         },
       );
 
@@ -87,8 +87,8 @@ class _MessageTileState extends State<MessageTile> {
           decoration: BoxDecoration(
             borderRadius: widget.sentByMe ? BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23), bottomLeft: Radius.circular(23))
                 :
-                BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23), bottomRight: Radius.circular(23)
-                ),
+            BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23), bottomRight: Radius.circular(23)
+            ),
             color: widget.sentByMe ? Colors.teal[900] : Colors.blueGrey[700],
           ),
           child: Column(

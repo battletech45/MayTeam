@@ -3,7 +3,7 @@ import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:MayTeam/MAYteam/ProfilePage.dart';
+import 'package:MayTeam/screen/profile_screen/profile_screen.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import 'ForgetPasswordPage.dart';

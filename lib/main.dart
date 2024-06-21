@@ -1,14 +1,13 @@
 import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/constant/router_config.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:MayTeam/screen/auth_screen/reset_password_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'MAYteam/LoginPage.dart';
-import 'MAYteam/SignUpPage.dart';
 import 'firebase_options.dart';
 
 late AutherProvider authProvider;
@@ -67,7 +66,7 @@ class loginButton extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.black,
       onPressed: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordScreen()));
       },
     );
   }
@@ -83,7 +82,7 @@ class signUpButton extends StatelessWidget {
       splashColor: Colors.red,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       onPressed: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordScreen()));
       },
     );
   }

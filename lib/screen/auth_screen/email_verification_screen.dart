@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:MayTeam/MAYteam/GameGroupPage.dart';
 import 'package:MayTeam/main.dart';
+import '../../core/service/firebase.dart';
 
-import '../core/service/firebase.dart';
-
-class VerificationPage extends StatefulWidget {
+class EmailVerificationScreen extends StatefulWidget {
   @override
-  State<VerificationPage> createState() => _VerificationPageState();
+  State<EmailVerificationScreen> createState() => _EmailVerificationScreenState();
 }
 
-class _VerificationPageState extends State<VerificationPage> {
+class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final _user = FirebaseAuth.instance;
   bool _isVerified = false;
   String _userName = '';
@@ -37,7 +36,7 @@ class _VerificationPageState extends State<VerificationPage> {
     setState(() {
       _isVerified = _user.currentUser!.emailVerified;
     });
-       if(_isVerified) {
+    if(_isVerified) {
       await SideFunctions.saveUserLoggedInSharedPreference(true);
       await SideFunctions.saverUserEmailSharedPreference(_user.currentUser!.email!);
       await SideFunctions.saveUserNameSharedPreference(_userName);
@@ -46,12 +45,12 @@ class _VerificationPageState extends State<VerificationPage> {
       });
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
     }
-       else {
-         setState(() {
-           _isLoading = false;
-         });
-         _showPopupDialog();
-       }
+    else {
+      setState(() {
+        _isLoading = false;
+      });
+      _showPopupDialog();
+    }
   }
 
   void _showPopupDialog() {
@@ -102,7 +101,7 @@ class _VerificationPageState extends State<VerificationPage> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                 color: Colors.red,
                 child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Check Verification'),
-                  onPressed: _getVerificationValue
+                onPressed: _getVerificationValue
             ),
             MaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
