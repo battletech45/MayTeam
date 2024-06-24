@@ -29,7 +29,7 @@ class _AnimatedChatLogoState extends State<AnimatedLogo> with SingleTickerProvid
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _colorAnimation = ColorTween(begin: AppColor.secondary, end: AppColor.primary).animate(
+    _colorAnimation = ColorTween(begin: AppColor.primaryBackgroundColor, end: AppColor.secondaryBackgroundColor).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }

@@ -34,7 +34,6 @@ class PageError extends StatelessWidget {
           10.h.verticalSpace,
           FilledButton(
             onPressed: () => context.go('/'),
-            style: FilledButton.styleFrom(backgroundColor: AppColor.primary),
             child: const Text('Ana Sayfa'),
           )
         ],

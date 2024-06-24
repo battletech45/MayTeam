@@ -36,7 +36,6 @@ class MayTeam extends StatelessWidget {
              designSize: const Size(393, 808),
              builder: (context, __) {
                return MaterialApp.router(
-                 color: AppColor.secondary,
                  routerConfig: AppRouterConfig.router,
                  debugShowCheckedModeBanner: false,
                  scrollBehavior: const CupertinoScrollBehavior(),
@@ -51,40 +50,6 @@ class MayTeam extends StatelessWidget {
            );
          },
        );
-  }
-}
-
-
-class loginButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final String text = 'Login';
-    return MaterialButton(
-       child: Text(text),
-      elevation: 5.0,
-      color: Colors.red,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-      splashColor: Colors.black,
-      onPressed: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordScreen()));
-      },
-    );
-  }
-}
-class signUpButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final String text = 'Sign Up';
-    return MaterialButton(
-      child: Text(text),
-      color: Colors.black,
-      elevation: 5.0,
-      splashColor: Colors.red,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-      onPressed: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordScreen()));
-      },
-    );
   }
 }
 
