@@ -1,7 +1,7 @@
 import 'package:MayTeam/MAYteam/AdminPage.dart';
-import 'package:MayTeam/MAYteam/GameGroupPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/service/firebase.dart';
@@ -142,12 +142,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       color: Colors.black,
                       child: Text('Back'),
                       onPressed: () => {
-                        if(_user.currentUser!.email == 'taneri862@gmail.com') {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>AdminPage()))
-                        }
-                        else {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>HomePage()))
-                        }
+                        context.go('/')
                       }
                   )
                 ],

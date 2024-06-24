@@ -3,14 +3,11 @@ import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:MayTeam/screen/profile_screen/profile_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
-import 'ForgetPasswordPage.dart';
-import 'SideFunctions.dart';
+import '../widget/tile/group_tile.dart';
 import 'Auth_functions.dart';
-import 'SearchPage.dart';
-import 'Chat_Group_Settings.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -94,19 +91,9 @@ class _AdminPageState extends State<AdminPage> {
 
   _getUserAuthAndJoinedGroups() async {
     _user = FirebaseAuth.instance.currentUser;
-    await SideFunctions.getUserNameSharedPreference().then((value) {
-      setState(() {
-        _userName = value!;
-      });
-    });
     FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid).then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
-      });
-    });
-    await SideFunctions.getUserEmailSharedPreference().then((value) {
-      setState(() {
-        _email = value!;
       });
     });
     var data = await FirebaseService.getUserData(_email);
@@ -141,10 +128,8 @@ class _AdminPageState extends State<AdminPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
       splashColor: Colors.black,
       onPressed: () async {
-          await SideFunctions.getUserNameSharedPreference().then((val) {
-            FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, val!, _groupName, userToken);
-          });
-          Navigator.of(context).pop();
+        FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, context.read<AutherProvider>().user!.displayName ?? '', _groupName, userToken);
+        Navigator.of(context).pop();
       },
     );
 
@@ -187,7 +172,7 @@ class _AdminPageState extends State<AdminPage> {
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               icon: Icon(Icons.search, color: Colors.white, size: 25.0),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPage()));
+                context.go('/search');
               }
           )
         ],
@@ -214,13 +199,13 @@ class _AdminPageState extends State<AdminPage> {
             ListTile(
                 title: Text("Profile"),
                 onTap: (){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
+                  context.go('/profile');
                 }
             ),
             ListTile(
                 title: Text("Reset Password"),
                 onTap: (){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ForgetPasswordPage()));
+                  context.go('/forgotPassword');
                 }
             ),
             ListTile(

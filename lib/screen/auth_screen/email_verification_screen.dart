@@ -1,11 +1,11 @@
-import 'package:MayTeam/MAYteam/SideFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:MayTeam/MAYteam/GameGroupPage.dart';
 import 'package:MayTeam/main.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/service/firebase.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
+  const EmailVerificationScreen({super.key});
   @override
   State<EmailVerificationScreen> createState() => _EmailVerificationScreenState();
 }
@@ -37,13 +37,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       _isVerified = _user.currentUser!.emailVerified;
     });
     if(_isVerified) {
-      await SideFunctions.saveUserLoggedInSharedPreference(true);
-      await SideFunctions.saverUserEmailSharedPreference(_user.currentUser!.email!);
-      await SideFunctions.saveUserNameSharedPreference(_userName);
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+      context.go('/');
     }
     else {
       setState(() {
@@ -107,7 +104,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                 color: Colors.black,
                 child: Text('Back'),
-                onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MayTeam()))
+                onPressed: () => context.go('/')
             ),
           ],
         ),

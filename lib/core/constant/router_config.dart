@@ -1,8 +1,11 @@
+import 'package:MayTeam/screen/auth_screen/email_verification_screen.dart';
+import 'package:MayTeam/screen/auth_screen/login_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../screen/landing_screen/landing_screen.dart';
+import '../../screen/search_screen/search_screen.dart';
 import '../../widget/base/loading.dart';
 
 const rootKey = GlobalObjectKey<NavigatorState>('root');
@@ -35,9 +38,27 @@ class AppRouterConfig {
     routes: [
       GoRoute(
           path: '/landing_screen',
+          parentNavigatorKey: rootKey,
+          name: 'Karşılama Sayfası',
+          builder: (context, state) => const LandingScreen()
+      ),
+      GoRoute(
+        path: '/search',
         parentNavigatorKey: rootKey,
-        name: 'Karşılama Sayfası',
-        builder: (context, state) => const LandingScreen()
+        name: 'Arama Sayfası',
+        builder: (context, state) => const SearchScreen()
+      ),
+      GoRoute(
+        path: '/verification',
+        parentNavigatorKey: rootKey,
+        name: 'Mail Onaylama Sayfası',
+        builder: (context, state) => const EmailVerificationScreen()
+      ),
+      GoRoute(
+        path: '/login',
+        parentNavigatorKey: rootKey,
+        name: 'Giriş Sayfası',
+        builder: (context, state) => const LoginScreen()
       )
     ]
   );

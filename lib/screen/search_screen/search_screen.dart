@@ -3,17 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/firebase.dart';
-import '../core/service/firebase.dart';
-import '../core/service/provider/auth.dart';
-import 'SideFunctions.dart';
-import '../screen/chat_screen/chat_screen.dart';
+import '../../core/service/provider/auth.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchScreenState extends State<SearchScreen> {
 
   TextEditingController searchEditingController = new TextEditingController();
   QuerySnapshot? searchResultSnapshot;
@@ -21,9 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   ScrollController? _controller;
   bool isLoading = false;
   bool hasUserJoined = false;
-  String _userName = '';
   String? token;
-  User? _user;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -35,11 +31,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _getCurrentUserNameAndUserID() async {
-    await SideFunctions.getUserNameSharedPreference().then((value) {
-      _userName = value!;
-    });
-    _user = FirebaseAuth.instance.currentUser!;
-    var data = await FirebaseService.getUserData(_user!.email!);
+    var data = await FirebaseService.getUserData(context.read<AutherProvider>().user!.email ?? '');
     setState(() {
       token = data.docs[0].get('token');
       print(token);
@@ -99,7 +91,7 @@ class _SearchPageState extends State<SearchPage> {
           await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, groupID, groupName, userName, token!);
           Future.delayed(Duration(milliseconds: 1000), () {
             Navigator.of(context).pop();
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName, userToken: token!)));
+            //Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName, userToken: token!)));
           });
         }
         else {
@@ -136,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
         itemCount: searchResultSnapshot!.docs.length,
         itemBuilder: (context, index) {
           return groupTile(
-            _userName,
+            context.read<AutherProvider>().user?.displayName ?? '',
             searchResultSnapshot!.docs[index].get("groupID"),
             searchResultSnapshot!.docs[index].get("groupName"),
             searchResultSnapshot!.docs[index].get("admin"),
@@ -151,7 +143,7 @@ class _SearchPageState extends State<SearchPage> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 return groupTile(
-                  _userName,
+                  context.read<AutherProvider>().user?.displayName ?? '',
                   snapshot.data!.docs[index].get("groupID"),
                   snapshot.data!.docs[index].get("groupName"),
                   snapshot.data!.docs[index].get("admin"),

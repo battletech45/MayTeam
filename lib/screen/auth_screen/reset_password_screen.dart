@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -30,8 +31,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         backgroundColor: Colors.brown[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())
-          ),
+          onPressed: () => context.go('/'),
         ),
       ),
       body: Container(

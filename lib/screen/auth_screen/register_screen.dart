@@ -4,9 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:MayTeam/main.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../MAYteam/Auth_functions.dart';
-import '../../MAYteam/SideFunctions.dart';
 
 class RegisterScreen extends StatefulWidget {
 
@@ -39,12 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await AuthService.registerWithEmailAndPassword(fullName, email, password, token!).then((result) async {
           if (_user.currentUser!.emailVerified) {
             if (result != null) {
-              await SideFunctions.saveUserLoggedInSharedPreference(true);
-              await SideFunctions.saverUserEmailSharedPreference(email);
-              await SideFunctions.saveUserNameSharedPreference(fullName);
-
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => HomePage()));
+              context.go('/');
             }
             else {
               setState(() {
@@ -55,9 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
           else {
             _user.currentUser!.sendEmailVerification();
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => VerificationPage()));
-            print("mail sent");
+            context.go('/verification');
           }
         });
       }
@@ -91,8 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.brown[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam()),
-          ),
+          onPressed: () => context.go('/'),
         ),
       ),
       body: Form(
@@ -195,7 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             text: 'Sign In',
                             style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
                             recognizer: TapGestureRecognizer()..onTap = () {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+                              context.go('/login');
                             },
                           ),
                         ],

@@ -3,18 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:MayTeam/MAYteam/AdminPage.dart';
 import 'package:MayTeam/MAYteam/Auth_functions.dart';
-import 'package:MayTeam/MAYteam/SideFunctions.dart';
-import 'package:MayTeam/MAYteam/VerificationPage.dart';
 import 'package:MayTeam/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/service/firebase.dart';
 import '../../core/service/provider/auth.dart';
-import 'email_verification_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -70,10 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
             if (result != null) {
               QuerySnapshot userInfoSnapshot = await FirebaseService.getUserData(email);
 
-              await SideFunctions.saveUserLoggedInSharedPreference(true);
-              await SideFunctions.saverUserEmailSharedPreference(email);
-              await SideFunctions.saveUserNameSharedPreference(
-                  userInfoSnapshot.docs[0].get('fullName'));
               if(userInfoSnapshot.docs[0].get('password') != password) {
                 await FirebaseService.updateUserPassword(context.read<AutherProvider>().user!.uid, password);
               }
@@ -81,15 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
               if(userInfoSnapshot.docs[0].get('token') != token) {
                 await FirebaseService.updateUserToken(context.read<AutherProvider>().user!.uid, token!);
               }
-
-              if (email == 'taneri862@gmail.com') {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => AdminPage()));
-              }
-              else {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomePage()));
-              }
+                context.go('/');
             }
             else {
               setState(() {
@@ -100,9 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           else {
             _user.currentUser!.sendEmailVerification();
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => VerificationPage()));
-            print("mail sent");
+            context.go('/verification');
           }
         });
       }
@@ -124,8 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.brown[900],
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())
-          ),
+          onPressed: () => context.go('/'),
         ),
       ),
       body: Form(
@@ -207,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = ()  {
-                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ResetPasswordPage()));
+                                context.go('/resetPassword');
                               },
                           ),
                         ],

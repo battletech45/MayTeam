@@ -3,12 +3,10 @@ import 'package:MayTeam/core/service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:MayTeam/MAYteam/Chat_Group_Settings.dart';
-import 'package:MayTeam/MAYteam/Chat_Message_Settings.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/provider/auth.dart';
 import '../../MAYteam/AdminPage.dart';
-import '../../MAYteam/GameGroupPage.dart';
 import '../../widget/tile/member_tile.dart';
 import '../../widget/tile/message_tile.dart';
 
@@ -29,7 +27,6 @@ class _ChatScreenState extends State<ChatScreen> {
     QuerySnapshot? _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
     List userTokens = [];
-    User? _user;
 
     Widget _chatMessages() {
       return StreamBuilder <QuerySnapshot>(
@@ -87,9 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
         userTokens = _groupMembers!.docs[0].get('memberTokens');
         userTokens.remove(widget.userToken);
         });
-        print(userTokens);
       });
-      _user = FirebaseAuth.instance.currentUser!;
     }
 
     _deleteEmptyGroup() async {
@@ -124,11 +119,11 @@ class _ChatScreenState extends State<ChatScreen> {
         splashColor: Colors.red[900],
         onPressed: () async {
           await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, widget.userName, widget.userToken);
-          if(_user!.email == "taneri862@gmail.com") {
+          if(context.read<AutherProvider>().user?.email == "taneri862@gmail.com") {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminPage()));
           }
           else {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+            context.go('/');
           }
         },
       );

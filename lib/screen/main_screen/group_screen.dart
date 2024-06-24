@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:MayTeam/screen/profile_screen/profile_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../MAYteam/Auth_functions.dart';
 import '../../core/service/firebase.dart';
 import '../../core/service/provider/auth.dart';
+import '../../widget/tile/group_tile.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -13,10 +15,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
-  User? _user;
-  String _userName = '';
-  String _email = '';
   Stream<DocumentSnapshot>? _groups ;
   ScrollController? _controller;
 
@@ -83,20 +81,9 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _getUserAuthAndJoinedGroups() async {
-    _user = FirebaseAuth.instance.currentUser!;
-    await SideFunctions.getUserNameSharedPreference().then((value) {
-      setState(() {
-        _userName = value!;
-      });
-    });
     FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid).then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
-      });
-    });
-    await SideFunctions.getUserEmailSharedPreference().then((value) {
-      setState(() {
-        _email = value!;
       });
     });
   }
@@ -120,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               icon: Icon(Icons.search, color: Colors.white, size: 25.0),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPage()));
+                context.go('/search');
               }
           )
         ],
@@ -136,17 +123,17 @@ class _MainScreenState extends State<MainScreen> {
             ListTile(
                 title: Text("Profile"),
                 onTap: (){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfilePage()));
+                  context.go('/profile');
                 }
             ), ListTile(
                 title: Text("Reset Password"),
-                onTap: (){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ForgetPasswordPage()));
+                onTap: () {
+                  context.go('/forgot_password');
                 }
             ),ListTile(
                 title: Text("Sign Out"),
-                onTap: (){
-                  AuthService.signOut().then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MayTeam())));
+                onTap: () {
+                  AuthService.signOut().then((value) => context.pop());
                 }
             ),
           ],

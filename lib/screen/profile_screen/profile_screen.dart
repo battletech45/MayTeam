@@ -1,22 +1,23 @@
 import 'package:MayTeam/MAYteam/AdminPage.dart';
+import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../MAYteam/GameGroupPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:provider/provider.dart';
 
 
-class ProfilePage extends StatefulWidget{
+class ProfileScreen extends StatefulWidget{
+  const ProfileScreen({super.key});
   @override
-  State<StatefulWidget> createState() => ProfilePageState();
+  State<StatefulWidget> createState() => ProfileScreenState();
 }
-class ProfilePageState extends State<ProfilePage> {
-  String userName = '';
-  String userEmail = '';
+class ProfileScreenState extends State<ProfileScreen> {
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   DefaultCacheManager manager = new DefaultCacheManager();
   ImagePicker _picker = ImagePicker();
@@ -27,17 +28,6 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isPhotoExist = false;
   String? _activeGroup;
   bool isAdmin = false;
-
-  _getUserName() async {
-    var name = await SideFunctions.getUserNameSharedPreference();
-    setState(() {
-      userName = name!;
-    });
-    var email = await SideFunctions.getUserEmailSharedPreference();
-    setState(() {
-      userEmail = email!;
-    });
-  }
 
   _getActiveGroup() async {
     var userData = await FirebaseFirestore.instance.collection('users').doc(_user.currentUser!.uid).get();
@@ -114,7 +104,6 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _getUserName();
     _getImage();
     _getActiveGroup();
   }
@@ -134,8 +123,8 @@ class ProfilePageState extends State<ProfilePage> {
         title: Text("Profile"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: Colors.white),
-          onPressed: (){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>  isAdmin ? AdminPage() : HomePage()));
+          onPressed: () {
+            context.go('/');
           },
         ),
       ),
@@ -162,7 +151,7 @@ class ProfilePageState extends State<ProfilePage> {
                   children: [
                     Icon(Icons.person_outline_rounded,size: 25.0,),
                     SizedBox(width: 70.0,),
-                    Text("$userName",style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                    Text("${context.read<AutherProvider>().user?.displayName ?? ''}",style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                     SizedBox(width: 120.0,),
 
                   ],
@@ -180,7 +169,7 @@ class ProfilePageState extends State<ProfilePage> {
                     Icon(Icons.alternate_email_rounded, size: 25.0,),
                     SizedBox(width: 50.0,),
                     Expanded(
-                      child: Text("$userEmail",style: TextStyle(fontSize: 15),),
+                      child: Text("${context.read<AutherProvider>().user?.email ?? ''}",style: TextStyle(fontSize: 15),),
                     ),
                   ],
                 ),
