@@ -1,7 +1,5 @@
-import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/constant/router_config.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
-import 'package:MayTeam/screen/auth_screen/reset_password_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
