@@ -1,6 +1,9 @@
 import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:MayTeam/core/model/login.dart';
+import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:MayTeam/core/util/extension.dart';
 import 'package:MayTeam/core/util/validator.dart';
 import 'package:MayTeam/widget/button/loading_button.dart';
 import 'package:MayTeam/widget/form/app_form_field.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../widget/base/scaffold.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,53 +26,20 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  /*
-  _onSignIn() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      try {
-        await AuthService.signInWithEmailAndPassWord(email, password).then((
-            result) async {
-          if (_user.currentUser!.emailVerified) {
-            if (result != null) {
-              QuerySnapshot userInfoSnapshot = await FirebaseService.getUserData(email);
-
-              if(userInfoSnapshot.docs[0].get('password') != password) {
-                await FirebaseService.updateUserPassword(context.read<AutherProvider>().user!.uid, password);
-              }
-              token = await FirebaseMessaging.instance.getToken();
-              if(userInfoSnapshot.docs[0].get('token') != token) {
-                await FirebaseService.updateUserToken(context.read<AutherProvider>().user!.uid, token!);
-              }
-                context.go('/');
+  Future<void> send() async {
+    if(_formKey.currentState!.validate()) {
+      context.read<AutherProvider>().login(LoginModel(email: emailController.text, password: passwordController.text))
+          .then((value) {
+            if(value == null) {
+              context.go('/main');
             }
             else {
-              setState(() {
-                error = 'Error signing in!';
-                _isLoading = false;
-              });
+              print('HATALI giriş');
+              //context.showAppDialog();
             }
-          }
-          else {
-            _user.currentUser!.sendEmailVerification();
-            context.go('/verification');
-          }
-        });
-      }
-      catch (e) {
-        print(e);
-        _showPopupDialog();
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      });
     }
   }
-
-   */
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 UIConst.verticalBlankSpace,
                 LoadingButton(
-                  onTap: () async {},
+                  onTap: send,
                   backgroundColor: AppColor.red,
                   child: Text('Login'),
                 ),

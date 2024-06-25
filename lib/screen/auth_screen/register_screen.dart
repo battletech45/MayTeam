@@ -1,16 +1,12 @@
 import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:MayTeam/core/model/login.dart';
+import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:MayTeam/main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import '../../MAYteam/Auth_functions.dart';
 import '../../core/constant/text_style.dart';
 import '../../core/util/validator.dart';
 import '../../widget/base/scaffold.dart';
@@ -30,44 +26,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  /*
-  _onRegister() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
+  Future<void> send() async {
+    if(_formKey.currentState!.validate()) {
+      context.read<AutherProvider>().register(nameController.text, LoginModel(email: emailController.text, password: passwordController.text))
+      .then((value) {
+        if(value == null) {
+          context.go('/main');
+        }
+        else {
+          print('Bir Hata oluştu');
+        }
       });
-
-      await _checkUserNameExistence(fullName);
-      token = await FirebaseMessaging.instance.getToken();
-      if(_isUserUnique) {
-        print(token!);
-        await AuthService.registerWithEmailAndPassword(fullName, email, password, token!).then((result) async {
-          if (_user.currentUser!.emailVerified) {
-            if (result != null) {
-              context.go('/');
-            }
-            else {
-              setState(() {
-                error = 'Error while registering the user!';
-                _isLoading = false;
-              });
-            }
-          }
-          else {
-            _user.currentUser!.sendEmailVerification();
-            context.go('/verification');
-          }
-        });
-      }
-      else {
-        setState(() {
-          error = 'UserName is not unique !';
-        });
-      }
     }
   }
-
-   */
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 UIConst.verticalBlankSpace,
                 LoadingButton(
-                  onTap: () async {},
+                  onTap: send,
                   backgroundColor: AppColor.red,
                   child: Text('Register'),
                 ),

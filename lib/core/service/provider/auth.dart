@@ -1,10 +1,10 @@
-import 'package:MayTeam/MAYteam/Auth_functions.dart';
 import 'package:MayTeam/core/service/log.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/login.dart';
+import '../firebase.dart';
 
 class AutherProvider with ChangeNotifier {
   User? user;
@@ -45,8 +45,65 @@ class AutherProvider with ChangeNotifier {
     return b;
   }
 
+  Future<User?> signInWithEmailAndPassWord(String email, String password) async {
+    try {
+      UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      if(user != null) {
+        return user;
+      }
+      else {
+        return null;
+      }
+    }
+    catch(e) {
+      LoggerService.logError(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<User?> registerWithEmailAndPassword(String fullName, String email, String password) async {
+    try {
+      UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+
+      if(user != null) {
+        await FirebaseService.updateUserData(user.uid, fullName, email, password);
+        return user;
+      }
+      else {
+        return null;
+      }
+    }
+    catch(e) {
+      LoggerService.logError(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      return await FirebaseAuth.instance.signOut();
+    }
+    catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   Future<String?> login(LoginModel model) async {
-    final tmp = await AuthService.signInWithEmailAndPassWord(model.email, model.password);
+    final tmp = await signInWithEmailAndPassWord(model.email, model.password);
+    if (tmp != null) {
+      user = tmp;
+      await writeShared(model);
+      notifyListeners();
+      return null;
+    }
+    return 'Kullanıcı Adı veya Şifre Hatalı';
+  }
+
+  Future<String?> register(String name, LoginModel model) async {
+    final tmp = await registerWithEmailAndPassword(name, model.email, model.password);
     if (tmp != null) {
       user = tmp;
       await writeShared(model);
