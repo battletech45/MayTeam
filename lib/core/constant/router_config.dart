@@ -6,6 +6,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../screen/chat_screen/chat_screen.dart';
 import '../../screen/landing_screen/landing_screen.dart';
 import '../../screen/search_screen/search_screen.dart';
 import '../../widget/base/loading.dart';
@@ -49,6 +50,12 @@ class AppRouterConfig {
         parentNavigatorKey: rootKey,
         name: 'Ana Sayfa',
         builder: (context, state) => const MainScreen()
+      ),
+      GoRoute(
+        path: '/chat/:id',
+        parentNavigatorKey: rootKey,
+        name: 'Chat Sayfası',
+        builder: (context, state) => ChatScreen(groupID: state.pathParameters['id'] as String, groupName: state.extra as String)
       ),
       GoRoute(
         path: '/search',

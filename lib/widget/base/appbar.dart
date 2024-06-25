@@ -8,9 +8,11 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Animation<double>? progress;
   final bool isDrawer;
   final List<Widget> actions;
+  final String? title;
   const AppAppBar({
     super.key,
     this.onTap,
+    this.title,
     this.progress,
     required this.isDrawer,
     this.actions = const <Widget>[],
@@ -25,7 +27,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColor.primaryBackgroundColor,
       scrolledUnderElevation: 0.0,
       centerTitle: true,
-      title: Text('My Team', style: AppTextStyle.dialogTitle),
+      title: Text(title ?? 'My Team', style: AppTextStyle.dialogTitle),
       leading: isDrawer ? IconButton(onPressed: onTap, icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: progress!)) : null,
       actions: isDrawer ? [] : actions,
     );

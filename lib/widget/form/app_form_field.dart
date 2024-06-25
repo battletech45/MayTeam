@@ -91,7 +91,7 @@ class _AppFormFieldState extends State<AppFormField> {
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.start,
       maxLines: widget.isBigField ? 5 : 1,
-      cursorColor: AppColor.primaryBackgroundColor,
+      cursorColor: AppColor.primaryTextColor,
       decoration: InputDecoration(
         border: widget.border ?? OutlineInputBorder(
             borderRadius: BorderRadius.circular(15.r),

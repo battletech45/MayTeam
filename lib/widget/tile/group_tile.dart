@@ -1,27 +1,30 @@
 import 'package:MayTeam/screen/chat_screen/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class GroupTile extends StatelessWidget {
   final String userName;
   final String groupID;
   final String groupName;
-  final String userToken;
 
-  GroupTile({required this.userName, required this.groupID, required this.groupName, required this.userToken});
+  GroupTile({required this.userName, required this.groupID, required this.groupName});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(groupID: groupID, userName: userName, groupName: groupName, userToken: userToken)));
+        context.push('/chat/${groupID}', extra: groupName);
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         child: ListTile(
-          leading: CircleAvatar(
+          leading: ProfilePicture(
+            name: '$groupName',
             radius: 30.r,
-            child: Text(groupName.substring(0,1).toUpperCase(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
+            fontsize: 21.sp,
+            random: true,
           ),
           title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
           subtitle: Text("Join the chat room as $userName", style: TextStyle(fontSize: 13.0)),

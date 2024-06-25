@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     int reqIndex = data['groups'].length - index - 1;
-                    return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]), userToken: data['token']);
+                    return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]));
                   }
               );
             }
@@ -166,7 +166,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         elevation: 2.0,
         backgroundColor: AppColor.secondaryBackgroundColor,
         onPressed: () {
-          context.go('/search');
+          context.push('/search');
         },
         child: Icon(Icons.search, color: AppColor.iconColor),
       ),

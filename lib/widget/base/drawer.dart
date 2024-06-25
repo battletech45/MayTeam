@@ -1,6 +1,9 @@
 import 'package:MayTeam/core/constant/color.dart';
+import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/constant/text_style.dart';
 import '../../core/constant/ui_const.dart';
@@ -20,7 +23,13 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-
+            DrawerButton(
+              title: 'Çıkış Yap',
+              onTap: () async {
+                await context.read<AutherProvider>().signOut();
+                context.go('/login');
+              },
+            )
           ],
         ),
       ),

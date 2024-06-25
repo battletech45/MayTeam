@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       context.read<AutherProvider>().register(nameController.text, LoginModel(email: emailController.text, password: passwordController.text))
       .then((value) {
         if(value == null) {
-          context.go('/main');
+          context.go('/');
         }
         else {
           print('Bir Hata oluştu');

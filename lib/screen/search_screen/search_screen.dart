@@ -1,9 +1,14 @@
+import 'package:MayTeam/core/constant/color.dart';
+import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../core/constant/text_style.dart';
 import '../../core/service/firebase.dart';
 import '../../core/service/provider/auth.dart';
+import '../../widget/base/scaffold.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -17,9 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
   QuerySnapshot? searchResultSnapshot;
   Stream<QuerySnapshot>? allGroupsSnapshot;
   ScrollController? _controller;
-  bool isLoading = false;
-  bool hasUserJoined = false;
-  String? token;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -32,23 +35,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _getCurrentUserNameAndUserID() async {
     var data = await FirebaseService.getUserData(context.read<AutherProvider>().user!.email ?? '');
-    setState(() {
-      token = data.docs[0].get('token');
-      print(token);
-    });
   }
 
   _initiateSearch() async {
     if(searchEditingController.text.isNotEmpty) {
-      setState(() {
-        isLoading = true;
-      });
       await FirebaseService.searchByName(searchEditingController.text).then((snapshot) {
         searchResultSnapshot = snapshot;
-        setState(() {
-          isLoading = false;
-          hasUserJoined = true;
-        });
       });
     }
   }
@@ -88,7 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
       onPressed: () async {
         bool val = await FirebaseService.isUserJoined(context.read<AutherProvider>().user!.uid, groupID, groupName, userName);
         if(!val) {
-          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, groupID, groupName, userName, token!);
+          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, groupID, groupName, userName, '');
           Future.delayed(Duration(milliseconds: 1000), () {
             Navigator.of(context).pop();
             //Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName, userToken: token!)));
@@ -122,19 +114,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget groupList() {
-    return hasUserJoined ? ListView.builder(
-        physics: BouncingScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: searchResultSnapshot!.docs.length,
-        itemBuilder: (context, index) {
-          return groupTile(
-            context.read<AutherProvider>().user?.displayName ?? '',
-            searchResultSnapshot!.docs[index].get("groupID"),
-            searchResultSnapshot!.docs[index].get("groupName"),
-            searchResultSnapshot!.docs[index].get("admin"),
-          );
-        }
-    ) : StreamBuilder <QuerySnapshot>(
+    return StreamBuilder <QuerySnapshot>(
         stream: allGroupsSnapshot,
         builder: (context, snapshot) {
           return snapshot.hasData ? ListView.builder(
@@ -155,7 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget groupTile(String userName, String groupID, String groupName, String admin){
+  Widget groupTile(String userName, String groupID, String groupName, String admin) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       leading: CircleAvatar(
@@ -172,70 +152,56 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.brown[900],
-        title: Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
+    return AppScaffold(
+      backgroundColor: AppColor.primaryBackgroundColor,
+      backgroundImage: false,
+      appBar: AppAppBar(
+        isDrawer: false,
       ),
-      body: Container(
-        child: Scrollbar(
-          interactive: true,
-          thickness: 7.5,
-          trackVisibility: true,
-          controller: _controller,
-          child: SingleChildScrollView(
-            controller: _controller,
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                SizedBox(height: 20.0),
-                Container(
-                  decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onSubmitted: (val) => {
-                            _initiateSearch()
-                          },
-                          controller: searchEditingController,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          decoration: InputDecoration(
-                              hintText: "Search groups...",
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                              border: InputBorder.none
-                          ),
-                        ),
+      child: SingleChildScrollView(
+        controller: _controller,
+        physics: BouncingScrollPhysics(),
+        padding: UIConst.pagePadding,
+        child: Column(
+          children: [
+            UIConst.verticalBlankSpace,
+            Container(
+              decoration: BoxDecoration(color: AppColor.secondaryBackgroundColor, borderRadius: BorderRadius.circular(80.r)),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      onSubmitted: (val) => {
+                        _initiateSearch()
+                      },
+                      controller: searchEditingController,
+                      style: AppTextStyle.bigButtonText.copyWith(color: AppColor.primaryTextColor),
+                      decoration: InputDecoration(
+                          hintText: "Search groups...",
+                          hintStyle: AppTextStyle.bigButtonText.copyWith(color: AppColor.primaryTextColor),
+                          border: InputBorder.none
                       ),
-                      GestureDetector(
-                          onTap: (){
-                            _initiateSearch();
-                          },
-                          child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(40)
-                              ),
-                              child: Icon(Icons.search, color: Colors.white)
-                          )
-                      )
-                    ],
+                    ),
                   ),
-                ),
-                isLoading ? Container(child: Center(child: CircularProgressIndicator())) : groupList()
-              ],
+                  GestureDetector(
+                      onTap: (){
+                        _initiateSearch();
+                      },
+                      child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(40)
+                          ),
+                          child: Icon(Icons.search, color: Colors.white)
+                      )
+                  )
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

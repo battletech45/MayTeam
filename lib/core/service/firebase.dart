@@ -10,11 +10,10 @@ class FirebaseService {
   static final CollectionReference groupCollection = FirebaseFirestore.instance.collection('groups');
 
 
-  static Future updateUserData(String userID, String fullName, String email, String password) async {
+  static Future updateUserData(String userID, String fullName, String email) async {
     return await userCollection.doc(userID).set({
       'fullName': fullName,
       'email': email,
-      'password': password,
       'groups': [],
       'profilePic': '',
       'activeGroup': ''
@@ -24,12 +23,6 @@ class FirebaseService {
   static updateUserLastGroup(String userID, String groupName) async {
     return await userCollection.doc(userID).update({
       'activeGroup': groupName
-    });
-  }
-
-  static updateUserPassword(String userID, String password) async {
-    return await userCollection.doc(userID).update({
-      'password': password
     });
   }
 

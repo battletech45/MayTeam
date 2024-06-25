@@ -27,7 +27,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     final _credential = EmailAuthProvider.credential(email: _user.currentUser!.email!, password: oldPassword);
     await _user.currentUser?.reauthenticateWithCredential(_credential);
     await _user.currentUser?.updatePassword(newPassword);
-    await FirebaseService.updateUserPassword(context.read<AutherProvider>().user!.uid, newPassword);
     setState(() {
       _isLoading = false;
     });

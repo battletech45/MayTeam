@@ -1,20 +1,21 @@
+import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/service/notification.dart';
 import 'package:MayTeam/core/service/firebase.dart';
+import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/provider/auth.dart';
+import '../../widget/base/scaffold.dart';
 import '../../widget/tile/member_tile.dart';
 import '../../widget/tile/message_tile.dart';
 
 class ChatScreen extends StatefulWidget {
   final String groupID;
-  final String userName;
   final String groupName;
-  final String userToken;
 
-  ChatScreen({required this.groupID, required this.userName, required this.groupName, required this.userToken});
+  const ChatScreen({super.key, required this.groupID, required this.groupName});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -38,7 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 return MessageTile(
                   message: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("message"),
                   sender: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
-                  sentByMe: widget.userName == snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
+                  sentByMe:context.read<AutherProvider>().user!.displayName == snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
                   groupID: widget.groupID,
                   messageID: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].id,
                 );
@@ -52,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (messageEditingController.text.isNotEmpty) {
         Map<String, dynamic> chatMessageMap = {
           "message": messageEditingController.text,
-          "sender": widget.userName,
+          "sender": context.read<AutherProvider>().user!.displayName,
           'time': DateTime
               .now()
               .millisecondsSinceEpoch,
@@ -67,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
         for(int i = 0; i < userTokens.length; i++) {
           print('here');
-          FCM().sendNotification(widget.userName, messageEditingController.text, userTokens[i]);
+          FCM().sendNotification(context.read<AutherProvider>().user!.displayName ?? '', messageEditingController.text, userTokens[i]);
         }
       }
       FirebaseService.updateUserLastGroup(context.read<AutherProvider>().user!.uid, widget.groupName);
@@ -80,21 +81,9 @@ class _ChatScreenState extends State<ChatScreen> {
         });
         setState(() {
         userTokens = _groupMembers!.docs[0].get('memberTokens');
-        userTokens.remove(widget.userToken);
+        userTokens.remove(context.read<AutherProvider>().user!.refreshToken);
         });
       });
-    }
-
-    _deleteEmptyGroup() async {
-      FirebaseService.getAllGroups().then((value) => value.forEach((element) {
-        for(var i = 0; i < element.docs.length; i++) {
-          List<dynamic> doc = element.docs.elementAt(i).get('members');
-          if(doc.isEmpty) {
-            print(i);
-            FirebaseFirestore.instance.runTransaction((transaction) async => transaction.delete(FirebaseService.groupCollection.doc(element.docs.elementAt(i).id)));
-          }
-        }
-      }));
     }
 
     void _popupGroupMemberLists(BuildContext context) {
@@ -116,8 +105,8 @@ class _ChatScreenState extends State<ChatScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
         splashColor: Colors.red[900],
         onPressed: () async {
-          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, widget.userName, widget.userToken);
-          context.go('/main');
+          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, context.read<AutherProvider>().user!.displayName ?? '', context.read<AutherProvider>().user!.refreshToken ?? '');
+          context.go('/');
         },
       );
 
@@ -136,15 +125,17 @@ class _ChatScreenState extends State<ChatScreen> {
               itemBuilder: (context, index) {
                 if(_groupMembers!.docs[index].exists) {
                   var data = _groupMembers!.docs[index];
-                  if(data['members'] != null) {
-                    if(data['members'].length != 0) {
+                  if (data['members'] != null) {
+                    if (data['members'].length != 0) {
                       return ListView.builder(
                           physics: BouncingScrollPhysics(),
                           itemCount: data['members'].length,
                           shrinkWrap: true,
-                          itemBuilder:  (context, index) {
+                          itemBuilder: (context, index) {
                             int reqIndex = data['members'].length - index - 1;
-                            return MemberTile(userName: data['members'][reqIndex], groupName: widget.groupName);
+                            return MemberTile(
+                                userName: data['members'][reqIndex],
+                                groupName: widget.groupName);
                           }
                       );
                     }
@@ -186,22 +177,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
     @override
     Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.groupName, style: TextStyle(color: Colors.white)),
-          centerTitle: true,
-          backgroundColor: Colors.brown[900],
-          elevation: 0.0,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.info_outline_rounded, color: Colors.white),
-              onPressed: () {
-                _popupGroupMemberLists(context);
-              },
-            ),
-          ],
+      return AppScaffold(
+        backgroundImage: false,
+        backgroundColor: AppColor.primaryBackgroundColor,
+        appBar: AppAppBar(
+          isDrawer: false,
+          title: widget.groupName,
         ),
-        body: Container(
+        child: Container(
           child: Column(
             children: <Widget>[
               Expanded(

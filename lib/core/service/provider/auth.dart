@@ -1,6 +1,7 @@
 import 'package:MayTeam/core/service/log.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/login.dart';
@@ -68,7 +69,8 @@ class AutherProvider with ChangeNotifier {
       User? user = result.user;
 
       if(user != null) {
-        await FirebaseService.updateUserData(user.uid, fullName, email, password);
+        user.updateDisplayName(fullName);
+        await FirebaseService.updateUserData(user.uid, fullName, email);
         return user;
       }
       else {
@@ -83,11 +85,10 @@ class AutherProvider with ChangeNotifier {
 
   Future<void> signOut() async {
     try {
-      return await FirebaseAuth.instance.signOut();
+      await FirebaseAuth.instance.signOut();
     }
     catch(e) {
       print(e.toString());
-      return null;
     }
   }
 
