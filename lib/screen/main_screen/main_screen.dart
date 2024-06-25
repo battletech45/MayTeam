@@ -1,9 +1,13 @@
 import 'package:MayTeam/core/constant/color.dart';
+import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/firebase.dart';
 import '../../core/service/provider/auth.dart';
+import '../../widget/base/drawer.dart';
 import '../../widget/base/scaffold.dart';
 import '../../widget/tile/group_tile.dart';
 
@@ -13,20 +17,48 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin{
   Stream<DocumentSnapshot>? _groups;
   ScrollController? _controller;
+  late AnimationController animationController;
+  late Animation<Offset> offset;
 
   @override
   void initState() {
     super.initState();
     _getUserAuthAndJoinedGroups();
     _controller = ScrollController();
+    animationController = AnimationController(
+      vsync: this,
+      duration: UIConst.animationDuration,
+      reverseDuration: const Duration(milliseconds: 200),
+    );
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  Future<void> openDrawer() async {
+    await animationController.forward();
+  }
+
+  Future<void> closeDrawer() async {
+    await animationController.reverse();
+  }
+
+  Future<void> changeDrawer() async {
+    if (animationController.isCompleted) {
+      await closeDrawer();
+    } else {
+      await openDrawer();
+    }
   }
 
   Widget noGroupWidget() {
     return Container(
-        color: Colors.grey[850],
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -90,10 +122,54 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return AppScaffold(
+      appBar: AppAppBar(
+        isDrawer: true,
+        progress: animationController,
+        onTap: changeDrawer,
+      ),
       backgroundImage: false,
       backgroundColor: AppColor.primaryBackgroundColor,
-      child: groupsList(),
+      child: Stack(
+        children: [
+          Positioned.fill(child: groupsList()),
+          Positioned.fill(
+              child: AnimatedBuilder(
+                animation: animationController,
+                builder: (context, child) {
+                  var offsetValue = Tween<double>(begin: -width, end: 0).animate(CurvedAnimation(parent: animationController, curve: Curves.ease));
+                  return Transform.translate(
+                    offset: Offset(offsetValue.value, 0),
+                    child: PopScope(
+                      onPopInvoked: (canPop) async {
+                        if(animationController.isCompleted) {
+                          await closeDrawer();
+                        }
+                        else {
+                          context.pop();
+                        }
+                      },
+                      child: AppDrawer(
+                        onWillCloseDrawer: () async {
+                          closeDrawer();
+                        },
+                      ),
+                    ),
+                  );
+                },
+              )
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        elevation: 2.0,
+        backgroundColor: AppColor.secondaryBackgroundColor,
+        onPressed: () {
+          context.go('/search');
+        },
+        child: Icon(Icons.search, color: AppColor.iconColor),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:MayTeam/screen/chat_screen/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GroupTile extends StatelessWidget {
   final String userName;
@@ -19,8 +20,7 @@ class GroupTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         child: ListTile(
           leading: CircleAvatar(
-            radius: 30.0,
-            backgroundColor: Colors.brown[900],
+            radius: 30.r,
             child: Text(groupName.substring(0,1).toUpperCase(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
           ),
           title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),

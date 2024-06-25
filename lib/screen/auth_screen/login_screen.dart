@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       context.read<AutherProvider>().login(LoginModel(email: emailController.text, password: passwordController.text))
           .then((value) {
             if(value == null) {
-              context.go('/main');
+              context.go('/');
             }
             else {
               print('HATALI giriş');
