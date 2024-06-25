@@ -1,12 +1,10 @@
 import 'package:MayTeam/core/service/notification.dart';
 import 'package:MayTeam/core/service/firebase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/provider/auth.dart';
-import '../../MAYteam/AdminPage.dart';
 import '../../widget/tile/member_tile.dart';
 import '../../widget/tile/message_tile.dart';
 
@@ -119,12 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
         splashColor: Colors.red[900],
         onPressed: () async {
           await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, widget.userName, widget.userToken);
-          if(context.read<AutherProvider>().user?.email == "taneri862@gmail.com") {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminPage()));
-          }
-          else {
-            context.go('/');
-          }
+          context.go('/main');
         },
       );
 
