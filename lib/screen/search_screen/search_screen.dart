@@ -6,6 +6,7 @@ import 'package:MayTeam/widget/dialog/alert_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/constant/text_style.dart';
 import '../../core/service/firebase.dart';
@@ -49,67 +50,6 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  void _showPopupDialog(BuildContext context, String groupName, String groupID, String userName) {
-    Widget cancelButton = MaterialButton(
-      child: Text("Cancel"),
-      elevation: 5.0,
-      color: Colors.red[900],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-      splashColor: Colors.black,
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-    AlertDialog userAlert = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      title: Text("Already Joined !"),
-      content: Text('You already joined to group $groupName.'),
-      actions: [
-        cancelButton
-      ],
-    );
-    Widget joinButton = MaterialButton(
-      child: Text("Join"),
-      elevation: 5.0,
-      color: Colors.black,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-      splashColor: Colors.red[900],
-      onPressed: () async {
-        bool val = await FirebaseService.isUserJoined(context.read<AutherProvider>().user!.uid, groupID, groupName, userName);
-        if(!val) {
-          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, groupID, groupName, userName, '');
-          Future.delayed(Duration(milliseconds: 1000), () {
-            Navigator.of(context).pop();
-            //Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatPage(groupID: groupID, userName: userName, groupName: groupName, userToken: token!)));
-          });
-        }
-        else {
-          Navigator.of(context).pop();
-          showDialog(context: context, builder: (BuildContext context) {
-            return userAlert;
-          });
-        }
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      title: Text("You will join: $groupName"),
-      content: Text('Are you sure to join group $groupName ?'),
-      actions: [
-        cancelButton,
-        joinButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   Widget groupList() {
     return StreamBuilder <QuerySnapshot>(
         stream: allGroupsSnapshot,
@@ -129,6 +69,25 @@ class _SearchScreenState extends State<SearchScreen> {
                       repeat: true,
                       text: '${snapshot.data!.docs[index].get("groupName")} odasına giriş yapmak istiyor musunuz ?',
                       title: 'Giriş Yap',
+                      leftFunction: () async {
+                        bool val = await FirebaseService.isUserJoined(context.read<AutherProvider>().user!.uid, snapshot.data!.docs[index].get("groupID"), snapshot.data!.docs[index].get("groupName"), context.read<AutherProvider>().user!.displayName ?? '');
+                        if(!val) {
+                          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, snapshot.data!.docs[index].get("groupID"), snapshot.data!.docs[index].get("groupName"), context.read<AutherProvider>().user!.displayName ?? '', '');
+                          print(snapshot.data!.docs[index].get("groupID"));
+                          print(snapshot.data!.docs[index].get("groupName"));
+                          context.push('/chat/${snapshot.data!.docs[index].get("groupID")}', extra: snapshot.data!.docs[index].get("groupName"));
+                        }
+                        else {
+                          context.showAppDialog(
+                            AppAlertDialog(
+                              type: AlertType.warn,
+                              isSingleButton: true,
+                              text: 'Bu gruba zaten üyesiniz !',
+                              title: 'Hata',
+                            )
+                          );
+                        }
+                      },
                     )
                   ),
                 );

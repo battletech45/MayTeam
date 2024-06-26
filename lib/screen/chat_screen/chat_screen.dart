@@ -28,7 +28,6 @@ class _ChatScreenState extends State<ChatScreen> {
     Stream<QuerySnapshot>? _chats;
     QuerySnapshot? _groupMembers;
     TextEditingController messageEditingController = new TextEditingController();
-    List userTokens = [];
 
     Widget _chatMessages() {
       return StreamBuilder <QuerySnapshot>(
@@ -69,10 +68,6 @@ class _ChatScreenState extends State<ChatScreen> {
           });
         });
 
-        for(int i = 0; i < userTokens.length; i++) {
-          print('here');
-          FCM().sendNotification(context.read<AutherProvider>().user!.displayName ?? '', messageEditingController.text, userTokens[i]);
-        }
       }
       FirebaseService.updateUserLastGroup(context.read<AutherProvider>().user!.uid, widget.groupName);
     }
@@ -81,10 +76,6 @@ class _ChatScreenState extends State<ChatScreen> {
       FirebaseService.getGroupMembers(widget.groupID).then((QuerySnapshot val) {
         setState(() {
           _groupMembers = val;
-        });
-        setState(() {
-        userTokens = _groupMembers!.docs[0].get('memberTokens');
-        userTokens.remove(context.read<AutherProvider>().user!.refreshToken);
         });
       });
     }
