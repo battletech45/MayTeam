@@ -84,36 +84,6 @@ class AppAlertDialog extends StatelessWidget {
               children: [
                 Expanded(
                   child: InkWell(
-                    splashColor: rightTextColor?.withOpacity(0.3),
-                    highlightColor: rightTextColor?.withOpacity(0.1),
-                    onTap: () {
-                      if(rightFunction != null) {
-                        rightFunction!();
-                        Navigator.of(context).pop(false);
-                      }
-                      else {
-                        Navigator.of(context).pop(false);
-                      }
-                    },
-                    borderRadius: BorderRadius.only(bottomRight: UIConst.radius),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(bottomRight: UIConst.radius),
-                      ),
-                      child: Center(
-                        child: Text(
-                          rightButtonText ?? "İptal",
-                          style: AppTextStyle.smallButtonText.copyWith(color: rightTextColor),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                isSingleButton ? UIConst.zeroGap : const VerticalDivider(width: 0),
-                isSingleButton
-                    ? UIConst.zeroGap
-                    : Expanded(
-                  child: InkWell(
                     highlightColor: leftTextColor?.withOpacity(0.1),
                     splashColor: leftTextColor?.withOpacity(0.3),
                     onTap: () {
@@ -133,12 +103,42 @@ class AppAlertDialog extends StatelessWidget {
                       child: Center(
                         child: Text(
                           leftButtonText ?? "Onayla",
-                          style: AppTextStyle.smallButtonText.copyWith(color: AppColor.green),
+                          style: AppTextStyle.smallButtonText,
                         ),
                       ),
                     ),
                   ),
-                )
+                ),
+                isSingleButton ? UIConst.zeroGap : const VerticalDivider(width: 0),
+                isSingleButton
+                    ? UIConst.zeroGap
+                    : Expanded(
+                        child: InkWell(
+                          splashColor: rightTextColor?.withOpacity(0.3),
+                          highlightColor: rightTextColor?.withOpacity(0.1),
+                          onTap: () {
+                            if(rightFunction != null) {
+                              rightFunction!();
+                              Navigator.of(context).pop(false);
+                            }
+                            else {
+                              Navigator.of(context).pop(false);
+                            }
+                          },
+                          borderRadius: BorderRadius.only(bottomRight: UIConst.radius),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(bottomRight: UIConst.radius),
+                            ),
+                            child: Center(
+                              child: Text(
+                                rightButtonText ?? "İptal",
+                                style: AppTextStyle.smallButtonText.copyWith(color: rightTextColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
               ],
             ),
           )
