@@ -1,6 +1,8 @@
 import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:MayTeam/core/util/extension.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
+import 'package:MayTeam/widget/dialog/alert_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +11,7 @@ import '../../core/constant/text_style.dart';
 import '../../core/service/firebase.dart';
 import '../../core/service/provider/auth.dart';
 import '../../widget/base/scaffold.dart';
+import '../../widget/tile/search_tile.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -23,18 +26,12 @@ class _SearchScreenState extends State<SearchScreen> {
   Stream<QuerySnapshot>? allGroupsSnapshot;
   ScrollController? _controller;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _getCurrentUserNameAndUserID();
     _getAllGroups();
     _controller = ScrollController();
-  }
-
-  _getCurrentUserNameAndUserID() async {
-    var data = await FirebaseService.getUserData(context.read<AutherProvider>().user!.email ?? '');
   }
 
   _initiateSearch() async {
@@ -122,31 +119,23 @@ class _SearchScreenState extends State<SearchScreen> {
               shrinkWrap: true,
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                return groupTile(
-                  context.read<AutherProvider>().user?.displayName ?? '',
-                  snapshot.data!.docs[index].get("groupID"),
-                  snapshot.data!.docs[index].get("groupName"),
-                  snapshot.data!.docs[index].get("admin"),
+                return SearchTile(
+                  groupName: snapshot.data!.docs[index].get("groupName"),
+                  admin: snapshot.data!.docs[index].get("admin"),
+                  onTap: () => context.showAppDialog(
+                    AppAlertDialog(
+                      type: AlertType.joining,
+                      isSingleButton: false,
+                      repeat: true,
+                      text: '${snapshot.data!.docs[index].get("groupName")} odasına giriş yapmak istiyor musunuz ?',
+                      title: 'Giriş Yap',
+                    )
+                  ),
                 );
               }
           ) :
           CircularProgressIndicator();
         }
-    );
-  }
-
-  Widget groupTile(String userName, String groupID, String groupName, String admin) {
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      leading: CircleAvatar(
-          radius: 30.0,
-          backgroundColor: Colors.brown[900],
-          child: Text(groupName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white))
-      ),
-      title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text("Admin: $admin"),
-      onTap: () => _showPopupDialog(context, groupName, groupID, userName),
-      trailing: Icon(Icons.add_circle, size: 30.0),
     );
   }
 
@@ -172,7 +161,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   Expanded(
                     child: TextField(
-                      onSubmitted: (val) => {
+                      onChanged: (val) => {
                         _initiateSearch()
                       },
                       controller: searchEditingController,
@@ -184,23 +173,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                      onTap: (){
-                        _initiateSearch();
-                      },
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(40)
-                          ),
-                          child: Icon(Icons.search, color: Colors.white)
-                      )
-                  )
+                  Icon(Icons.search, color: AppColor.primaryTextColor)
                 ],
               ),
             ),
+            groupList()
           ],
         ),
       ),

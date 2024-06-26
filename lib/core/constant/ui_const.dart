@@ -18,6 +18,14 @@ class UIConst {
   static SizedBox verticalBlankSpace = 21.vb;
   static SizedBox horizontalBlankSpace = 12.hb;
 
+  /// ([paddingValue] = 12.0) * [multipler]
+  static SizedBox horizontalGap([double multipler = 1]) => SizedBox(width: paddingValue * multipler);
+
+  /// ([paddingValue] = 12.0) * [multipler]
+  static SizedBox verticalGap([double multipler = 1]) => SizedBox(height: paddingValue * multipler);
+
+  static SizedBox get zeroGap => const SizedBox.shrink();
+
   static EdgeInsets pagePadding = const EdgeInsets.symmetric(horizontal: paddingValue).r;
   static EdgeInsets inputTopMargin = const EdgeInsets.only(top: 5).r;
   static EdgeInsets pageScrollPadding(BuildContext context) => EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + paddingValue).r;

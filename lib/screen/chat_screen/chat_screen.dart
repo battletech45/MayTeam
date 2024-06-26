@@ -39,7 +39,6 @@ class _ChatScreenState extends State<ChatScreen> {
             reverse: true,
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-
                 return MessageTile(
                   message: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("message"),
                   sender: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),

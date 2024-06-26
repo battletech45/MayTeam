@@ -28,6 +28,7 @@ class GroupTile extends StatelessWidget {
           ),
           title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
           subtitle: Text("Join the chat room as $userName", style: TextStyle(fontSize: 13.0)),
+          trailing: Icon(Icons.chevron_right),
         ),
       ),
     );
