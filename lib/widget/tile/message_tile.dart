@@ -1,5 +1,9 @@
+import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/service/firebase.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../core/constant/color.dart';
 
 class MessageTile extends StatefulWidget {
 
@@ -89,14 +93,14 @@ class _MessageTileState extends State<MessageTile> {
                 :
             BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23), bottomRight: Radius.circular(23)
             ),
-            color: widget.sentByMe ? Colors.teal[900] : Colors.blueGrey[700],
+            color: widget.sentByMe ? AppColor.outgoingBubbleBackground : AppColor.incomingBubbleBackground,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(widget.sender.toUpperCase(), textAlign: TextAlign.start, style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.black, letterSpacing: -0.5)),
-              SizedBox(height: 7.0),
-              Text(widget.message, textAlign: TextAlign.start, style: TextStyle(fontSize: 15.0, color: Colors.white)),
+              Text(widget.sender.toUpperCase(), textAlign: TextAlign.start, style: AppTextStyle.messageSenderStyle),
+              SizedBox(height: 7.h),
+              Text(widget.message, textAlign: TextAlign.start, style: AppTextStyle.settingTile),
             ],
           ),
         ),

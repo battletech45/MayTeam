@@ -19,6 +19,7 @@ class UIConst {
   static SizedBox horizontalBlankSpace = 12.hb;
 
   static EdgeInsets pagePadding = const EdgeInsets.symmetric(horizontal: paddingValue).r;
+  static EdgeInsets inputTopMargin = const EdgeInsets.only(top: 5).r;
   static EdgeInsets pageScrollPadding(BuildContext context) => EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + paddingValue).r;
 
   static EdgeInsets pageFullPadding(BuildContext context) =>

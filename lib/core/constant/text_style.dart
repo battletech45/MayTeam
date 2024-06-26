@@ -24,6 +24,7 @@ class AppTextStyle {
   static TextStyle formCardTitle = TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500, color: AppColor.secondaryTextColor);
 
   static TextStyle settingTile = TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500);
+  static TextStyle messageSenderStyle = TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold, color: Colors.black, letterSpacing: -0.5);
 
   static TextStyle sliderChip = TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w300, color: AppColor.primaryBackgroundColor);
   static TextStyle sliderTitle = TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: AppColor.primaryBackgroundColor);

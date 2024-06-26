@@ -1,9 +1,12 @@
 import 'package:MayTeam/core/constant/color.dart';
+import 'package:MayTeam/core/constant/text_style.dart';
+import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:MayTeam/core/service/notification.dart';
 import 'package:MayTeam/core/service/firebase.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/provider/auth.dart';
@@ -36,6 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
             reverse: true,
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
+
                 return MessageTile(
                   message: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("message"),
                   sender: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
@@ -183,57 +187,56 @@ class _ChatScreenState extends State<ChatScreen> {
         appBar: AppAppBar(
           isDrawer: false,
           title: widget.groupName,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.info_outline),
+              onPressed: (){}
+            )
+          ],
         ),
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                  child: _chatMessages()
-              ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.grey[900], borderRadius: BorderRadius.circular(80)),
-                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.5),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          onSubmitted: _sendMessage(),
-                          controller: messageEditingController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                              hintText: 'Send a message...',
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                              border: InputBorder.none
-                          ),
-                        ),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+                child: _chatMessages()
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              width: MediaQuery.of(context).size.width,
+              margin: UIConst.inputTopMargin,
+              padding: (UIConst.pagePadding) / 2 + (UIConst.pageScrollPadding(context) * 0.75),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      onSubmitted: _sendMessage(),
+                      controller: messageEditingController,
+                      decoration: InputDecoration(
+                          hintText: 'Send a message...',
+                          hintStyle: AppTextStyle.mainSubtitle,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColor.borderColor,
+                              width: 2.0
+                            ),
+                            borderRadius: BorderRadius.circular(25.r)
+                          )
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          _sendMessage();
-                        },
-                        child: Container(
-                          height: 50.0,
-                          width: 50.0,
-                          decoration: BoxDecoration(
-                              color: Colors.brown[700],
-                              borderRadius: BorderRadius.circular(50)
-                          ),
-                          child: Center(child: Icon(Icons.send, color: Colors.white)),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () {
+                      _sendMessage();
+                    },
+                    child: Container(
+                      height: 50.0,
+                      width: 50.0,
+                      child: Center(child: Icon(Icons.send)),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
