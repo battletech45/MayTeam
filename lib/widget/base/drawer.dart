@@ -9,28 +9,33 @@ import '../../core/constant/text_style.dart';
 import '../../core/constant/ui_const.dart';
 
 class AppDrawer extends StatelessWidget {
+  final double width;
   final VoidCallback onWillCloseDrawer;
 
-  const AppDrawer({super.key, required this.onWillCloseDrawer});
+  const AppDrawer({super.key, required this.onWillCloseDrawer, required this.width});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
+    return Container(
+      width: width,
       color: AppColor.secondaryBackgroundColor,
-      shape: const RoundedRectangleBorder(),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            DrawerButton(
-              title: 'Çıkış Yap',
-              onTap: () async {
-                await context.read<AutherProvider>().signOut();
-                context.go('/login');
-              },
-            )
-          ],
+      child: SafeArea(
+        child: Padding(
+          padding: UIConst.pageFullPadding(context),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                DrawerButton(
+                  title: 'Çıkış Yap',
+                  onTap: () async {
+                    await context.read<AutherProvider>().signOut();
+                    context.go('/login');
+                  },
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
