@@ -1,4 +1,5 @@
 import 'package:MayTeam/core/constant/router_config.dart';
+import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class MayTeam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UIConst.init(context);
        return MultiProvider(
          providers: [
            ChangeNotifierProvider.value(value: authProvider)

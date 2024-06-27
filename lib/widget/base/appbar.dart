@@ -9,10 +9,12 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isDrawer;
   final List<Widget> actions;
   final String? title;
+  final Widget? leading;
   const AppAppBar({
     super.key,
     this.onTap,
     this.title,
+    this.leading,
     this.progress,
     required this.isDrawer,
     this.actions = const <Widget>[],
@@ -28,7 +30,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0.0,
       centerTitle: true,
       title: Text(title ?? 'My Team', style: AppTextStyle.dialogTitle),
-      leading: isDrawer ? IconButton(onPressed: onTap, icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: progress!)) : null,
+      leading: leading ?? (isDrawer ? IconButton(onPressed: onTap, icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: progress!)) : null),
       actions: isDrawer ? [] : actions,
     );
   }
