@@ -18,7 +18,7 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin{
+class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Stream<DocumentSnapshot>? _groups;
 
   static final _drawerWidth = UIConst.screenSize.width * 0.8;

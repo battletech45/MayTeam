@@ -3,7 +3,9 @@ import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:MayTeam/core/service/notification.dart';
 import 'package:MayTeam/core/service/firebase.dart';
+import 'package:MayTeam/core/util/extension.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
+import 'package:MayTeam/widget/dialog/alert_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,84 +82,6 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     }
 
-    void _popupGroupMemberLists(BuildContext context) {
-      Widget backButton = MaterialButton(
-        child: Text("Back"),
-        elevation: 5.0,
-        color: Colors.red[900],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-        splashColor: Colors.black,
-        onPressed:  () {
-          Navigator.of(context).pop();
-        },
-      );
-
-      Widget leaveButton = MaterialButton(
-        child: Text("Leave Group"),
-        elevation: 5.0,
-        color: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-        splashColor: Colors.red[900],
-        onPressed: () async {
-          await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, context.read<AutherProvider>().user!.displayName ?? '', context.read<AutherProvider>().user!.refreshToken ?? '');
-          context.go('/');
-        },
-      );
-
-      AlertDialog alert = AlertDialog(
-        icon: Icon(Icons.people_alt),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        title: Text("Group Members"),
-        actions: [backButton, leaveButton],
-        content: Material(
-          elevation: 10.0,
-          child: Container(
-            height: 225.0,
-            width:  200.0,
-            child: ListView.builder (
-              itemCount: _groupMembers!.size,
-              itemBuilder: (context, index) {
-                if(_groupMembers!.docs[index].exists) {
-                  var data = _groupMembers!.docs[index];
-                  if (data['members'] != null) {
-                    if (data['members'].length != 0) {
-                      return ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          itemCount: data['members'].length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            int reqIndex = data['members'].length - index - 1;
-                            return MemberTile(
-                                userName: data['members'][reqIndex],
-                                groupName: widget.groupName);
-                          }
-                      );
-                    }
-                    else {
-                      return CircularProgressIndicator();
-                    }
-                  }
-                  else {
-                    return CircularProgressIndicator();
-                  }
-                }
-                else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
-          ),
-        )
-      );
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
-
     @override
     void initState() {
       super.initState();
@@ -180,7 +104,26 @@ class _ChatScreenState extends State<ChatScreen> {
           actions: [
             IconButton(
               icon: Icon(Icons.info_outline),
-              onPressed: (){}
+              onPressed: () {
+                context.showAppDialog(
+                  AppAlertDialog(
+                    title: 'Üye Listesi',
+                    rightButtonText: 'Gruptan ayrıl',
+                    rightFunction: () async {
+                      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, context.read<AutherProvider>().user!.displayName ?? '', context.read<AutherProvider>().user!.refreshToken ?? '');
+                      context.go('/');
+                    },
+                    customIcon: ListView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      itemCount: _groupMembers?.docs[0].get('members').length ?? 0,
+                      itemBuilder: (context, index) {
+                        return MemberTile(userName: _groupMembers!.docs[0].get('members')[index], groupName: widget.groupName);
+                      },
+                    ),
+                  )
+                );
+              }
             )
           ],
         ),
