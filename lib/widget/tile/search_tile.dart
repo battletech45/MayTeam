@@ -16,7 +16,6 @@ class SearchTile extends StatelessWidget {
         name: '$groupName',
         radius: 30.r,
         fontsize: 21.sp,
-        random: true,
       ),
       title: Text(groupName, style: TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Text("Admin: $admin"),
