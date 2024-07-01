@@ -1,9 +1,14 @@
 import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/service/firebase.dart';
+import 'package:MayTeam/core/util/extension.dart';
+import 'package:MayTeam/widget/dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constant/color.dart';
+import '../../core/util/validator.dart';
+import '../button/scale_button.dart';
+import '../form/app_form_field.dart';
 
 class MessageTile extends StatefulWidget {
 
@@ -21,59 +26,44 @@ class MessageTile extends StatefulWidget {
 
 class _MessageTileState extends State<MessageTile> {
 
-  String? newMessage;
+  final TextEditingController messageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      messageController.text = widget.message;
+    });
+  }
 
   void _editMessage() {
     if(widget.sentByMe) {
-      Widget okButton = MaterialButton(
-        child: Text("OK"),
-        color: Colors.red[900],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-        splashColor: Colors.black,
-        onPressed: () {
-          if(newMessage == null) {
-            FirebaseService.editMessage(widget.groupID!, widget.messageID!, widget.message);
-            Navigator.of(context).pop();
-          }
-          else {
-            FirebaseService.editMessage(widget.groupID!, widget.messageID!, newMessage!);
-            Navigator.of(context).pop();
-          }
-        },
-      );
-      Widget delButton = MaterialButton(
-        child: Text("DELETE"),
-        color: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-        splashColor: Colors.red[900],
-        onPressed: () {
-          FirebaseService.deleteMessage(widget.groupID!, widget.messageID!);
-          Navigator.of(context).pop();
-        },
-      );
-
-      AlertDialog alert = AlertDialog(
-        icon: Icon(Icons.edit),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        title: Text('Please edit your message'),
-        content: TextFormField(
-            initialValue: widget.message,
-            onChanged: (val) {
-              newMessage = val;
+      context.showAppDialog(
+          AppAlertDialog(
+            title: 'Düzenle',
+            customIcon: Center(
+              child: AppFormField(
+                hintText: 'Mesajınız',
+                controller: messageController,
+                validator: AppValidator.passwordValidator,
+                keyboardType: TextInputType.text,
+                autofillHints: const [AutofillHints.name],
+                textInputAction: TextInputAction.done,
+              ),
+            ),
+            leftFunction: () {
+              if(messageController.text.isEmpty) {
+                FirebaseService.deleteMessage(widget.groupID!, widget.messageID!);
+              }
+              else {
+                FirebaseService.editMessage(widget.groupID!, widget.messageID!, messageController.text);
+              }
             },
-            style: TextStyle(
-                fontSize: 15.0,
-                height: 2.0,
-                color: Colors.black
-            )
-        ),
-        actions: <Widget>[delButton, okButton],
-      );
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
+            rightButtonText: 'Mesajı Sil',
+            rightFunction: () {
+              FirebaseService.deleteMessage(widget.groupID!, widget.messageID!);
+            },
+          )
       );
     }
   }
