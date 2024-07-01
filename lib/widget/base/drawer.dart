@@ -29,6 +29,7 @@ class AppDrawer extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                Image.asset('assets/images/logo.png', width: 200.w, height: 200.h, fit: BoxFit.cover),
                 ScaleButton(
                   bordered: true,
                   onTap: () async {

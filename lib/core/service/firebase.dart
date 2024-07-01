@@ -142,7 +142,7 @@ class FirebaseService {
     return FirebaseFirestore.instance.collection('groups').where('groupName', isEqualTo: groupName).get();
   }
 
-  static Future<Stream<QuerySnapshot>> getAllGroups() async {
-    return groupCollection.snapshots();
+  static Future<QuerySnapshot> getAllGroups() async {
+    return groupCollection.get();
   }
 }
