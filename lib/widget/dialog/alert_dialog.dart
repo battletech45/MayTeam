@@ -59,7 +59,7 @@ class AppAlertDialog extends StatelessWidget {
                   style: AppTextStyle.bigButtonText,
                 ),
                 type != null ? UIConst.verticalGap() : UIConst.zeroGap,
-                SizedBox(height: (customIcon != null || type != null) ? 160 : 0, child: buildImage(type, customIcon, repeat)),
+                SizedBox(height: (customIcon != null || type != null) ? 200 : 0, child: buildImage(type, customIcon, repeat)),
                 UIConst.verticalGap(),
                 text == null
                     ? UIConst.zeroGap

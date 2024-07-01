@@ -1,16 +1,23 @@
+import 'dart:convert';
+
 import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:MayTeam/core/service/log.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/firebase.dart';
+import '../../core/service/notification.dart';
 import '../../core/service/provider/auth.dart';
 import '../../widget/base/drawer.dart';
 import '../../widget/base/scaffold.dart';
 import '../../widget/button/scale_button.dart';
 import '../../widget/tile/group_tile.dart';
+
+late NotificationService notificationService;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -35,6 +42,65 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       return isDrawerClosed;
     } catch (e) {
       return true;
+    }
+  }
+
+  Future<void> initNotification() async {
+    notificationService = NotificationService(context);
+    await notificationService.initNotification();
+    //await FirebaseMessaging.instance.subscribeToTopic('group_notification');
+    FirebaseMessaging.onMessage.listen(foregroundMessageListener);
+    FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedApp);
+    await FirebaseMessaging.instance.getInitialMessage().then((initMessage) {
+      LoggerService.logInfo('initMessage: $initMessage');
+      if (initMessage != null) {
+        LoggerService.logInfo('initMessage data: ${initMessage.data}');
+        GoRouter.of(context).push(initMessage.data['page']);
+      }
+    });
+  }
+
+  Future<void> onNotificationClick() async {
+    await notificationService.plugin.getNotificationAppLaunchDetails().then(
+          (appLaunchDetail) {
+        if (appLaunchDetail != null && appLaunchDetail.didNotificationLaunchApp) {
+          if (appLaunchDetail.notificationResponse != null && appLaunchDetail.notificationResponse!.payload != null) {
+            var json = jsonDecode(appLaunchDetail.notificationResponse!.payload!);
+            if (json is Map) {
+              var page = json['page'];
+              if (page != null) {
+                context.push(page);
+              }
+            }
+          }
+        }
+      },
+    );
+  }
+
+  Future<void> onMessageOpenedApp(RemoteMessage message) async {
+    LoggerService.logInfo('onMessageOpenedApp: data: ${message.data}');
+    if (message.data['page'] != null) {
+      LoggerService.logInfo('message data is not null \nnavigating: ${message.data['page']}');
+      GoRouter.of(context).push(message.data['page']);
+    }
+  }
+
+  Future<void> foregroundMessageListener(RemoteMessage message) async {
+    LoggerService.logInfo('\x1B[31mforgroundMessageListener: ${jsonEncode(message.toMap())}');
+    if (message.data.isNotEmpty) {
+      notificationService.showNotification(
+        id: 0,
+        body: message.notification?.body,
+        title: message.notification?.title,
+        payload: jsonEncode(message.data),
+      );
+    } else {
+      notificationService.showNotification(
+        id: 0,
+        body: message.notification?.body,
+        title: message.notification?.title,
+      );
     }
   }
 
