@@ -73,8 +73,8 @@ class NotificationService {
   NotificationDetails notificationDetail() {
     return const NotificationDetails(
         android: AndroidNotificationDetails(
-          'mayteam',
-          'mayteam',
+          'smartform',
+          'smartform',
           importance: Importance.max,
         ),
         iOS: DarwinNotificationDetails(),
