@@ -1,14 +1,20 @@
 import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:MayTeam/widget/base/appbar.dart';
+import 'package:MayTeam/widget/base/scaffold.dart';
+import 'package:MayTeam/widget/tile/profile_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
+
+import '../../core/constant/color.dart';
 
 
 class ProfileScreen extends StatefulWidget{
@@ -21,25 +27,16 @@ class ProfileScreenState extends State<ProfileScreen> {
   DefaultCacheManager manager = new DefaultCacheManager();
   ImagePicker _picker = ImagePicker();
   FirebaseAuth _user = FirebaseAuth.instance;
-  bool _isLoading = false;
   File? _photo;
   String? link;
   bool _isPhotoExist = false;
   String? _activeGroup;
-  bool isAdmin = false;
 
   _getActiveGroup() async {
     var userData = await FirebaseFirestore.instance.collection('users').doc(_user.currentUser!.uid).get();
     var data = userData.data();
-
-    if(data!['email'] != null && data['email'] == 'taneri862@gmail.com') {
-      setState(() {
-        isAdmin = true;
-      });
-    }
-
     setState(() {
-      _activeGroup = data['activeGroup'];
+      _activeGroup = data?['activeGroup'] ?? '';
     });
   }
 
@@ -49,14 +46,8 @@ class ProfileScreenState extends State<ProfileScreen> {
     final destination = '$userID';
 
     try {
-      setState(() {
-        _isLoading = true;
-      });
       final ref = FirebaseStorage.instance.ref(destination).child(userID);
       await ref.putFile(_photo!);
-      setState(() {
-        _isLoading = false;
-      });
       manager.emptyCache();
     }
     catch (e) {
@@ -109,87 +100,37 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.brown[900],
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit, color: Colors.white),
-            onPressed: _selectImage,
-          ),
-        ],
-        title: Text("Profile"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.white),
-          onPressed: () {
-            context.go('/');
-          },
-        ),
+    return AppScaffold(
+      backgroundImage: false,
+      backgroundColor: AppColor.primaryBackgroundColor,
+      appBar: AppAppBar(
+        isDrawer: false,
+        title: 'Profil',
       ),
-      body: Container(
+      child: Container(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 50.0),
-              Container(
-                margin: EdgeInsets.all(15),
-                child: Center(
-                  child: CircleAvatar(
-                    radius: 95,
-                    child: _isLoading ? CircularProgressIndicator(color: Colors.red) : _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link!)) : Icon(Icons.person,size: 80.0),
+              50.verticalSpace,
+              GestureDetector(
+                onTap: () async {
+                  _selectImage();
+                },
+                child: Container(
+                  margin: EdgeInsets.all(15),
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 95,
+                      child: _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link!)) : Icon(Icons.person,size: 80.0),
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 50.0),
-              Container(
-                height: 40,
-                decoration: BoxDecoration(color:Colors.teal[900], borderRadius: BorderRadius.circular(8)),
-                margin: EdgeInsets.symmetric(horizontal: 30.0),
-                child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(Icons.person_outline_rounded,size: 25.0,),
-                    SizedBox(width: 70.0,),
-                    Text("${context.read<AutherProvider>().user?.displayName ?? ''}",style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                    SizedBox(width: 120.0,),
-
-                  ],
-                ),
-              ),
-              SizedBox(height: 25.0),
-              Container(
-                height: 40,
-                decoration: BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(7)),
-                margin: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(width: 20.0,),
-                    Icon(Icons.alternate_email_rounded, size: 25.0,),
-                    SizedBox(width: 50.0,),
-                    Expanded(
-                      child: Text("${context.read<AutherProvider>().user?.email ?? ''}",style: TextStyle(fontSize: 15),),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 25.0),
-              Container(
-                height: 40,
-                decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(7)),
-                margin: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(width: 20.0,),
-                    Icon(Icons.games, size:25.0),
-                    SizedBox(width: 100.0),
-                    Expanded(
-                      child: Text("$_activeGroup",style:TextStyle(fontSize: 15),),
-                    ),
-                  ],
-                ),
-              ),
+              50.verticalSpace,
+              ProfileTile(icon: Icons.person_outline_rounded, data: "${context.read<AutherProvider>().user?.displayName ?? ''}"),
+              10.verticalSpace,
+              ProfileTile(icon: Icons.alternate_email_rounded, data: "${context.read<AutherProvider>().user?.email ?? ''}"),
+              10.verticalSpace,
+              ProfileTile(icon: Icons.games, data: "$_activeGroup")
             ],
      ),
     ),

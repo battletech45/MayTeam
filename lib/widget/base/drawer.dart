@@ -32,6 +32,15 @@ class AppDrawer extends StatelessWidget {
                 ScaleButton(
                   bordered: true,
                   onTap: () async {
+                    onWillCloseDrawer();
+                    await context.push('/profile');
+                  },
+                  child: const NavigationTile(leading: Icon(Icons.person), title: 'Profili Görüntüle'),
+                ),
+                10.verticalSpace,
+                ScaleButton(
+                  bordered: true,
+                  onTap: () async {
                     await context.read<AutherProvider>().signOut();
                     context.go('/login');
                   },
