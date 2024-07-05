@@ -88,9 +88,8 @@ class FirebaseService {
     }
   }
 
-  static Future<QuerySnapshot> getUserData(String email) async {
-    QuerySnapshot snapshot =
-    await userCollection.where('email', isEqualTo: email).get();
+  static Future<DocumentSnapshot> getUserData(String id) async {
+    DocumentSnapshot snapshot = await userCollection.doc(id).get();
     return snapshot;
   }
 

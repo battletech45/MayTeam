@@ -1,10 +1,11 @@
+import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/service/firebase.dart';
-import '../../core/service/provider/auth.dart';
+import '../../core/util/validator.dart';
+import '../../widget/form/app_form_field.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
 
@@ -14,19 +15,18 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
+  final TextEditingController oldController = TextEditingController();
+  final TextEditingController newController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String _newPassword = '';
-  String _oldPassword = '';
   bool _isLoading = false;
-  final _user = FirebaseAuth.instance;
 
   void _resetPassword(String oldPassword, String newPassword) async {
     setState(() {
       _isLoading = true;
     });
-    final _credential = EmailAuthProvider.credential(email: _user.currentUser!.email!, password: oldPassword);
-    await _user.currentUser?.reauthenticateWithCredential(_credential);
-    await _user.currentUser?.updatePassword(newPassword);
+    final _credential = EmailAuthProvider.credential(email: context.read<AutherProvider>().user!.email!, password: oldPassword);
+    await context.read<AutherProvider>().user!.reauthenticateWithCredential(_credential);
+    await context.read<AutherProvider>().user!.updatePassword(newPassword);
     setState(() {
       _isLoading = false;
     });
@@ -79,52 +79,24 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   SizedBox(height: 30.0),
                   Text('Please enter your new password here.', style: TextStyle(color: Colors.white, fontSize: 15.0)),
                   SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        hintText: 'OLD PASSWORD'
-                    ),
-                    style: TextStyle(color: Colors.white),
+                  AppFormField(
+                    hintText: 'Old Password',
                     obscureText: true,
-                    validator: (val) {
-                      if(val!.length == 0) {
-                        return 'Please enter a valid password';
-                      }
-                      else {
-                        if(val.length < 6) {
-                          return 'Please enter stronger password';
-                        }
-                        return null;
-                      }
-                    },
-                    onChanged: (val) {
-                      setState(() {
-                        _oldPassword = val;
-                      });
-                    },
+                    controller: oldController,
+                    validator: AppValidator.passwordValidator,
+                    keyboardType: TextInputType.visiblePassword,
+                    autofillHints: const [AutofillHints.password],
+                    textInputAction: TextInputAction.done,
                   ),
                   SizedBox(height: 30.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        hintText: 'NEW PASSWORD'
-                    ),
-                    style: TextStyle(color: Colors.white),
+                  AppFormField(
+                    hintText: 'New Password',
                     obscureText: true,
-                    validator: (val) {
-                      if(val!.length == 0) {
-                        return 'Please enter a valid password';
-                      }
-                      else {
-                        if(val.length < 6) {
-                          return 'Please enter stronger password';
-                        }
-                        return null;
-                      }
-                    },
-                    onChanged: (val) {
-                      setState(() {
-                        _newPassword = val;
-                      });
-                    },
+                    controller: newController,
+                    validator: AppValidator.passwordValidator,
+                    keyboardType: TextInputType.visiblePassword,
+                    autofillHints: const [AutofillHints.password],
+                    textInputAction: TextInputAction.done,
                   ),
                   SizedBox(height: 30.0),
                   MaterialButton(
@@ -132,7 +104,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       color: Colors.red,
                       child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Reset Password'),
                       onPressed: () {
-                        _resetPassword(_oldPassword, _newPassword);
+                        _resetPassword(oldController.text, newController.text);
                       }
                   ),
                   MaterialButton(

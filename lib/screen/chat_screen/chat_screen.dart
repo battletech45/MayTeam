@@ -27,31 +27,29 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-    Stream<QuerySnapshot>? _chats;
-    QuerySnapshot? _groupMembers;
-    TextEditingController messageEditingController = new TextEditingController();
+  final TextEditingController messageEditingController = new TextEditingController();
+  Stream<QuerySnapshot>? _chats;
+  QuerySnapshot? _groupMembers;
 
-    Widget _chatMessages() {
-      return StreamBuilder <QuerySnapshot>(
-        stream: _chats,
-        builder: (context, snapshot) {
-          return snapshot.hasData ? ListView.builder(
-              physics: BouncingScrollPhysics(),
-            reverse: true,
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                return MessageTile(
-                  message: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("message"),
-                  sender: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
-                  sentByMe:context.read<AutherProvider>().user!.displayName == snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
-                  groupID: widget.groupID,
-                  messageID: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].id,
-                );
-              }
-          ) : Container();
+  Widget _chatMessages() {
+    return StreamBuilder <QuerySnapshot>(
+      stream: _chats,
+      builder: (context, snapshot) {
+        return snapshot.hasData ? ListView.builder(
+            physics: BouncingScrollPhysics(), reverse: true,
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              return MessageTile(
+                message: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("message"),
+                sender: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
+                sentByMe:context.read<AutherProvider>().user!.displayName == snapshot.data!.docs[snapshot.data!.docs.length - index - 1].get("sender"),
+                groupID: widget.groupID,
+                messageID: snapshot.data!.docs[snapshot.data!.docs.length - index - 1].id,
+              );
+            }) : Container();
         },
-      );
-    }
+    );
+  }
 
     _sendMessage() {
       if (messageEditingController.text.isNotEmpty) {
@@ -91,7 +89,6 @@ class _ChatScreenState extends State<ChatScreen> {
           _chats = val;
         });
       });
-      print(context.read<AutherProvider>().user?.displayName ?? '');
     }
 
     @override

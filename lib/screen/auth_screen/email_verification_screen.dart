@@ -1,7 +1,7 @@
+import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:MayTeam/main.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../core/service/firebase.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
@@ -11,30 +11,16 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
-  final _user = FirebaseAuth.instance;
   bool _isVerified = false;
-  String _userName = '';
   bool _isLoading = false;
-
-
-  _getUserName() async {
-    var snapshot = await FirebaseService.getUserData(_user.currentUser!.email!);
-    for(int i = 0; i < snapshot.docs.length; i++) {
-      if(snapshot.docs[i].get("email") == _user.currentUser!.email) {
-        setState(() {
-          _userName = snapshot.docs[i].get("fullName");
-        });
-      }
-    }
-  }
 
   _getVerificationValue() async {
     setState(() {
       _isLoading = true;
     });
-    await _user.currentUser!.reload();
+    await context.read<AutherProvider>().user?.reload();
     setState(() {
-      _isVerified = _user.currentUser!.emailVerified;
+      _isVerified = context.read<AutherProvider>().user?.emailVerified ?? false;
     });
     if(_isVerified) {
       setState(() {
@@ -74,12 +60,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         return alert;
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getUserName();
   }
 
   @override
