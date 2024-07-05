@@ -40,8 +40,8 @@ class _SearchScreenState extends State<SearchScreen> {
         searchResult.clear();
         setState(() {});
         allGroupsSnapshot!.docs.forEach((element) {
-          String name = element.get('groupName');
-          if(name.contains(searchEditingController.text)) {
+          String name = element.get('groupName').toLowerCase();
+          if(name.contains(searchEditingController.text.toLowerCase())) {
             setState(() {
               searchResult.add(element);
             });

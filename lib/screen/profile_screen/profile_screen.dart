@@ -79,7 +79,6 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   _selectImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
     setState(() {
       if(pickedFile != null) {
         _photo = File(pickedFile.path);
@@ -113,7 +112,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               50.verticalSpace,
               GestureDetector(
                 onTap: () async {
-                  _selectImage();
+                  //_selectImage();
                 },
                 child: Container(
                   margin: EdgeInsets.all(15),

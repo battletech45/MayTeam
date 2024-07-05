@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../core/service/firebase.dart';
 import '../../core/service/notification.dart';
 import '../../core/service/provider/auth.dart';
+import '../../widget/animation/animated_logo.dart';
 import '../../widget/base/drawer.dart';
 import '../../widget/base/scaffold.dart';
 import '../../widget/button/scale_button.dart';
@@ -183,7 +184,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           }
         }
         else {
-          return CircularProgressIndicator();
+          return AnimatedLogo();
         }
       },
     );

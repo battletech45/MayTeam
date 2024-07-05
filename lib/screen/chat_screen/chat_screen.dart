@@ -109,6 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   AppAlertDialog(
                     title: 'Üye Listesi',
                     rightButtonText: 'Gruptan ayrıl',
+                    leftButtonText: 'Kapat',
                     rightFunction: () async {
                       await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, context.read<AutherProvider>().user!.displayName ?? '', context.read<AutherProvider>().user!.refreshToken ?? '');
                       context.go('/');
