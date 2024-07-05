@@ -91,6 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
           _chats = val;
         });
       });
+      print(context.read<AutherProvider>().user?.displayName ?? '');
     }
 
     @override
@@ -111,7 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     rightButtonText: 'Gruptan ayrıl',
                     leftButtonText: 'Kapat',
                     rightFunction: () async {
-                      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, context.read<AutherProvider>().user!.displayName ?? '', context.read<AutherProvider>().user!.refreshToken ?? '');
+                      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, context.read<AutherProvider>().user!.displayName ?? '');
                       context.go('/');
                     },
                     customIcon: ListView.builder(

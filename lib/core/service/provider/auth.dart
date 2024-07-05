@@ -69,8 +69,9 @@ class AutherProvider with ChangeNotifier {
       User? user = result.user;
 
       if(user != null) {
-        user.updateDisplayName(fullName);
-        await FirebaseService.updateUserData(user.uid, fullName, email);
+        await user.updateProfile(displayName: fullName);
+        user = await signInWithEmailAndPassWord(email, password);
+        await FirebaseService.updateUserData(user!.uid, fullName, email);
         return user;
       }
       else {

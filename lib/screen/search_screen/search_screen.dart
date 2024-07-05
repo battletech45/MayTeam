@@ -62,7 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _onTileClick(QueryDocumentSnapshot doc) async {
     bool val = await FirebaseService.isUserJoined(context.read<AutherProvider>().user!.uid, doc.get("groupID"), doc.get("groupName"), context.read<AutherProvider>().user!.displayName ?? '');
     if(!val) {
-      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, doc.get("groupID"), doc.get("groupName"), context.read<AutherProvider>().user!.displayName ?? '', '');
+      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, doc.get("groupID"), doc.get("groupName"), context.read<AutherProvider>().user!.displayName ?? '');
       context.push('/chat/${doc.get("groupID")}', extra: doc.get("groupName"));
     }
     else {

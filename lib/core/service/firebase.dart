@@ -26,19 +26,12 @@ class FirebaseService {
     });
   }
 
-  static updateUserToken(String userID, String token) async {
-    return await userCollection.doc(userID).update({
-      'token': token
-    });
-  }
-
-  static Future createGroup(String userID, String userName, String groupName, String userToken) async {
+  static Future createGroup(String userID, String userName, String groupName) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
       'groupIcon': '',
       'admin': userName,
       'members': [],
-      'memberTokens': [],
       'groupID': '',
       'recentMessage': '',
       'recentMessageSender': ''
@@ -47,7 +40,6 @@ class FirebaseService {
     await groupDocRef.update({
       'members': FieldValue.arrayUnion([userID + '_' + userName]),
       'groupID': groupDocRef.id,
-      'memberTokens': FieldValue.arrayUnion([userToken])
     });
 
     DocumentReference userDocRef = userCollection.doc(userID);
@@ -56,7 +48,7 @@ class FirebaseService {
     });
   }
 
-  static Future<void> togglingGroupJoin(String userID, String groupID, String groupName, String userName, String token) async {
+  static Future<void> togglingGroupJoin(String userID, String groupID, String groupName, String userName) async {
     DocumentReference userDocRef = userCollection.doc(userID);
     DocumentSnapshot userDocSnapshot = await userDocRef.get();
 
@@ -70,17 +62,15 @@ class FirebaseService {
       });
 
       await groupDocRef.update({
-        'members': FieldValue.arrayRemove([userID + '_' + userName]),
-        'memberTokens': FieldValue.arrayRemove([token])
+        'members': FieldValue.arrayRemove([userID + '_' + userName])
       });
-    } else {
+    }
+    else {
       await userDocRef.update({
         'groups': FieldValue.arrayUnion([groupID + '_' + groupName])
       });
-
       await groupDocRef.update({
-        'members': FieldValue.arrayUnion([userID + '_' + userName]),
-        'memberTokens': FieldValue.arrayUnion([token])
+        'members': FieldValue.arrayUnion([userID + '_' + userName])
       });
     }
   }
