@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:email_validator/email_validator.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 class AppValidator {
   AppValidator._();
@@ -96,6 +99,24 @@ class AppValidator {
       }
     } else {
       return "Bu alan boş bırakılamaz";
+    }
+  }
+
+  static FutureOr<String?> phoneNumberValidator(PhoneNumber? value) {
+    if (value == null) return 'Hatalı giriş';
+    if (value.completeNumber.isEmpty) return emptyValidator(value.completeNumber);
+    try {
+      final isValid = value.isValidNumber();
+      if (isValid == false) return 'Geçersiz Telefon Numarası';
+      return null;
+    } catch (e) {
+      if (e is NumberTooShortException) {
+        return 'Telefon numarası çok kısa';
+      }
+      if (e is NumberTooLongException) {
+        return 'Telefon numarası çok uzun';
+      }
+      return 'Lütfen geçerli bir telefon numarası giriniz';
     }
   }
 }

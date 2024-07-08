@@ -29,7 +29,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController messageEditingController = new TextEditingController();
   Stream<QuerySnapshot>? _chats;
-  QuerySnapshot? _groupMembers;
+  DocumentSnapshot? _groupMembers;
 
   Widget _chatMessages() {
     return StreamBuilder <QuerySnapshot>(
@@ -56,9 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
         Map<String, dynamic> chatMessageMap = {
           "message": messageEditingController.text,
           "sender": context.read<AutherProvider>().user!.displayName,
-          'time': DateTime
-              .now()
-              .millisecondsSinceEpoch,
+          'time': DateTime.now().millisecondsSinceEpoch,
         };
         FirebaseService.sendMessage(widget.groupID, chatMessageMap);
         FirebaseService.getChats(widget.groupID).then((Stream<QuerySnapshot> val) {
@@ -67,13 +65,11 @@ class _ChatScreenState extends State<ChatScreen> {
             messageEditingController.text = "";
           });
         });
-
       }
-      FirebaseService.updateUserLastGroup(context.read<AutherProvider>().user!.uid, widget.groupName);
     }
 
     _getGroupMembers() async {
-      FirebaseService.getGroupMembers(widget.groupID).then((QuerySnapshot val) {
+      FirebaseService.getGroupData(widget.groupID).then((DocumentSnapshot val) {
         setState(() {
           _groupMembers = val;
         });
@@ -109,15 +105,15 @@ class _ChatScreenState extends State<ChatScreen> {
                     rightButtonText: 'Gruptan ayrıl',
                     leftButtonText: 'Kapat',
                     rightFunction: () async {
-                      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, widget.groupName, context.read<AutherProvider>().user!.displayName ?? '');
+                      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID);
                       context.go('/');
                     },
                     customIcon: ListView.builder(
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
-                      itemCount: _groupMembers?.docs[0].get('members').length ?? 0,
+                      itemCount: _groupMembers?.get('members').length ?? 0,
                       itemBuilder: (context, index) {
-                        return MemberTile(userName: _groupMembers!.docs[0].get('members')[index], groupName: widget.groupName);
+                        return MemberTile(userName: _groupMembers!.get('members')[index], groupName: widget.groupName);
                       },
                     ),
                   )

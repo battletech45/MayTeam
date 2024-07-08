@@ -63,7 +63,7 @@ class AutherProvider with ChangeNotifier {
     }
   }
 
-  Future<User?> registerWithEmailAndPassword(String fullName, String email, String password) async {
+  Future<User?> registerWithEmailAndPassword(String fullName, String email, String password, String phoneNumber) async {
     try {
       UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
@@ -71,7 +71,7 @@ class AutherProvider with ChangeNotifier {
       if(user != null) {
         await user.updateProfile(displayName: fullName);
         user = await signInWithEmailAndPassWord(email, password);
-        await FirebaseService.updateUserData(user!.uid, fullName, email);
+        await FirebaseService.createUser(user!.uid, fullName, email, phoneNumber);
         return user;
       }
       else {
@@ -84,9 +84,20 @@ class AutherProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> _clearLogin() async {
+    user = null;
+    LoggerService.logInfo('Starting to clear login model in shared');
+    final pref = await SharedPreferences.getInstance();
+    bool b = await pref.remove(_loginKey);
+    LoggerService.logInfo('Clear completed. success: $b');
+    return b;
+  }
+
   Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
+      await _clearLogin();
+      notifyListeners();
     }
     catch(e) {
       print(e.toString());
@@ -104,8 +115,8 @@ class AutherProvider with ChangeNotifier {
     return 'Kullanıcı Adı veya Şifre Hatalı';
   }
 
-  Future<String?> register(String name, LoginModel model) async {
-    final tmp = await registerWithEmailAndPassword(name, model.email, model.password);
+  Future<String?> register(String name, LoginModel model, String phoneNumber,) async {
+    final tmp = await registerWithEmailAndPassword(name, model.email, model.password, phoneNumber);
     if (tmp != null) {
       user = tmp;
       await writeShared(model);

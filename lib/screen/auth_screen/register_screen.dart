@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:provider/provider.dart';
 import '../../core/constant/text_style.dart';
 import '../../core/util/validator.dart';
 import '../../widget/base/scaffold.dart';
 import '../../widget/button/loading_button.dart';
 import '../../widget/form/app_form_field.dart';
+import '../../widget/form/phone_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -25,10 +27,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  PhoneNumber phoneNumber = PhoneNumber(countryISOCode: 'TR', countryCode: '90', number: '');
 
   Future<void> send() async {
     if(_formKey.currentState!.validate()) {
-      context.read<AutherProvider>().register(nameController.text, LoginModel(email: emailController.text, password: passwordController.text))
+      context.read<AutherProvider>().register(nameController.text, LoginModel(email: emailController.text, password: passwordController.text), phoneNumber.number)
       .then((value) {
         if(value == null) {
           context.go('/');
@@ -72,6 +75,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   keyboardType: TextInputType.emailAddress,
                   autofillHints: const [AutofillHints.email],
                   textInputAction: TextInputAction.next,
+                ),
+                UIConst.verticalBlankSpace,
+                PhoneField(
+                  onChanged: (value) {
+                    phoneNumber = value;
+                  },
                 ),
                 UIConst.verticalBlankSpace,
                 AppFormField(

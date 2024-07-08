@@ -1,11 +1,17 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:MayTeam/core/service/firebase.dart';
+import 'package:MayTeam/core/service/log.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:MayTeam/widget/base/scaffold.dart';
 import 'package:MayTeam/widget/tile/profile_tile.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constant/color.dart';
@@ -18,7 +24,6 @@ class ProfileScreen extends StatefulWidget{
 }
 class ProfileScreenState extends State<ProfileScreen> {
   String? link;
-  bool _isPhotoExist = false;
   String? _activeGroup;
 
   _getActiveGroup() async {
@@ -26,6 +31,36 @@ class ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _activeGroup = userData.get('activeGroup');
     });
+  }
+
+  Future<void> _uploadImageToFirebase(File imageFile) async {
+    try {
+      String fileName = 'images/${context.read<AutherProvider>().user?.uid}';
+      Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
+
+      UploadTask uploadTask = storageRef.putFile(imageFile);
+
+      await uploadTask.whenComplete(() => {
+        LoggerService.logInfo('Image file uploaded.')
+      });
+      String downloadUrl = await storageRef.getDownloadURL();
+      setState(() {
+        link = downloadUrl;
+      });
+    }
+    catch(e) {
+      LoggerService.logError(e.toString());
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if(pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      _uploadImageToFirebase(imageFile);
+    }
   }
 
   @override
@@ -42,6 +77,12 @@ class ProfileScreenState extends State<ProfileScreen> {
       appBar: AppAppBar(
         isDrawer: false,
         title: 'Profil',
+        actions: [
+          IconButton(
+              onPressed: _pickImage,
+              icon: Icon(Icons.edit, color: AppColor.primaryTextColor)
+          )
+        ],
       ),
       child: Container(
           child: Column(
@@ -54,7 +95,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   child: Center(
                     child: CircleAvatar(
                       radius: 95,
-                      child: _isPhotoExist ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link!)) : Icon(Icons.person,size: 80.0),
+                      child: link != null ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link!)) : Icon(Icons.person,size: 80.0),
                     ),
                   ),
                 ),
