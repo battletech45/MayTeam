@@ -3,15 +3,20 @@ import 'dart:convert';
 import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:MayTeam/core/service/log.dart';
+import 'package:MayTeam/core/util/extension.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
+import 'package:MayTeam/widget/dialog/alert_dialog.dart';
+import 'package:MayTeam/widget/form/app_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/service/firebase.dart';
 import '../../core/service/notification.dart';
 import '../../core/service/provider/auth.dart';
+import '../../core/util/validator.dart';
 import '../../widget/animation/animated_logo.dart';
 import '../../widget/base/drawer.dart';
 import '../../widget/base/scaffold.dart';
@@ -28,6 +33,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Stream<DocumentSnapshot>? _groups;
+  final TextEditingController groupNameController = TextEditingController();
 
   static final _drawerWidth = UIConst.screenSize.width * 0.8;
   static double get drawerWidth => _drawerWidth;
@@ -265,6 +271,30 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                           appBar: AppAppBar(
                             isDrawer: true,
                             progress: animationController,
+                            actions: [
+                              IconButton(
+                                onPressed: () async {
+                                  context.showAppDialog(
+                                    AppAlertDialog(
+                                      title: 'Yeni Oda Oluştur',
+                                      leftButtonText: 'Oluştur',
+                                      leftFunction: () async {
+                                        await FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, groupNameController.text);
+                                      },
+                                      customIcon: AppFormField(
+                                        hintText: 'Grup Adı',
+                                        controller: groupNameController,
+                                        validator: AppValidator.passwordValidator,
+                                        keyboardType: TextInputType.text,
+                                        autofillHints: const [AutofillHints.name],
+                                        textInputAction: TextInputAction.done,
+                                      ),
+                                    )
+                                  );
+                                },
+                                icon: Icon(Icons.add),
+                              )
+                            ],
                             leading: ScaleButton(
                               waitAnimation: true,
                                 bordered: false,

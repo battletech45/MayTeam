@@ -31,7 +31,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: Text(title ?? 'My Team', style: AppTextStyle.dialogTitle),
       leading: leading ?? (isDrawer ? IconButton(onPressed: onTap, icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: progress!)) : null),
-      actions: isDrawer ? [] : actions,
+      actions: isDrawer ? actions.isNotEmpty ? actions: [] : actions,
     );
   }
 }
