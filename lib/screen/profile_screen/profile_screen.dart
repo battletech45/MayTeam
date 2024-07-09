@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/service/firebase.dart';
 import 'package:MayTeam/core/service/log.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:MayTeam/widget/base/scaffold.dart';
 import 'package:MayTeam/widget/tile/profile_tile.dart';
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constant/color.dart';
+import '../../widget/animation/animated_toggle.dart';
 
 
 class ProfileScreen extends StatefulWidget{
@@ -25,12 +28,28 @@ class ProfileScreen extends StatefulWidget{
 class ProfileScreenState extends State<ProfileScreen> {
   String? link;
   String? _activeGroup;
+  var notifications = false;
+  var darkMode = false;
 
-  _getActiveGroup() async {
+  Future<void> _getActiveGroup() async {
     var userData = await FirebaseService.getUserData(context.read<AutherProvider>().user!.uid);
     setState(() {
       _activeGroup = userData.get('activeGroup');
     });
+  }
+
+  Future<void> _getProfileImage() async {
+    try {
+      String fileName = 'images/${context.read<AutherProvider>().user?.uid}';
+      Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
+      String downloadUrl = await storageRef.getDownloadURL();
+      setState(() {
+        link = downloadUrl;
+      });
+    }
+    catch(e) {
+      LoggerService.logError(e.toString());
+    }
   }
 
   Future<void> _uploadImageToFirebase(File imageFile) async {
@@ -66,6 +85,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    _getProfileImage();
     _getActiveGroup();
   }
 
@@ -105,7 +125,31 @@ class ProfileScreenState extends State<ProfileScreen> {
               10.verticalSpace,
               ProfileTile(icon: Icons.alternate_email_rounded, data: "${context.read<AutherProvider>().user?.email ?? ''}"),
               10.verticalSpace,
-              ProfileTile(icon: Icons.games, data: "$_activeGroup")
+              ProfileTile(icon: Icons.games, data: "$_activeGroup"),
+              20.verticalSpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  AnimatedToggle(
+                    title: 'Bildirimler',
+                    current: notifications,
+                    first: false,
+                    second: true,
+                    leftIcon: Icons.notification_important_outlined,
+                    onChanged: (b) => setState(() => notifications = b!),
+                  ),
+                  AnimatedToggle(
+                    title: 'Tema',
+                    current: darkMode,
+                    first: false,
+                    second: true,
+                    rightText: 'Koyu',
+                    leftIcon: Icons.light_outlined,
+                    rightIcon: Icons.mode_night_outlined,
+                    onChanged: (b) => setState(() => darkMode = b!),
+                  ),
+                ],
+              )
             ],
      ),
     ),
