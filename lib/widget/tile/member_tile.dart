@@ -17,7 +17,7 @@ class MemberTile extends StatelessWidget {
       child: ListTile(
         leading: ProfilePicture(
           radius: 30.0,
-          name: '$userName',
+          name: '$rawUserName',
           fontsize: 21.sp,
         ),
         title: Text(rawUserName, style: TextStyle(fontWeight: FontWeight.bold)),

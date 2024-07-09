@@ -169,15 +169,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if(snapshot.hasData) {
           var data = snapshot.data;
-          if(data!['groups'] != null) {
-            if(data['groups'].length != 0) {
+          if(data!['chats'] != null) {
+            if(data['chats'].length != 0) {
               return ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount: data['groups'].length,
+                  itemCount: data['chats'].length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    int reqIndex = data['groups'].length - index - 1;
-                    return GroupTile(userName: data['fullName'], groupID: _destructureId(data['groups'][reqIndex]), groupName: _destructureName(data['groups'][reqIndex]));
+                    int reqIndex = data['chats'].length - index - 1;
+                    return GroupTile(userName: data['displayName'], groupID: _destructureId(data['chats'][reqIndex]), groupName: _destructureName(data['chats'][reqIndex]));
                   }
               );
             }

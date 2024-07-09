@@ -105,7 +105,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     rightButtonText: 'Gruptan ayrıl',
                     leftButtonText: 'Kapat',
                     rightFunction: () async {
-                      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID);
+                      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, widget.groupID, context.read<AutherProvider>().user!.displayName ?? '', widget.groupName);
                       context.go('/');
                     },
                     customIcon: ListView.builder(

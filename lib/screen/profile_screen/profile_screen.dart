@@ -27,30 +27,8 @@ class ProfileScreen extends StatefulWidget{
 }
 class ProfileScreenState extends State<ProfileScreen> {
   String? link;
-  String? _activeGroup;
   var notifications = false;
   var darkMode = false;
-
-  Future<void> _getActiveGroup() async {
-    var userData = await FirebaseService.getUserData(context.read<AutherProvider>().user!.uid);
-    setState(() {
-      _activeGroup = userData.get('activeGroup');
-    });
-  }
-
-  Future<void> _getProfileImage() async {
-    try {
-      String fileName = 'images/${context.read<AutherProvider>().user?.uid}';
-      Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
-      String downloadUrl = await storageRef.getDownloadURL();
-      setState(() {
-        link = downloadUrl;
-      });
-    }
-    catch(e) {
-      LoggerService.logError(e.toString());
-    }
-  }
 
   Future<void> _uploadImageToFirebase(File imageFile) async {
     try {
@@ -58,11 +36,16 @@ class ProfileScreenState extends State<ProfileScreen> {
       Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
 
       UploadTask uploadTask = storageRef.putFile(imageFile);
-
       await uploadTask.whenComplete(() => {
         LoggerService.logInfo('Image file uploaded.')
       });
       String downloadUrl = await storageRef.getDownloadURL();
+      context.read<AutherProvider>().user?.updateProfile(photoURL: downloadUrl).then((val) async {
+        await context.read<AutherProvider>().user?.reload();
+        setState(() {
+          link = context.read<AutherProvider>().user?.photoURL;
+        });
+      });
       setState(() {
         link = downloadUrl;
       });
@@ -85,8 +68,9 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _getProfileImage();
-    _getActiveGroup();
+    setState(() {
+      link = context.read<AutherProvider>().user?.photoURL;
+    });
   }
 
   @override
@@ -124,8 +108,6 @@ class ProfileScreenState extends State<ProfileScreen> {
               ProfileTile(icon: Icons.person_outline_rounded, data: "${context.read<AutherProvider>().user?.displayName ?? ''}"),
               10.verticalSpace,
               ProfileTile(icon: Icons.alternate_email_rounded, data: "${context.read<AutherProvider>().user?.email ?? ''}"),
-              10.verticalSpace,
-              ProfileTile(icon: Icons.games, data: "$_activeGroup"),
               20.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -46,26 +46,26 @@ class FirebaseService {
     });
   }
 
-  static Future<void> togglingGroupJoin(String userID, String groupID) async {
+  static Future<void> togglingGroupJoin(String userID, String groupID, String userName, String groupName) async {
     DocumentReference groupRef = groupCollection.doc(groupID);
     DocumentReference userRef = userCollection.doc(userID);
     DocumentSnapshot groupSnapshot = await groupCollection.doc(groupID).get();
     List<dynamic> groupMembers = await groupSnapshot.get('members');
 
-    if(groupMembers.contains(userID)) {
+    if(groupMembers.contains(userID + '_' + userName)) {
       await groupRef.update({
-        'members': FieldValue.arrayRemove([userID])
+        'members': FieldValue.arrayRemove([userID + '_' + userName])
       });
       await userRef.update({
-        'chats': FieldValue.arrayRemove([groupID])
+        'chats': FieldValue.arrayRemove([groupID + '_' + groupName])
       });
     }
     else {
       await groupRef.update({
-        'members': FieldValue.arrayUnion([userID])
+        'members': FieldValue.arrayUnion([userID + '_' + userName])
       });
       await userRef.update({
-        'chats': FieldValue.arrayUnion([groupID])
+        'chats': FieldValue.arrayUnion([groupID + '_' + groupName])
       });
     }
   }
