@@ -281,13 +281,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                       leftFunction: () async {
                                         await FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, groupNameController.text);
                                       },
-                                      customIcon: AppFormField(
-                                        hintText: 'Grup Adı',
-                                        controller: groupNameController,
-                                        validator: AppValidator.passwordValidator,
-                                        keyboardType: TextInputType.text,
-                                        autofillHints: const [AutofillHints.name],
-                                        textInputAction: TextInputAction.done,
+                                      height: 100.h,
+                                      customIcon: Center(
+                                        child: AppFormField(
+                                          hintText: 'Grup Adı',
+                                          controller: groupNameController,
+                                          validator: AppValidator.passwordValidator,
+                                          keyboardType: TextInputType.text,
+                                          autofillHints: const [AutofillHints.name],
+                                          textInputAction: TextInputAction.done,
+                                        ),
                                       ),
                                     )
                                   );

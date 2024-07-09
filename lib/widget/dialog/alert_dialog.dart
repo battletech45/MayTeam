@@ -20,6 +20,7 @@ class AppAlertDialog extends StatelessWidget {
   final Color? rightTextColor;
   final bool? repeat;
   final bool isSingleButton;
+  final double? height;
   final AlertType? type;
   final Widget? customIcon;
   final void Function()? leftFunction;
@@ -36,7 +37,7 @@ class AppAlertDialog extends StatelessWidget {
     this.type,
     this.customIcon,
     this.leftFunction,
-    this.rightFunction, this.repeat,
+    this.rightFunction, this.repeat, this.height,
   });
 
   @override
@@ -59,7 +60,7 @@ class AppAlertDialog extends StatelessWidget {
                   style: AppTextStyle.bigButtonText,
                 ),
                 type != null ? UIConst.verticalGap() : UIConst.zeroGap,
-                SizedBox(height: (customIcon != null || type != null) ? 200 : 0, child: buildImage(type, customIcon, repeat)),
+                SizedBox(height: height != null ? height : (customIcon != null || type != null) ? 200 : 0, child: buildImage(type, customIcon, repeat)),
                 UIConst.verticalGap(),
                 text == null
                     ? UIConst.zeroGap
