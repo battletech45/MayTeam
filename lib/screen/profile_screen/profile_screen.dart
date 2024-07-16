@@ -5,6 +5,7 @@ import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/service/firebase.dart';
 import 'package:MayTeam/core/service/log.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:MayTeam/core/service/provider/theme.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:MayTeam/widget/base/scaffold.dart';
 import 'package:MayTeam/widget/tile/profile_tile.dart';
@@ -28,7 +29,6 @@ class ProfileScreen extends StatefulWidget{
 class ProfileScreenState extends State<ProfileScreen> {
   String? link;
   var notifications = false;
-  var darkMode = false;
 
   Future<void> _uploadImageToFirebase(File imageFile) async {
     try {
@@ -122,13 +122,13 @@ class ProfileScreenState extends State<ProfileScreen> {
                   ),
                   AnimatedToggle(
                     title: 'Tema',
-                    current: darkMode,
+                    current: context.watch<ThemeProvider>().themeString == 'light',
                     first: false,
                     second: true,
                     rightText: 'Koyu',
                     leftIcon: Icons.light_outlined,
                     rightIcon: Icons.mode_night_outlined,
-                    onChanged: (b) => setState(() => darkMode = b!),
+                    onChanged: (b) => context.read<ThemeProvider>().changeTheme()
                   ),
                 ],
               )

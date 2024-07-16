@@ -155,7 +155,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.search, color: Colors.grey, size: 75.0),
+            Icon(Icons.search, color: AppColor.secondaryTextColor, size: 75.0),
             SizedBox(height: 20.0),
             Text("You've not joined any group, tap on the 'search' icon"),
           ],
@@ -203,12 +203,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       });
     });
   }
-  String _destructureId(String res) {
-    return res.substring(0, res.indexOf('_'));
-  }
+
 
   String _destructureName(String res) {
     return res.substring(res.indexOf('_') + 1);
+  }
+
+  String _destructureId(String res) {
+    return res.substring(0, res.indexOf('_'));
   }
 
   @override

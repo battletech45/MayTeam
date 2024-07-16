@@ -1,15 +1,18 @@
 import 'package:MayTeam/core/constant/router_config.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:MayTeam/core/service/provider/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 late AutherProvider authProvider;
+late String themeStr;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +32,8 @@ class MayTeam extends StatelessWidget {
     UIConst.init(context);
        return MultiProvider(
          providers: [
-           ChangeNotifierProvider.value(value: authProvider)
+           ChangeNotifierProvider.value(value: authProvider),
+           ChangeNotifierProvider(create: (context) => ThemeProvider(themeString: themeStr))
          ],
          builder: (context, __) {
            return ScreenUtilInit(
@@ -56,7 +60,19 @@ class MayTeam extends StatelessWidget {
 Future <void> providerInit() async {
   authProvider = AutherProvider();
   await authProvider.init();
+  themeStr = await checkSharedForTheme();
 }
+
+Future<String> checkSharedForTheme() async {
+  final shared = await SharedPreferences.getInstance();
+
+  if (shared.containsKey('theme')) {
+    return shared.getString('theme')!;
+  } else {
+    return 'platform';
+  }
+}
+
 
 
 

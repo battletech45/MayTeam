@@ -9,6 +9,13 @@ class FirebaseService {
   static final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
   static final CollectionReference groupCollection = FirebaseFirestore.instance.collection('groups');
 
+  static String _destructureName(String res) {
+    return res.substring(res.indexOf('_') + 1);
+  }
+
+  static String _destructureId(String res) {
+    return res.substring(0, res.indexOf('_'));
+  }
 
   static Future createUser(String userID, String fullName, String email, String phoneNumber) async {
     return await userCollection.doc(userID).set({
@@ -73,12 +80,15 @@ class FirebaseService {
   static Future<bool> isUserJoined(String userID, String groupID) async {
     DocumentSnapshot groupSnapshot = await groupCollection.doc(groupID).get();
     List<dynamic> groupMembers = await groupSnapshot.get('members');
+    bool flag = false;
 
-    if (groupMembers.contains(userID)) {
-      return true;
-    } else {
-      return false;
-    }
+    groupMembers.forEach((element) {
+      print(element);
+      if(_destructureId(element) == userID) {
+        flag = true;
+      }
+    });
+    return flag;
   }
 
   static Future<DocumentSnapshot> getUserData(String userID) async {
