@@ -88,7 +88,7 @@ class AppTheme {
     focusedBorder: _focusedBorder,
     errorBorder: errorBorder,
     filled: true,
-    fillColor: AppColor.primaryTextColor,
+    fillColor: AppColor.primaryBackgroundColor,
     focusedErrorBorder: focusedErrorBorder,
     helperMaxLines: 1,
     errorMaxLines: 1,

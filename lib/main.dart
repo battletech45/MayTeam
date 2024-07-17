@@ -39,10 +39,12 @@ class MayTeam extends StatelessWidget {
            return ScreenUtilInit(
              designSize: const Size(393, 808),
              builder: (context, __) {
+               context.read<ThemeProvider>().init(context);
                return MaterialApp.router(
                  routerConfig: AppRouterConfig.router,
                  debugShowCheckedModeBanner: false,
                  scrollBehavior: const CupertinoScrollBehavior(),
+                 theme: context.watch<ThemeProvider>().selected,
                  builder: (context, child) {
                    return MediaQuery(
                        data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),

@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import '../../core/service/firebase.dart';
 import '../../core/service/notification.dart';
 import '../../core/service/provider/auth.dart';
+import '../../core/service/provider/theme.dart';
 import '../../core/util/validator.dart';
 import '../../widget/animation/animated_logo.dart';
 import '../../widget/base/drawer.dart';
@@ -301,6 +302,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                               )
                             ],
                             leading: ScaleButton(
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                              ),
                               waitAnimation: true,
                                 bordered: false,
                                 onTap: () async {
@@ -310,11 +314,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                   }
                                   await scrollController.animateTo(drawerWidth, duration: UIConst.animationDuration, curve: Curves.ease);
                                 },
-                                child: const Icon(Icons.menu)
+                                child: Center(child: const Icon(Icons.menu))
                             ),
                           ),
                           backgroundImage: false,
-                          backgroundColor: AppColor.primaryBackgroundColor,
                           child: groupsList(),
                           floatingActionButton: FloatingActionButton(
                             elevation: 2.0,

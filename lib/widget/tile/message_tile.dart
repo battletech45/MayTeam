@@ -1,9 +1,11 @@
 import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/service/firebase.dart';
+import 'package:MayTeam/core/service/provider/theme.dart';
 import 'package:MayTeam/core/util/extension.dart';
 import 'package:MayTeam/widget/dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/constant/color.dart';
 import '../../core/util/validator.dart';
@@ -83,14 +85,14 @@ class _MessageTileState extends State<MessageTile> {
                 :
             BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23), bottomRight: Radius.circular(23)
             ),
-            color: widget.sentByMe ? AppColor.outgoingBubbleBackground : AppColor.incomingBubbleBackground,
+            color:  widget.sentByMe ? AppColor.outgoingBubbleBackground : AppColor.incomingBubbleBackground,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(widget.sender.toUpperCase(), textAlign: TextAlign.start, style: AppTextStyle.messageSenderStyle),
               SizedBox(height: 7.h),
-              Text(widget.message, textAlign: TextAlign.start, style: AppTextStyle.settingTile),
+              Text(widget.message, textAlign: TextAlign.start, style: AppTextStyle.settingTile.copyWith(color: AppColor.primaryTextColor)),
             ],
           ),
         ),

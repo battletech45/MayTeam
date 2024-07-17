@@ -130,7 +130,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      backgroundColor: AppColor.primaryBackgroundColor,
       backgroundImage: false,
       appBar: AppAppBar(
         isDrawer: false,
@@ -153,9 +152,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       controller: searchEditingController,
                       style: AppTextStyle.bigButtonText.copyWith(color: AppColor.primaryTextColor),
                       decoration: InputDecoration(
-                          hintText: "Search groups...",
-                          hintStyle: AppTextStyle.bigButtonText.copyWith(color: AppColor.primaryTextColor),
-                          border: InputBorder.none
+                        hintText: "Search groups...",
+                        hintStyle: AppTextStyle.bigButtonText.copyWith(color: AppColor.primaryTextColor),
+                        fillColor: AppColor.secondaryBackgroundColor,
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none
                       ),
                     ),
                   ),

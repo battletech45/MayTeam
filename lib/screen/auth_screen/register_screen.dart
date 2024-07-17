@@ -47,7 +47,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       backgroundImage: false,
-      backgroundColor: AppColor.secondaryBackgroundColor,
       child: Form(
           key: _formKey,
           child: Container(

@@ -43,7 +43,6 @@ class AppAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.primaryBackgroundColor,
       surfaceTintColor: AppColor.primaryBackgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,

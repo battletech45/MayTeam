@@ -3,6 +3,7 @@ import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:MayTeam/core/service/notification.dart';
 import 'package:MayTeam/core/service/firebase.dart';
+import 'package:MayTeam/core/service/provider/theme.dart';
 import 'package:MayTeam/core/util/extension.dart';
 import 'package:MayTeam/widget/base/appbar.dart';
 import 'package:MayTeam/widget/dialog/alert_dialog.dart';
@@ -91,7 +92,6 @@ class _ChatScreenState extends State<ChatScreen> {
     Widget build(BuildContext context) {
       return AppScaffold(
         backgroundImage: false,
-        backgroundColor: AppColor.primaryBackgroundColor,
         appBar: AppAppBar(
           isDrawer: false,
           title: widget.groupName,
@@ -139,11 +139,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       onSubmitted: _sendMessage(),
                       controller: messageEditingController,
                       decoration: InputDecoration(
+                          fillColor: context.read<ThemeProvider>().themeString == 'light' ? Colors.transparent : AppColor.primaryBackgroundColorDark,
                           hintText: 'Send a message...',
                           hintStyle: AppTextStyle.mainSubtitle,
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: AppColor.borderColor,
                               width: 2.0
                             ),
                             borderRadius: BorderRadius.circular(25.r)

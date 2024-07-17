@@ -1,5 +1,6 @@
 import 'package:MayTeam/core/constant/color.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:MayTeam/core/service/provider/theme.dart';
 import 'package:MayTeam/widget/tile/navigation_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +22,6 @@ class AppDrawer extends StatelessWidget {
     return Container(
       width: width,
       height: UIConst.screenSize.height,
-      color: AppColor.primaryBackgroundColor,
       child: SafeArea(
         child: Padding(
           padding: UIConst.pageFullPadding(context),
@@ -31,6 +31,13 @@ class AppDrawer extends StatelessWidget {
               children: <Widget>[
                 Image.asset('assets/images/logo.png', width: 200.w, height: 200.h, fit: BoxFit.cover),
                 ScaleButton(
+                  decoration: BoxDecoration(
+                      color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryBackgroundColor : AppColor.secondaryBackgroundColorDark,
+                      border: Border.all(
+                        width: 1,
+                        color: AppColor.secondaryBackgroundColor
+                      )
+                  ),
                   bordered: true,
                   onTap: () async {
                     onWillCloseDrawer();
@@ -40,6 +47,13 @@ class AppDrawer extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 ScaleButton(
+                  decoration: BoxDecoration(
+                      color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryBackgroundColor : AppColor.secondaryBackgroundColorDark,
+                      border: Border.all(
+                          width: 1,
+                          color: AppColor.secondaryBackgroundColor
+                      )
+                  ),
                   bordered: true,
                   onTap: () async {
                     await context.read<AutherProvider>().signOut();

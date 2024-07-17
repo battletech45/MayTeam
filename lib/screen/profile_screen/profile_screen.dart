@@ -77,14 +77,13 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       backgroundImage: false,
-      backgroundColor: AppColor.primaryBackgroundColor,
       appBar: AppAppBar(
         isDrawer: false,
         title: 'Profil',
         actions: [
           IconButton(
               onPressed: _pickImage,
-              icon: Icon(Icons.edit, color: AppColor.primaryTextColor)
+              icon: Icon(Icons.edit)
           )
         ],
       ),

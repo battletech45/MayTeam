@@ -26,7 +26,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColor.primaryBackgroundColor,
+      //backgroundColor: AppColor.primaryBackgroundColor,
       scrolledUnderElevation: 0.0,
       centerTitle: true,
       title: Text(title ?? 'My Team', style: AppTextStyle.dialogTitle),

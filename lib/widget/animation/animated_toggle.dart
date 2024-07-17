@@ -57,7 +57,7 @@ class AnimatedToggle extends StatelessWidget {
             second: second,
             onChanged: onChanged,
             textBuilder: (t) => Center(
-              child: Text(t! ? leftText ?? 'Açık' : rightText ??  'Kapalı', style: AppTextStyle.description.copyWith(fontWeight: FontWeight.w600)),
+              child: Text(t! ? leftText ?? 'Açık' : rightText ??  'Kapalı', style: AppTextStyle.description.copyWith(fontWeight: FontWeight.w600, color: AppColor.primaryTextColor)),
             ),
           ),
         ],

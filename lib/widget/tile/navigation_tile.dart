@@ -1,3 +1,5 @@
+import 'package:MayTeam/core/constant/color.dart';
+import 'package:MayTeam/core/constant/text_style.dart';
 import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +34,7 @@ class NavigationTile extends StatelessWidget {
                 SizedBox(width: leadingPadding),
               ]
             : [],
-        didSetTitle ? Text(title!) : UIConst.zeroGap,
+        didSetTitle ? Text(title!, style: AppTextStyle.description) : UIConst.zeroGap,
         ...didSetTrailing
             ? [
                 const Spacer(),
