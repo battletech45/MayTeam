@@ -85,7 +85,7 @@ class _MessageTileState extends State<MessageTile> {
                 :
             BorderRadius.only(topLeft: Radius.circular(23), topRight: Radius.circular(23), bottomRight: Radius.circular(23)
             ),
-            color:  widget.sentByMe ? AppColor.outgoingBubbleBackground : AppColor.incomingBubbleBackground,
+            color: context.watch<ThemeProvider>().themeString == 'light' ?  widget.sentByMe ? AppColor.outgoingBubbleBackground : AppColor.incomingBubbleBackground : widget.sentByMe ? AppColor.outgoingBubbleBackground.withOpacity(0.7) : AppColor.incomingBubbleBackground.withOpacity(0.7),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

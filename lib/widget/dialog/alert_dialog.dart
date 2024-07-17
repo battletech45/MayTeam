@@ -1,5 +1,7 @@
+import 'package:MayTeam/core/service/provider/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/constant/color.dart';
 import '../../core/constant/text_style.dart';
@@ -56,7 +58,7 @@ class AppAlertDialog extends StatelessWidget {
               children: [
                 Text(
                   title ?? "Uyarı!",
-                  style: AppTextStyle.bigButtonText,
+                  style: AppTextStyle.bigButtonText.copyWith(color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryTextColor : AppColor.primaryTextColorDark),
                 ),
                 type != null ? UIConst.verticalGap() : UIConst.zeroGap,
                 SizedBox(height: height != null ? height : (customIcon != null || type != null) ? 200 : 0, child: buildImage(type, customIcon, repeat)),
@@ -69,7 +71,7 @@ class AppAlertDialog extends StatelessWidget {
                           child: Text(
                             text!,
                             textAlign: TextAlign.center,
-                            style: AppTextStyle.subtitleTextButton,
+                            style: AppTextStyle.subtitleTextButton.copyWith(color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryTextColor : AppColor.primaryTextColorDark),
                           ),
                         ),
                       ),
