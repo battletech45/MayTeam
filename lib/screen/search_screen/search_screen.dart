@@ -64,6 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
     print(val);
     if(!val) {
       await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, doc.get("groupID"), context.read<AutherProvider>().user!.displayName ?? '', doc.get("groupName"));
+      context.pop();
       context.push('/chat/${doc.get("groupID")}', extra: doc.get("groupName"));
     }
     else {

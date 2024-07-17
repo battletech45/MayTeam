@@ -1074,6 +1074,9 @@ PODS:
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - GoogleAppMeasurement (10.27.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.27.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
@@ -1224,6 +1227,7 @@ PODS:
   - sqflite (0.0.3):
     - Flutter
     - FlutterMacOS
+  - Toast (4.1.1)
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
@@ -1234,6 +1238,7 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -1267,6 +1272,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - RecaptchaInterop
+    - Toast
 
 EXTERNAL SOURCES:
   cloud_firestore:
@@ -1285,6 +1291,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider_foundation:
@@ -1319,6 +1327,7 @@ SPEC CHECKSUMS:
   FirebaseStorage: 255526c3d04c49874d7a5e3886964a79f77d6f33
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
+  fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c
   GoogleAppMeasurement: f65fc137531af9ad647f1c0a42f3b6a4d3a98049
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
@@ -1333,6 +1342,7 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
+  Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
 
 PODFILE CHECKSUM: cab228616333b03d6cbf92b9262c8d74e7857e2d
 

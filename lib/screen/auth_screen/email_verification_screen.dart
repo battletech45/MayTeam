@@ -1,8 +1,16 @@
+import 'package:MayTeam/core/constant/text_style.dart';
+import 'package:MayTeam/core/constant/ui_const.dart';
 import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:MayTeam/core/util/extension.dart';
+import 'package:MayTeam/widget/base/scaffold.dart';
+import 'package:MayTeam/widget/dialog/alert_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../core/service/firebase.dart';
+
+import '../../core/constant/color.dart';
+import '../../widget/button/loading_button.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -11,81 +19,55 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
-  bool _isVerified = false;
-  bool _isLoading = false;
 
-  _getVerificationValue() async {
-    setState(() {
-      _isLoading = true;
-    });
+  Future<void> _getVerificationValue() async {
     await context.read<AutherProvider>().user?.reload();
-    setState(() {
-      _isVerified = context.read<AutherProvider>().user?.emailVerified ?? false;
-    });
-    if(_isVerified) {
-      setState(() {
-        _isLoading = false;
-      });
-      context.go('/');
+    User? user = context.read<AutherProvider>().user;
+
+    if(user != null) {
+     if(user.emailVerified) {
+       context.go('/');
+     }
+     else {
+       context.showAppDialog(
+           AppAlertDialog(
+             title: 'Hata !',
+             text: 'Lütfen Mail Kutunuzu Kontrol Edin !',
+             isSingleButton: true,
+             type: AlertType.warn,
+           )
+       );
+     }
     }
     else {
-      setState(() {
-        _isLoading = false;
-      });
-      _showPopupDialog();
+      context.showAppDialog(
+        AppAlertDialog(
+          title: 'Hata !',
+          text: "E-Posta'nız onaylanmamıştır. Lütfen Posta kutunuzu kontrol ediniz.",
+          isSingleButton: true,
+        )
+      );
     }
-  }
-
-  void _showPopupDialog() {
-    Widget okButton = MaterialButton(
-      child: Text("OK"),
-      color: Colors.black,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-      splashColor: Colors.red[900],
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      icon: Icon(Icons.mark_email_unread),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      title: Text("Please check your mailbox for verification !"),
-      actions: <Widget>[okButton],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
+    return AppScaffold(
+      backgroundImage: false,
+      child: Padding(
+        padding: UIConst.pagePadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Icon(Icons.email_outlined, size: 100.0),
-            SizedBox(height: 20.0),
-            Text('Please Verify Your E-Mail !', style: TextStyle(fontSize: 30.0)),
-            SizedBox(height: 30.0),
-            MaterialButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                color: Colors.red,
-                child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Check Verification'),
-                onPressed: _getVerificationValue
-            ),
-            MaterialButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                color: Colors.black,
-                child: Text('Back'),
-                onPressed: () => context.go('/')
-            ),
+            UIConst.verticalGap(),
+            Text('Mail Kutunuzu Kontrol Edin !', style: AppTextStyle.dialogTitle),
+            UIConst.verticalGap(),
+            LoadingButton(
+              onTap: _getVerificationValue,
+              backgroundColor: AppColor.red,
+              child: Text('Kontrol Et'),
+            )
           ],
         ),
       ),

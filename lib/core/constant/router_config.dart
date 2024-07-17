@@ -83,6 +83,12 @@ class AppRouterConfig {
         builder: (context, state) => const RegisterScreen()
       ),
       GoRoute(
+        path: '/verify',
+        parentNavigatorKey: rootKey,
+        name: 'Email Onay Sayfası',
+        builder: (context, state) => const EmailVerificationScreen()
+      ),
+      GoRoute(
         path: '/profile',
         parentNavigatorKey: rootKey,
         name: 'Profil Sayfası',

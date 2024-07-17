@@ -6,6 +6,7 @@ import 'package:MayTeam/core/service/provider/auth.dart';
 import 'package:MayTeam/core/util/extension.dart';
 import 'package:MayTeam/core/util/validator.dart';
 import 'package:MayTeam/widget/button/loading_button.dart';
+import 'package:MayTeam/widget/dialog/alert_dialog.dart';
 import 'package:MayTeam/widget/form/app_form_field.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
               context.go('/');
             }
             else {
-              print('HATALI giriş');
-              //context.showAppDialog();
+              context.showAppDialog(
+                AppAlertDialog(
+                  type: AlertType.denied,
+                  text: 'Hatalı Giriş Bilgisi Girdiniz.',
+                  title: 'Hata !',
+                  isSingleButton: true,
+                )
+              );
             }
       });
     }

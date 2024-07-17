@@ -46,7 +46,12 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) {
       if(context.read<AutherProvider>().isAuth) {
-        context.go('/');
+        if(context.read<AutherProvider>().user!.emailVerified) {
+          context.go('/');
+        }
+        else {
+          context.go('/verify');
+        }
       }
       else {
         context.go('/login');
