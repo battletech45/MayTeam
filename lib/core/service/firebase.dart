@@ -9,15 +9,11 @@ class FirebaseService {
   static final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
   static final CollectionReference groupCollection = FirebaseFirestore.instance.collection('groups');
 
-  static String _destructureName(String res) {
-    return res.substring(res.indexOf('_') + 1);
-  }
-
   static String _destructureId(String res) {
     return res.substring(0, res.indexOf('_'));
   }
 
-  static Future createUser(String userID, String fullName, String email, String phoneNumber) async {
+  static Future<void> createUser(String userID, String fullName, String email, String phoneNumber) async {
     return await userCollection.doc(userID).set({
       'displayName': fullName,
       'email': email,
@@ -38,7 +34,7 @@ class FirebaseService {
     });
   }
 
-  static Future createGroup(String userID, String groupName) async {
+  static Future<void> createGroup(String userID, String groupName) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
       'groupIcon': '',

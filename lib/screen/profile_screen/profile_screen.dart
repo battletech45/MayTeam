@@ -95,6 +95,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 margin: EdgeInsets.all(15),
                 child: Center(
                   child: CircleAvatar(
+                    backgroundColor: AppColor.borderColor,
                     radius: 95,
                     child: link != null ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link!)) : Icon(Icons.person,size: 80.0, color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.iconColor : AppColor.iconColorDark),
                   ),
