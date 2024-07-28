@@ -13,7 +13,7 @@ Screenshots
 Insert screenshots or GIFs of your application here.
 
 ## Installation
-Clone the repository: git clone https://github.com/your-username/may-team.git
+Clone the repository: git clone https://github.com/battletech45/may-team.git
 Navigate to the project directory: cd may-team
 Install dependencies: flutter pub get
 Run the app: flutter run
