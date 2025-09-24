@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:MayTeam/core/constant/color.dart';
-import 'package:MayTeam/core/service/log.dart';
-import 'package:MayTeam/firebase_options.dart';
+import 'package:mayteam/core/constant/color.dart';
+import 'package:mayteam/core/service/log.dart';
+import 'package:mayteam/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
   }
 
   void initApp() async {
-    await initFirebaseMessage();
+    //await initFirebaseMessage();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) {
       if(context.read<AutherProvider>().isAuth) {

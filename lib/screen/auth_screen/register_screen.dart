@@ -1,7 +1,7 @@
-import 'package:MayTeam/core/constant/color.dart';
-import 'package:MayTeam/core/constant/ui_const.dart';
-import 'package:MayTeam/core/model/login.dart';
-import 'package:MayTeam/core/service/provider/auth.dart';
+import 'package:mayteam/core/constant/color.dart';
+import 'package:mayteam/core/constant/ui_const.dart';
+import 'package:mayteam/core/model/login.dart';
+import 'package:mayteam/core/service/provider/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

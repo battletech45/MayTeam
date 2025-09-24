@@ -34,9 +34,10 @@ class FirebaseService {
     });
   }
 
-  static Future<void> createGroup(String userID, String groupName) async {
+  static Future<void> createGroup(String userID, String admin, String groupName) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
+      'admin': admin,
       'groupIcon': '',
       'members': [],
       'createdAt': DateTime.now().millisecondsSinceEpoch,
@@ -45,7 +46,11 @@ class FirebaseService {
     });
 
     await groupDocRef.update({
-      'members': FieldValue.arrayUnion([userID]),
+      'groupID': groupDocRef.id,
+      'members': FieldValue.arrayUnion([userID + '_' + admin]),
+    });
+    await userCollection.doc(userID).update({
+      'chats': FieldValue.arrayUnion([groupDocRef.id + '_' + groupName])
     });
   }
 
@@ -79,7 +84,6 @@ class FirebaseService {
     bool flag = false;
 
     groupMembers.forEach((element) {
-      print(element);
       if(_destructureId(element) == userID) {
         flag = true;
       }

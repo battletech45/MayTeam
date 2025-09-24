@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:MayTeam/core/constant/color.dart';
-import 'package:MayTeam/core/constant/ui_const.dart';
-import 'package:MayTeam/core/service/log.dart';
-import 'package:MayTeam/core/util/extension.dart';
-import 'package:MayTeam/widget/base/appbar.dart';
-import 'package:MayTeam/widget/dialog/alert_dialog.dart';
-import 'package:MayTeam/widget/form/app_form_field.dart';
+import 'package:mayteam/core/constant/color.dart';
+import 'package:mayteam/core/constant/ui_const.dart';
+import 'package:mayteam/core/service/log.dart';
+import 'package:mayteam/core/util/extension.dart';
+import 'package:mayteam/widget/base/appbar.dart';
+import 'package:mayteam/widget/dialog/alert_dialog.dart';
+import 'package:mayteam/widget/form/app_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +205,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     });
   }
 
-
   String _destructureName(String res) {
     return res.substring(res.indexOf('_') + 1);
   }
@@ -282,7 +281,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                                       title: 'Yeni Oda Oluştur',
                                       leftButtonText: 'Oluştur',
                                       leftFunction: () async {
-                                        await FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, groupNameController.text);
+                                        await FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, context.read<AutherProvider>().user?.displayName ?? "", groupNameController.text);
                                       },
                                       height: 100.h,
                                       customIcon: Center(

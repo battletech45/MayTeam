@@ -1,6 +1,6 @@
-import 'package:MayTeam/core/constant/color.dart';
-import 'package:MayTeam/core/constant/text_style.dart';
-import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:mayteam/core/constant/color.dart';
+import 'package:mayteam/core/constant/text_style.dart';
+import 'package:mayteam/core/constant/ui_const.dart';
 import 'package:flutter/material.dart';
 
 class NavigationTile extends StatelessWidget {

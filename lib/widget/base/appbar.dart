@@ -1,4 +1,4 @@
-import 'package:MayTeam/core/constant/color.dart';
+import 'package:mayteam/core/constant/color.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constant/text_style.dart';

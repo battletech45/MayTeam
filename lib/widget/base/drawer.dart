@@ -1,7 +1,7 @@
-import 'package:MayTeam/core/constant/color.dart';
-import 'package:MayTeam/core/service/provider/auth.dart';
-import 'package:MayTeam/core/service/provider/theme.dart';
-import 'package:MayTeam/widget/tile/navigation_tile.dart';
+import 'package:mayteam/core/constant/color.dart';
+import 'package:mayteam/core/service/provider/auth.dart';
+import 'package:mayteam/core/service/provider/theme.dart';
+import 'package:mayteam/widget/tile/navigation_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

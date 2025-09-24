@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:MayTeam/core/constant/text_style.dart';
-import 'package:MayTeam/core/service/firebase.dart';
-import 'package:MayTeam/core/service/log.dart';
-import 'package:MayTeam/core/service/provider/auth.dart';
-import 'package:MayTeam/core/service/provider/theme.dart';
-import 'package:MayTeam/widget/base/appbar.dart';
-import 'package:MayTeam/widget/base/scaffold.dart';
-import 'package:MayTeam/widget/tile/profile_tile.dart';
+import 'package:mayteam/core/constant/text_style.dart';
+import 'package:mayteam/core/service/firebase.dart';
+import 'package:mayteam/core/service/log.dart';
+import 'package:mayteam/core/service/provider/auth.dart';
+import 'package:mayteam/core/service/provider/theme.dart';
+import 'package:mayteam/widget/base/appbar.dart';
+import 'package:mayteam/widget/base/scaffold.dart';
+import 'package:mayteam/widget/tile/profile_tile.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

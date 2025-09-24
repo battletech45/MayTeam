@@ -1,5 +1,5 @@
-import 'package:MayTeam/core/constant/text_style.dart';
-import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:mayteam/core/constant/text_style.dart';
+import 'package:mayteam/core/constant/ui_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';

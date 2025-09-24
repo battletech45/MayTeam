@@ -1,23 +1,19 @@
 {
   "project_info": {
     "project_number": "336574716884",
+    "firebase_url": "https://mayteam-b82d5-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "mayteam-b82d5",
     "storage_bucket": "mayteam-b82d5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:336574716884:android:b6c80d5d28aecf4db91441",
+        "mobilesdk_app_id": "1:336574716884:android:8d594285a499c846b91441",
         "android_client_info": {
-          "package_name": "com.example.flutter_app"
+          "package_name": "com.example.mayteam"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "336574716884-n3fglqlqr5up4k2mp1goovbsh8kiqsg5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyDR2vORJmpeTn8eHt3VUTyUQH4BznO8mR8"
@@ -25,19 +21,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "336574716884-n3fglqlqr5up4k2mp1goovbsh8kiqsg5.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "336574716884-rofen648kd7o8jr01m4es1nf6pj2r7q3.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.flutterApp"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -1,4 +1,4 @@
-import 'package:MayTeam/core/service/log.dart';
+import 'package:mayteam/core/service/log.dart';
 import 'package:flutter/material.dart';
 
 enum DeviceType { phone, tablet, other }

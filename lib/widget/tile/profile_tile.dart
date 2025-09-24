@@ -1,5 +1,5 @@
-import 'package:MayTeam/core/constant/text_style.dart';
-import 'package:MayTeam/core/service/provider/theme.dart';
+import 'package:mayteam/core/constant/text_style.dart';
+import 'package:mayteam/core/service/provider/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

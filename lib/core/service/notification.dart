@@ -57,7 +57,6 @@ class NotificationService {
       requestBadgePermission: true,
       requestSoundPermission: true,
       requestProvisionalPermission: true,
-      onDidReceiveLocalNotification: (id, title, body, payload) {},
     );
     var settings = InitializationSettings(android: android, iOS: ios, macOS: ios);
     await plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();

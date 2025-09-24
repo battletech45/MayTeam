@@ -1,8 +1,8 @@
-import 'package:MayTeam/core/constant/text_style.dart';
-import 'package:MayTeam/core/service/firebase.dart';
-import 'package:MayTeam/core/service/provider/theme.dart';
-import 'package:MayTeam/core/util/extension.dart';
-import 'package:MayTeam/widget/dialog/alert_dialog.dart';
+import 'package:mayteam/core/constant/text_style.dart';
+import 'package:mayteam/core/service/firebase.dart';
+import 'package:mayteam/core/service/provider/theme.dart';
+import 'package:mayteam/core/util/extension.dart';
+import 'package:mayteam/widget/dialog/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

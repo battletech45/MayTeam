@@ -1,6 +1,6 @@
-import 'package:MayTeam/core/constant/color.dart';
-import 'package:MayTeam/core/constant/text_style.dart';
-import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:mayteam/core/constant/color.dart';
+import 'package:mayteam/core/constant/text_style.dart';
+import 'package:mayteam/core/constant/ui_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -77,7 +77,7 @@ class AppTheme {
     showDragHandle: true,
   );
 
-  static DialogTheme dialogTheme = DialogTheme(
+  static DialogThemeData dialogTheme = DialogThemeData(
     shape: UIConst.rectangelBorder,
     surfaceTintColor: Colors.transparent,
   );
@@ -110,7 +110,7 @@ class AppTheme {
     hintStyle: AppTextStyle.fieldHint,
   );
 
-  static final _cardTheme = CardTheme(
+  static final _cardTheme = CardThemeData(
     surfaceTintColor: Colors.transparent,
     color: AppColor.outgoingBubbleBackground,
     shape: UIConst.rectangelBorder.copyWith(side: const BorderSide(color: AppColor.borderColor, width: 1, style: BorderStyle.solid)),
@@ -118,7 +118,7 @@ class AppTheme {
     elevation: 0,
   );
 
-  static final _cardThemeDark = CardTheme(
+  static final _cardThemeDark = CardThemeData(
     surfaceTintColor: Colors.transparent,
     color: AppColor.outgoingBubbleBackgroundDark,
     shape: UIConst.rectangelBorder,

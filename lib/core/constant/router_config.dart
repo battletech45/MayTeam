@@ -1,8 +1,8 @@
-import 'package:MayTeam/screen/auth_screen/email_verification_screen.dart';
-import 'package:MayTeam/screen/auth_screen/login_screen.dart';
-import 'package:MayTeam/screen/auth_screen/register_screen.dart';
-import 'package:MayTeam/screen/main_screen/main_screen.dart';
-import 'package:MayTeam/screen/profile_screen/profile_screen.dart';
+import 'package:mayteam/screen/auth_screen/email_verification_screen.dart';
+import 'package:mayteam/screen/auth_screen/login_screen.dart';
+import 'package:mayteam/screen/auth_screen/register_screen.dart';
+import 'package:mayteam/screen/main_screen/main_screen.dart';
+import 'package:mayteam/screen/profile_screen/profile_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

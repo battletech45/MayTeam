@@ -1,7 +1,7 @@
-import 'package:MayTeam/core/constant/router_config.dart';
-import 'package:MayTeam/core/constant/ui_const.dart';
-import 'package:MayTeam/core/service/provider/auth.dart';
-import 'package:MayTeam/core/service/provider/theme.dart';
+import 'package:mayteam/core/constant/router_config.dart';
+import 'package:mayteam/core/constant/ui_const.dart';
+import 'package:mayteam/core/service/provider/auth.dart';
+import 'package:mayteam/core/service/provider/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,10 +22,10 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await providerInit();
   await Future.delayed(const Duration(seconds: 1));
-  runApp(MayTeam());
+  runApp(mayteam());
 }
 
-class MayTeam extends StatelessWidget {
+class mayteam extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

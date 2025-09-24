@@ -1,7 +1,6 @@
-import 'package:MayTeam/core/service/log.dart';
+import 'package:mayteam/core/service/log.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/login.dart';

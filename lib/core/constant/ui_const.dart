@@ -1,5 +1,5 @@
-import 'package:MayTeam/core/service/log.dart';
-import 'package:MayTeam/core/util/extension.dart';
+import 'package:mayteam/core/service/log.dart';
+import 'package:mayteam/core/util/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

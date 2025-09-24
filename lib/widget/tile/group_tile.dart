@@ -1,4 +1,4 @@
-import 'package:MayTeam/screen/chat_screen/chat_screen.dart';
+import 'package:mayteam/screen/chat_screen/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

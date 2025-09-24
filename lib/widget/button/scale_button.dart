@@ -1,4 +1,4 @@
-import 'package:MayTeam/core/constant/ui_const.dart';
+import 'package:mayteam/core/constant/ui_const.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/util/math.dart';
