@@ -27,8 +27,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController messageEditingController =
-      new TextEditingController();
+  final TextEditingController messageEditingController = TextEditingController();
   Stream<QuerySnapshot>? _chats;
   DocumentSnapshot? _groupMembers;
 
@@ -38,7 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 reverse: true,
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
@@ -105,6 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       backgroundImage: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppAppBar(
         isDrawer: false,
         title: widget.groupName,

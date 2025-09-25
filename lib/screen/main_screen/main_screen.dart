@@ -38,11 +38,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   static final _drawerWidth = UIConst.screenSize.width * 0.8;
   static double get drawerWidth => _drawerWidth;
-  ScrollController scrollController =
-      ScrollController(initialScrollOffset: drawerWidth);
+  ScrollController scrollController = ScrollController(initialScrollOffset: drawerWidth);
   late AnimationController animationController;
   late Animation<double> animation;
   ScrollPhysics physics = const NeverScrollableScrollPhysics();
+  bool isAdmin = false;
   bool isDragging = false;
   bool get isDrawerClosed => scrollController.offset == drawerWidth;
 
@@ -57,7 +57,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Future<void> initNotification() async {
     notificationService = NotificationService(context);
     await notificationService.initNotification();
-    //await FirebaseMessaging.instance.subscribeToTopic('group_notification');
+    await FirebaseMessaging.instance.subscribeToTopic('group_notification');
     FirebaseMessaging.onMessage.listen(foregroundMessageListener);
     FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedApp);
     await FirebaseMessaging.instance.getInitialMessage().then((initMessage) {
@@ -204,11 +204,20 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   _getUserAuthAndJoinedGroups() async {
-    FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid)
+    await FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid)
         .then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
       });
+    });
+    await FirebaseService.getUserData(context.read<AutherProvider>().user!.uid)
+        .then((val) {
+          if(val.data() != null) {
+            final data = val.get("settings")["isAdmin"];
+            setState(() {
+              isAdmin = data;
+            });
+          }
     });
   }
 
@@ -285,8 +294,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         appBar: AppAppBar(
                           isDrawer: true,
                           progress: animationController,
-                          actions: [
-                            IconButton(
+                          actions: <Widget>[
+                            if(isAdmin) IconButton(
                               onPressed: () async {
                                 context.showAppDialog(AppAlertDialog(
                                   title: 'Yeni Oda Oluştur',

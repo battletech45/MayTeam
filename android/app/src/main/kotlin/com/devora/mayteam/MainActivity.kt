@@ -1,4 +1,4 @@
-package com.example.mayteam
+package com.devora.mayteam
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
