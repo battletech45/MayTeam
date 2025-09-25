@@ -39,7 +39,9 @@ class AppAlertDialog extends StatelessWidget {
     this.type,
     this.customIcon,
     this.leftFunction,
-    this.rightFunction, this.repeat, this.height,
+    this.rightFunction,
+    this.repeat,
+    this.height,
   });
 
   @override
@@ -58,10 +60,20 @@ class AppAlertDialog extends StatelessWidget {
               children: [
                 Text(
                   title ?? "Uyarı!",
-                  style: AppTextStyle.bigButtonText.copyWith(color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryTextColor : AppColor.primaryTextColorDark),
+                  style: AppTextStyle.bigButtonText.copyWith(
+                      color:
+                          context.watch<ThemeProvider>().themeString == 'light'
+                              ? AppColor.primaryTextColor
+                              : AppColor.primaryTextColorDark),
                 ),
                 type != null ? UIConst.verticalGap() : UIConst.zeroGap,
-                SizedBox(height: height != null ? height : (customIcon != null || type != null) ? 200 : 0, child: buildImage(type, customIcon, repeat)),
+                SizedBox(
+                    height: height != null
+                        ? height
+                        : (customIcon != null || type != null)
+                            ? 200
+                            : 0,
+                    child: buildImage(type, customIcon, repeat)),
                 UIConst.verticalGap(),
                 text == null
                     ? UIConst.zeroGap
@@ -71,7 +83,13 @@ class AppAlertDialog extends StatelessWidget {
                           child: Text(
                             text!,
                             textAlign: TextAlign.center,
-                            style: AppTextStyle.subtitleTextButton.copyWith(color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryTextColor : AppColor.primaryTextColorDark),
+                            style: AppTextStyle.subtitleTextButton.copyWith(
+                                color: context
+                                            .watch<ThemeProvider>()
+                                            .themeString ==
+                                        'light'
+                                    ? AppColor.primaryTextColor
+                                    : AppColor.primaryTextColorDark),
                           ),
                         ),
                       ),
@@ -89,18 +107,23 @@ class AppAlertDialog extends StatelessWidget {
                     highlightColor: leftTextColor?.withOpacity(0.1),
                     splashColor: leftTextColor?.withOpacity(0.3),
                     onTap: () {
-                      if(leftFunction != null) {
+                      if (leftFunction != null) {
                         leftFunction!();
                         Navigator.of(context).pop(true);
-                      }
-                      else {
+                      } else {
                         Navigator.of(context).pop(true);
                       }
                     },
-                    borderRadius: BorderRadius.only(bottomLeft: UIConst.radius, bottomRight: isSingleButton ? UIConst.radius : Radius.zero),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: UIConst.radius,
+                        bottomRight:
+                            isSingleButton ? UIConst.radius : Radius.zero),
                     child: Ink(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(bottomLeft: UIConst.radius, bottomRight: isSingleButton ? UIConst.radius : Radius.zero),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: UIConst.radius,
+                            bottomRight:
+                                isSingleButton ? UIConst.radius : Radius.zero),
                       ),
                       child: Center(
                         child: Text(
@@ -111,7 +134,9 @@ class AppAlertDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-                isSingleButton ? UIConst.zeroGap : const VerticalDivider(width: 0),
+                isSingleButton
+                    ? UIConst.zeroGap
+                    : const VerticalDivider(width: 0),
                 isSingleButton
                     ? UIConst.zeroGap
                     : Expanded(
@@ -119,23 +144,25 @@ class AppAlertDialog extends StatelessWidget {
                           splashColor: rightTextColor?.withOpacity(0.3),
                           highlightColor: rightTextColor?.withOpacity(0.1),
                           onTap: () {
-                            if(rightFunction != null) {
+                            if (rightFunction != null) {
                               rightFunction!();
                               Navigator.of(context).pop(false);
-                            }
-                            else {
+                            } else {
                               Navigator.of(context).pop(false);
                             }
                           },
-                          borderRadius: BorderRadius.only(bottomRight: UIConst.radius),
+                          borderRadius:
+                              BorderRadius.only(bottomRight: UIConst.radius),
                           child: Ink(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(bottomRight: UIConst.radius),
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: UIConst.radius),
                             ),
                             child: Center(
                               child: Text(
                                 rightButtonText ?? "İptal",
-                                style: AppTextStyle.smallButtonText.copyWith(color: rightTextColor),
+                                style: AppTextStyle.smallButtonText
+                                    .copyWith(color: rightTextColor),
                               ),
                             ),
                           ),
@@ -154,15 +181,18 @@ class AppAlertDialog extends StatelessWidget {
       return widget;
     } else {
       if (type == AlertType.approved) {
-        return Lottie.asset('assets/lottie/check.json', repeat: repeat ?? false);
+        return Lottie.asset('assets/lottie/check.json',
+            repeat: repeat ?? false);
       } else if (type == AlertType.info) {
         return Lottie.asset('assets/lottie/info.json', repeat: repeat ?? false);
       } else if (type == AlertType.denied) {
-        return Lottie.asset('assets/lottie/cancel.json', repeat: repeat ?? false);
-      } else if (type == AlertType.joining){
+        return Lottie.asset('assets/lottie/cancel.json',
+            repeat: repeat ?? false);
+      } else if (type == AlertType.joining) {
         return Lottie.asset('assets/lottie/join.json', repeat: repeat ?? false);
       } else if (type == AlertType.warn) {
-        return Lottie.asset('assets/lottie/warning.json', repeat: repeat ?? false);
+        return Lottie.asset('assets/lottie/warning.json',
+            repeat: repeat ?? false);
       } else {
         return UIConst.zeroGap;
       }

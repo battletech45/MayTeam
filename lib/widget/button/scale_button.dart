@@ -45,7 +45,8 @@ class ScaleButton extends StatefulWidget {
   State<ScaleButton> createState() => _ScaleButtonState();
 }
 
-class _ScaleButtonState extends State<ScaleButton> with SingleTickerProviderStateMixin {
+class _ScaleButtonState extends State<ScaleButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -79,19 +80,26 @@ class _ScaleButtonState extends State<ScaleButton> with SingleTickerProviderStat
           },
           onTap: widget.waitAnimation
               ? () async {
-            await _controller.forward();
-            if (widget.onTap != null) {
-              widget.onTap!();
-            }
-            _controller.reverse();
-          }
+                  await _controller.forward();
+                  if (widget.onTap != null) {
+                    widget.onTap!();
+                  }
+                  _controller.reverse();
+                }
               : widget.onTap,
           child: Transform.scale(
-            scale:
-            AppMath.generalNormalizeValue(value: _animation.value, minValue: 0.3, maxValue: 1, minNormalizedValue: 0.95, maxNormalizedValue: 1),
+            scale: AppMath.generalNormalizeValue(
+                value: _animation.value,
+                minValue: 0.3,
+                maxValue: 1,
+                minNormalizedValue: 0.95,
+                maxNormalizedValue: 1),
             child: AnimatedContainer(
               duration: UIConst.animationDuration,
-              decoration: widget.decoration ?? (widget.bordered ? UIConst.borderedBoxDecoration : UIConst.boxDecoration),
+              decoration: widget.decoration ??
+                  (widget.bordered
+                      ? UIConst.borderedBoxDecoration
+                      : UIConst.boxDecoration),
               padding: widget.padding ?? UIConst.pageFullPadding(context),
               child: Opacity(
                 opacity: _animation.value,

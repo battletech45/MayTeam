@@ -10,7 +10,9 @@ class SlidingPageTransition extends PageTransitionsBuilder {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    final tween = Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0)).chain(CurveTween(curve: Curves.fastLinearToSlowEaseIn));
+    final tween =
+        Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0))
+            .chain(CurveTween(curve: Curves.fastLinearToSlowEaseIn));
     return SlideTransition(
       position: animation.drive(tween),
       child: child,

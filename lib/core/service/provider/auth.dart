@@ -45,39 +45,40 @@ class AutherProvider with ChangeNotifier {
     return b;
   }
 
-  Future<User?> signInWithEmailAndPassWord(String email, String password) async {
+  Future<User?> signInWithEmailAndPassWord(
+      String email, String password) async {
     try {
-      UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
-      if(user != null) {
+      if (user != null) {
         return user;
-      }
-      else {
+      } else {
         return null;
       }
-    }
-    catch(e) {
+    } catch (e) {
       LoggerService.logError(e.toString());
       rethrow;
     }
   }
 
-  Future<User?> registerWithEmailAndPassword(String fullName, String email, String password, String phoneNumber) async {
+  Future<User?> registerWithEmailAndPassword(String fullName, String email,
+      String password, String phoneNumber) async {
     try {
-      UserCredential result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
 
-      if(user != null) {
+      if (user != null) {
         await user.updateProfile(displayName: fullName);
         user = await signInWithEmailAndPassWord(email, password);
-        await FirebaseService.createUser(user!.uid, fullName, email, phoneNumber);
+        await FirebaseService.createUser(
+            user!.uid, fullName, email, phoneNumber);
         return user;
-      }
-      else {
+      } else {
         return null;
       }
-    }
-    catch(e) {
+    } catch (e) {
       LoggerService.logError(e.toString());
       return null;
     }
@@ -97,8 +98,7 @@ class AutherProvider with ChangeNotifier {
       await FirebaseAuth.instance.signOut();
       await _clearLogin();
       notifyListeners();
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
@@ -114,8 +114,13 @@ class AutherProvider with ChangeNotifier {
     return 'Kullanıcı Adı veya Şifre Hatalı';
   }
 
-  Future<String?> register(String name, LoginModel model, String phoneNumber,) async {
-    final tmp = await registerWithEmailAndPassword(name, model.email, model.password, phoneNumber);
+  Future<String?> register(
+    String name,
+    LoginModel model,
+    String phoneNumber,
+  ) async {
+    final tmp = await registerWithEmailAndPassword(
+        name, model.email, model.password, phoneNumber);
     if (tmp != null) {
       user = tmp;
       await writeShared(model);

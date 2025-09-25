@@ -17,83 +17,76 @@ const _mainShellKey = GlobalObjectKey<NavigatorState>('shell');
 
 class AppRouterConfig {
   static final analytics = FirebaseAnalytics.instance;
-  static final firebaseObserver = FirebaseAnalyticsObserver(analytics: analytics);
+  static final firebaseObserver =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   static GoRouter router = GoRouter(
-    navigatorKey: rootKey,
-    initialLocation: '/landing_screen',
-    redirect: (context, state) {
-      if(state.error != null) {
-        return '/';
-      }
-      else {
-        return null;
-      }
-    },
-    errorPageBuilder: (context, state) => NoTransitionPage(
-        child: Scaffold(
-          appBar: AppBar(),
-          body: const SafeArea(
-            child: PageError(),
-          ),
-        )
-    ),
-    observers: [firebaseObserver],
-    routes: [
-      GoRoute(
-          path: '/landing_screen',
-          parentNavigatorKey: rootKey,
-          name: 'Karşılama Sayfası',
-          builder: (context, state) => const LandingScreen()
-      ),
-      GoRoute(
-        path: '/',
-        parentNavigatorKey: rootKey,
-        name: 'Ana Sayfa',
-        builder: (context, state) => const MainScreen()
-      ),
-      GoRoute(
-        path: '/chat/:id',
-        parentNavigatorKey: rootKey,
-        name: 'Chat Sayfası',
-        builder: (context, state) => ChatScreen(groupID: state.pathParameters['id'] as String, groupName: state.extra as String)
-      ),
-      GoRoute(
-        path: '/search',
-        parentNavigatorKey: rootKey,
-        name: 'Arama Sayfası',
-        builder: (context, state) => const SearchScreen()
-      ),
-      GoRoute(
-        path: '/verification',
-        parentNavigatorKey: rootKey,
-        name: 'Mail Onaylama Sayfası',
-        builder: (context, state) => const EmailVerificationScreen()
-      ),
-      GoRoute(
-        path: '/login',
-        parentNavigatorKey: rootKey,
-        name: 'Giriş Sayfası',
-        builder: (context, state) => const LoginScreen()
-      ),
-      GoRoute(
-        path: '/register',
-        parentNavigatorKey: rootKey,
-        name: 'Kayıt Sayfası',
-        builder: (context, state) => const RegisterScreen()
-      ),
-      GoRoute(
-        path: '/verify',
-        parentNavigatorKey: rootKey,
-        name: 'Email Onay Sayfası',
-        builder: (context, state) => const EmailVerificationScreen()
-      ),
-      GoRoute(
-        path: '/profile',
-        parentNavigatorKey: rootKey,
-        name: 'Profil Sayfası',
-        builder: (context, state) => const ProfileScreen()
-      )
-    ]
-  );
+      navigatorKey: rootKey,
+      initialLocation: '/landing_screen',
+      redirect: (context, state) {
+        if (state.error != null) {
+          return '/';
+        } else {
+          return null;
+        }
+      },
+      errorPageBuilder: (context, state) => NoTransitionPage(
+              child: Scaffold(
+            appBar: AppBar(),
+            body: const SafeArea(
+              child: PageError(),
+            ),
+          )),
+      observers: [
+        firebaseObserver
+      ],
+      routes: [
+        GoRoute(
+            path: '/landing_screen',
+            parentNavigatorKey: rootKey,
+            name: 'Karşılama Sayfası',
+            builder: (context, state) => const LandingScreen()),
+        GoRoute(
+            path: '/',
+            parentNavigatorKey: rootKey,
+            name: 'Ana Sayfa',
+            builder: (context, state) => const MainScreen()),
+        GoRoute(
+            path: '/chat/:id',
+            parentNavigatorKey: rootKey,
+            name: 'Chat Sayfası',
+            builder: (context, state) => ChatScreen(
+                groupID: state.pathParameters['id'] as String,
+                groupName: state.extra as String)),
+        GoRoute(
+            path: '/search',
+            parentNavigatorKey: rootKey,
+            name: 'Arama Sayfası',
+            builder: (context, state) => const SearchScreen()),
+        GoRoute(
+            path: '/verification',
+            parentNavigatorKey: rootKey,
+            name: 'Mail Onaylama Sayfası',
+            builder: (context, state) => const EmailVerificationScreen()),
+        GoRoute(
+            path: '/login',
+            parentNavigatorKey: rootKey,
+            name: 'Giriş Sayfası',
+            builder: (context, state) => const LoginScreen()),
+        GoRoute(
+            path: '/register',
+            parentNavigatorKey: rootKey,
+            name: 'Kayıt Sayfası',
+            builder: (context, state) => const RegisterScreen()),
+        GoRoute(
+            path: '/verify',
+            parentNavigatorKey: rootKey,
+            name: 'Email Onay Sayfası',
+            builder: (context, state) => const EmailVerificationScreen()),
+        GoRoute(
+            path: '/profile',
+            parentNavigatorKey: rootKey,
+            name: 'Profil Sayfası',
+            builder: (context, state) => const ProfileScreen())
+      ]);
 }

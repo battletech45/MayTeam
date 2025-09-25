@@ -5,14 +5,13 @@ class LoggerService {
 
   static final Logger _logger = Logger(
     printer: PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      printTime: true,
-      noBoxingByDefault: true
-    ),
+        methodCount: 2,
+        errorMethodCount: 8,
+        lineLength: 120,
+        colors: true,
+        printEmojis: true,
+        printTime: true,
+        noBoxingByDefault: true),
   );
 
   static void logDebug(String message) {
@@ -27,8 +26,8 @@ class LoggerService {
     _logger.w(message);
   }
 
-  static void logError(String message, [dynamic error, StackTrace? stackTrace]) {
+  static void logError(String message,
+      [dynamic error, StackTrace? stackTrace]) {
     _logger.e(message, error: error, stackTrace: stackTrace);
   }
 }
-

@@ -7,7 +7,11 @@ class SearchTile extends StatelessWidget {
   final String admin;
   final VoidCallback onTap;
 
-  const SearchTile({super.key, required this.groupName, required this.admin, required this.onTap});
+  const SearchTile(
+      {super.key,
+      required this.groupName,
+      required this.admin,
+      required this.onTap});
   @override
   Widget build(BuildContext context) {
     return ListTile(

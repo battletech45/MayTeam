@@ -32,7 +32,10 @@ class AppScaffold extends StatelessWidget {
         child: DecoratedBox(
           decoration: backgroundImage
               ? const BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/images/logo.png'), opacity: 0.5, repeat: ImageRepeat.repeat),
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/logo.png'),
+                      opacity: 0.5,
+                      repeat: ImageRepeat.repeat),
                 )
               : const BoxDecoration(),
           child: child,

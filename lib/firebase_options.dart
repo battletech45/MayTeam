@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDR2vORJmpeTn8eHt3VUTyUQH4BznO8mR8',
-    appId: '1:336574716884:android:8d594285a499c846b91441',
+    appId: '1:336574716884:android:6dc907067849db86b91441',
     messagingSenderId: '336574716884',
     projectId: 'mayteam-b82d5',
     databaseURL: 'https://mayteam-b82d5-default-rtdb.europe-west1.firebasedatabase.app',
@@ -60,12 +60,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBNJSXPmndk7iNjbOCx9Fo68i607pKviTg',
-    appId: '1:336574716884:ios:fb8c4c5788de0f8eb91441',
+    appId: '1:336574716884:ios:a4d981eadbd20117b91441',
     messagingSenderId: '336574716884',
     projectId: 'mayteam-b82d5',
     databaseURL: 'https://mayteam-b82d5-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'mayteam-b82d5.appspot.com',
-    iosBundleId: 'com.example.mayteam',
+    iosBundleId: 'com.devora.mayteam',
   );
 
 }

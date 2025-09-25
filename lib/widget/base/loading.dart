@@ -21,7 +21,8 @@ class LoadingWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          LoadingAnimationWidget.discreteCircle(color: color ?? Colors.white, size: size ?? 48.w),
+          LoadingAnimationWidget.discreteCircle(
+              color: color ?? Colors.white, size: size ?? 48.w),
           6.h.verticalSpace,
           Text(
             text!,
@@ -30,7 +31,8 @@ class LoadingWidget extends StatelessWidget {
         ],
       );
     } else {
-      return LoadingAnimationWidget.discreteCircle(color: color ?? Colors.white, size: size ?? 48.w);
+      return LoadingAnimationWidget.discreteCircle(
+          color: color ?? Colors.white, size: size ?? 48.w);
     }
   }
 }
@@ -66,7 +68,10 @@ class AppErrorWidget extends StatelessWidget {
             : Text(
                 'Hata Kodu: ${errorCode ?? 700}',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColor.iconColor, fontSize: 12.sp, fontWeight: FontWeight.w300),
+                style: TextStyle(
+                    color: AppColor.iconColor,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w300),
               )
       ],
     );
@@ -101,7 +106,8 @@ class PageError extends StatelessWidget {
           10.h.verticalSpace,
           FilledButton(
             onPressed: () => context.go('/'),
-            style: FilledButton.styleFrom(backgroundColor: AppColor.primaryBackgroundColor),
+            style: FilledButton.styleFrom(
+                backgroundColor: AppColor.primaryBackgroundColor),
             child: const Text('Ana Sayfa'),
           )
         ],
@@ -157,7 +163,8 @@ class ImageError extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.hide_image_outlined, size: 36.sp, color: AppColor.primaryBackgroundColor),
+        Icon(Icons.hide_image_outlined,
+            size: 36.sp, color: AppColor.primaryBackgroundColor),
         Text('Görsel bulunamadı', style: AppTextStyle.imageError),
         Text(str, style: AppTextStyle.imageErrorCode),
       ],

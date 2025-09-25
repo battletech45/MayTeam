@@ -7,7 +7,8 @@ class AnimatedLogo extends StatefulWidget {
   _AnimatedChatLogoState createState() => _AnimatedChatLogoState();
 }
 
-class _AnimatedChatLogoState extends State<AnimatedLogo> with SingleTickerProviderStateMixin {
+class _AnimatedChatLogoState extends State<AnimatedLogo>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _rotationAnimation;
@@ -29,7 +30,10 @@ class _AnimatedChatLogoState extends State<AnimatedLogo> with SingleTickerProvid
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _colorAnimation = ColorTween(begin: AppColor.primaryBackgroundColor, end: AppColor.secondaryBackgroundColor).animate(
+    _colorAnimation = ColorTween(
+            begin: AppColor.primaryBackgroundColor,
+            end: AppColor.secondaryBackgroundColor)
+        .animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
@@ -43,25 +47,26 @@ class _AnimatedChatLogoState extends State<AnimatedLogo> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _scaleAnimation.value,
-              child: Transform.rotate(
-                angle: _rotationAnimation.value * 2.0 * 3.14159,
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    _colorAnimation.value!,
-                    BlendMode.modulate,
-                  ),
-                  child: child,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Transform.rotate(
+              angle: _rotationAnimation.value * 2.0 * 3.14159,
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  _colorAnimation.value!,
+                  BlendMode.modulate,
                 ),
+                child: child,
               ),
-            );
-          },
-          child: Image.asset('assets/images/logo.png', width: 300.w, height: 300.h),
-        ),
-      );
+            ),
+          );
+        },
+        child:
+            Image.asset('assets/images/logo.png', width: 300.w, height: 300.h),
+      ),
+    );
   }
 }

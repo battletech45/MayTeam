@@ -28,29 +28,29 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   Future<void> send() async {
-    if(_formKey.currentState!.validate()) {
-      context.read<AutherProvider>().login(LoginModel(email: emailController.text, password: passwordController.text))
+    if (_formKey.currentState!.validate()) {
+      context
+          .read<AutherProvider>()
+          .login(LoginModel(
+              email: emailController.text, password: passwordController.text))
           .then((value) {
-            if(value == null) {
-              context.go('/');
-            }
-            else {
-              context.showAppDialog(
-                AppAlertDialog(
-                  type: AlertType.denied,
-                  text: 'Hatalı Giriş Bilgisi Girdiniz.',
-                  title: 'Hata !',
-                  isSingleButton: true,
-                )
-              );
-            }
+        if (value == null) {
+          context.go('/');
+        } else {
+          context.showAppDialog(AppAlertDialog(
+            type: AlertType.denied,
+            text: 'Hatalı Giriş Bilgisi Girdiniz.',
+            title: 'Hata !',
+            isSingleButton: true,
+          ));
+        }
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return  AppScaffold(
+    return AppScaffold(
       backgroundImage: false,
       child: Form(
           key: _formKey,
@@ -60,7 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset('assets/images/logo.png', width: 175.w, height: 175.h),
+                Image.asset('assets/images/logo.png',
+                    width: 175.w, height: 175.h),
                 Text("Log In", style: AppTextStyle.dialogTitle),
                 UIConst.verticalBlankSpace,
                 AppFormField(
@@ -95,9 +96,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: <TextSpan>[
                       TextSpan(
                         text: 'Click here',
-                        style: AppTextStyle.dialogText.copyWith(decoration: TextDecoration.underline),
+                        style: AppTextStyle.dialogText
+                            .copyWith(decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = ()  {
+                          ..onTap = () {
                             context.go('/register');
                           },
                       ),
@@ -106,8 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-          )
-      ),
+          )),
     );
   }
 }

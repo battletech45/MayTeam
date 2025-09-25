@@ -53,7 +53,9 @@ extension DateTimeUtils on DateTime {
   }
 
   bool isSameDay(DateTime other) {
-    return (this).year == other.year && (this).month == other.month && (this).day == other.day;
+    return (this).year == other.year &&
+        (this).month == other.month &&
+        (this).day == other.day;
   }
 }
 
@@ -177,9 +179,9 @@ extension DialogExtension on BuildContext {
   ///```
   ///Şeklinde kullanılabilir
   Future<T?> showAppDialog<T extends Object?>(
-      Widget child, {
-        RouteSettings? settings,
-      }) {
+    Widget child, {
+    RouteSettings? settings,
+  }) {
     return rootKey.currentState!.push<T>(
       AppDialogRoute<T>(
         builder: (_) => child,
@@ -209,18 +211,22 @@ class AppDialogRoute<T> extends PopupRoute<T> {
   String? get barrierLabel => "label";
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     return builder(context);
   }
 
   @override
   Widget buildTransitions(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-      ) {
-    Animation<double> anim2 = CurvedAnimation(parent: animation, curve: Curves.bounceOut, reverseCurve: Curves.linear);
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    Animation<double> anim2 = CurvedAnimation(
+        parent: animation,
+        curve: Curves.bounceOut,
+        reverseCurve: Curves.linear);
     return FadeTransition(
       opacity: animation,
       child: ScaleTransition(

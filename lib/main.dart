@@ -17,8 +17,10 @@ late String themeStr;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
+      overlays: [SystemUiOverlay.top]);
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await providerInit();
   await Future.delayed(const Duration(seconds: 1));
@@ -26,40 +28,40 @@ void main() async {
 }
 
 class mayteam extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     UIConst.init(context);
-       return MultiProvider(
-         providers: [
-           ChangeNotifierProvider.value(value: authProvider),
-           ChangeNotifierProvider(create: (context) => ThemeProvider(themeString: themeStr))
-         ],
-         builder: (context, __) {
-           return ScreenUtilInit(
-             designSize: const Size(393, 808),
-             builder: (context, __) {
-               context.read<ThemeProvider>().init(context);
-               return MaterialApp.router(
-                 routerConfig: AppRouterConfig.router,
-                 debugShowCheckedModeBanner: false,
-                 scrollBehavior: const CupertinoScrollBehavior(),
-                 theme: context.watch<ThemeProvider>().selected,
-                 builder: (context, child) {
-                   return MediaQuery(
-                       data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
-                       child: child!
-                   );
-                 },
-               );
-             },
-           );
-         },
-       );
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: authProvider),
+        ChangeNotifierProvider(
+            create: (context) => ThemeProvider(themeString: themeStr))
+      ],
+      builder: (context, __) {
+        return ScreenUtilInit(
+          designSize: const Size(393, 808),
+          builder: (context, __) {
+            context.read<ThemeProvider>().init(context);
+            return MaterialApp.router(
+              routerConfig: AppRouterConfig.router,
+              debugShowCheckedModeBanner: false,
+              scrollBehavior: const CupertinoScrollBehavior(),
+              theme: context.watch<ThemeProvider>().selected,
+              builder: (context, child) {
+                return MediaQuery(
+                    data: MediaQuery.of(context)
+                        .copyWith(textScaler: TextScaler.noScaling),
+                    child: child!);
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }
 
-Future <void> providerInit() async {
+Future<void> providerInit() async {
   authProvider = AutherProvider();
   await authProvider.init();
   themeStr = await checkSharedForTheme();
@@ -74,7 +76,3 @@ Future<String> checkSharedForTheme() async {
     return 'platform';
   }
 }
-
-
-
-

@@ -27,17 +27,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  PhoneNumber phoneNumber = PhoneNumber(countryISOCode: 'TR', countryCode: '90', number: '');
+  PhoneNumber phoneNumber =
+      PhoneNumber(countryISOCode: 'TR', countryCode: '90', number: '');
 
   Future<void> send() async {
-    if(_formKey.currentState!.validate()) {
-      context.read<AutherProvider>().register(nameController.text, LoginModel(email: emailController.text, password: passwordController.text), phoneNumber.number)
-      .then((value) {
-        if(value == null) {
+    if (_formKey.currentState!.validate()) {
+      context
+          .read<AutherProvider>()
+          .register(
+              nameController.text,
+              LoginModel(
+                  email: emailController.text,
+                  password: passwordController.text),
+              phoneNumber.number)
+          .then((value) {
+        if (value == null) {
           context.read<AutherProvider>().user!.sendEmailVerification();
           context.go('/verify');
-        }
-        else {
+        } else {
           print('Bir Hata oluştu');
         }
       });
@@ -56,7 +63,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset('assets/images/logo.png', width: 175.w, height: 175.h),
+                Image.asset('assets/images/logo.png',
+                    width: 175.w, height: 175.h),
                 Text("Sign In", style: AppTextStyle.dialogTitle),
                 UIConst.verticalBlankSpace,
                 AppFormField(
@@ -106,18 +114,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: <TextSpan>[
                       TextSpan(
                         text: 'Sign In',
-                        style: AppTextStyle.dialogText.copyWith(decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()..onTap = () {
-                          context.go('/login');
-                        },
+                        style: AppTextStyle.dialogText
+                            .copyWith(decoration: TextDecoration.underline),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            context.go('/login');
+                          },
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-          )
-      ),
+          )),
     );
   }
 }

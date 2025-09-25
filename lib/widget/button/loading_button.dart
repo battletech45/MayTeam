@@ -9,7 +9,12 @@ class LoadingButton extends StatefulWidget {
   final Widget? child;
   final Color? backgroundColor;
   final Color? foregroundColor;
-  const LoadingButton({super.key, required this.onTap, this.child, this.backgroundColor, this.foregroundColor});
+  const LoadingButton(
+      {super.key,
+      required this.onTap,
+      this.child,
+      this.backgroundColor,
+      this.foregroundColor});
 
   @override
   State<LoadingButton> createState() => _LoadingButtonState();
@@ -22,16 +27,16 @@ class _LoadingButtonState extends State<LoadingButton> {
     return FilledButton(
       onPressed: widget.onTap != null
           ? () async {
-        if (!isLoading) {
-          setState(() {
-            isLoading = true;
-          });
-          await widget.onTap!();
-          setState(() {
-            isLoading = false;
-          });
-        }
-      }
+              if (!isLoading) {
+                setState(() {
+                  isLoading = true;
+                });
+                await widget.onTap!();
+                setState(() {
+                  isLoading = false;
+                });
+              }
+            }
           : null,
       style: FilledButton.styleFrom(
         backgroundColor: widget.backgroundColor,
@@ -40,7 +45,9 @@ class _LoadingButtonState extends State<LoadingButton> {
       child: Center(
         child: AnimatedSwitcher(
           duration: UIConst.animationDuration,
-          child: isLoading ? LoadingWidget(key: const ValueKey(true), size: 24.h) : widget.child,
+          child: isLoading
+              ? LoadingWidget(key: const ValueKey(true), size: 24.h)
+              : widget.child,
         ),
       ),
     );

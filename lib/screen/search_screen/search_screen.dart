@@ -21,12 +21,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   TextEditingController searchEditingController = new TextEditingController();
   List searchResult = [];
   QuerySnapshot? allGroupsSnapshot;
   ScrollController? _controller;
-
 
   @override
   void initState() {
@@ -36,23 +34,23 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> _initiateSearch() async {
-      if(allGroupsSnapshot != null && allGroupsSnapshot!.docs.isNotEmpty) {
-        searchResult.clear();
-        setState(() {});
-        allGroupsSnapshot!.docs.forEach((element) {
-          String name = element.get('groupName').toLowerCase();
-          if(name.contains(searchEditingController.text.toLowerCase())) {
-            setState(() {
-              searchResult.add(element);
-            });
-          }
-        });
-      }
+    if (allGroupsSnapshot != null && allGroupsSnapshot!.docs.isNotEmpty) {
+      searchResult.clear();
+      setState(() {});
+      allGroupsSnapshot!.docs.forEach((element) {
+        String name = element.get('groupName').toLowerCase();
+        if (name.contains(searchEditingController.text.toLowerCase())) {
+          setState(() {
+            searchResult.add(element);
+          });
+        }
+      });
+    }
   }
 
-  Future<void> _getAllGroups () async {
+  Future<void> _getAllGroups() async {
     var val = await FirebaseService.getAllGroups();
-    if(val.docs.isNotEmpty) {
+    if (val.docs.isNotEmpty) {
       setState(() {
         allGroupsSnapshot = val;
       });
@@ -60,22 +58,24 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> _onTileClick(QueryDocumentSnapshot doc) async {
-    bool val = await FirebaseService.isUserJoined(context.read<AutherProvider>().user!.uid, doc.get("groupID"));
+    bool val = await FirebaseService.isUserJoined(
+        context.read<AutherProvider>().user!.uid, doc.get("groupID"));
     print(val);
-    if(!val) {
-      await FirebaseService.togglingGroupJoin(context.read<AutherProvider>().user!.uid, doc.get("groupID"), context.read<AutherProvider>().user!.displayName ?? '', doc.get("groupName"));
+    if (!val) {
+      await FirebaseService.togglingGroupJoin(
+          context.read<AutherProvider>().user!.uid,
+          doc.get("groupID"),
+          context.read<AutherProvider>().user!.displayName ?? '',
+          doc.get("groupName"));
       context.pop();
       context.push('/chat/${doc.get("groupID")}', extra: doc.get("groupName"));
-    }
-    else {
-      context.showAppDialog(
-          AppAlertDialog(
-            type: AlertType.warn,
-            isSingleButton: true,
-            text: 'Bu gruba zaten üyesiniz !',
-            title: 'Hata',
-          )
-      );
+    } else {
+      context.showAppDialog(AppAlertDialog(
+        type: AlertType.warn,
+        isSingleButton: true,
+        text: 'Bu gruba zaten üyesiniz !',
+        title: 'Hata',
+      ));
     }
   }
 
@@ -83,49 +83,45 @@ class _SearchScreenState extends State<SearchScreen> {
     return ListView.builder(
         physics: BouncingScrollPhysics(),
         shrinkWrap: true,
-        itemCount: searchResult.isEmpty ? (allGroupsSnapshot?.docs.length ?? 0) : (searchResult.length),
+        itemCount: searchResult.isEmpty
+            ? (allGroupsSnapshot?.docs.length ?? 0)
+            : (searchResult.length),
         itemBuilder: (context, index) {
-          if(allGroupsSnapshot != null && searchResult.isEmpty) {
+          if (allGroupsSnapshot != null && searchResult.isEmpty) {
             return SearchTile(
               groupName: allGroupsSnapshot!.docs[index].get("groupName"),
               admin: allGroupsSnapshot!.docs[index].get("admin"),
-              onTap: () => context.showAppDialog(
-                  AppAlertDialog(
-                    type: AlertType.joining,
-                    isSingleButton: false,
-                    repeat: true,
-                    text: '${allGroupsSnapshot!.docs[index].get("groupName")} odasına giriş yapmak istiyor musunuz ?',
-                    title: 'Giriş Yap',
-                    leftFunction: () async {
-                      _onTileClick(allGroupsSnapshot!.docs[index]);
-                    },
-                  )
-              ),
+              onTap: () => context.showAppDialog(AppAlertDialog(
+                type: AlertType.joining,
+                isSingleButton: false,
+                repeat: true,
+                text:
+                    '${allGroupsSnapshot!.docs[index].get("groupName")} odasına giriş yapmak istiyor musunuz ?',
+                title: 'Giriş Yap',
+                leftFunction: () async {
+                  _onTileClick(allGroupsSnapshot!.docs[index]);
+                },
+              )),
             );
-          }
-          else if(searchResult.isNotEmpty) {
+          } else if (searchResult.isNotEmpty) {
             return SearchTile(
                 groupName: searchResult[index].get("groupName"),
                 admin: searchResult[index].get("admin"),
-                onTap: () => context.showAppDialog(
-                    AppAlertDialog(
+                onTap: () => context.showAppDialog(AppAlertDialog(
                       type: AlertType.joining,
                       isSingleButton: false,
                       repeat: true,
-                      text: '${searchResult[index].get("groupName")} odasına giriş yapmak istiyor musunuz ?',
+                      text:
+                          '${searchResult[index].get("groupName")} odasına giriş yapmak istiyor musunuz ?',
                       title: 'Giriş Yap',
                       leftFunction: () async {
                         _onTileClick(searchResult[index]);
                       },
-                    )
-                )
-            );
-          }
-          else {
+                    )));
+          } else {
             return const SizedBox.shrink();
           }
-        }
-    );
+        });
   }
 
   @override
@@ -143,7 +139,9 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             UIConst.verticalBlankSpace,
             Container(
-              decoration: BoxDecoration(color: AppColor.secondaryBackgroundColor, borderRadius: BorderRadius.circular(80.r)),
+              decoration: BoxDecoration(
+                  color: AppColor.secondaryBackgroundColor,
+                  borderRadius: BorderRadius.circular(80.r)),
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
@@ -151,15 +149,16 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: TextField(
                       onChanged: (val) => {_initiateSearch()},
                       controller: searchEditingController,
-                      style: AppTextStyle.bigButtonText.copyWith(color: AppColor.primaryTextColor),
+                      style: AppTextStyle.bigButtonText
+                          .copyWith(color: AppColor.primaryTextColor),
                       decoration: InputDecoration(
-                        hintText: "Search groups...",
-                        hintStyle: AppTextStyle.bigButtonText.copyWith(color: AppColor.primaryTextColor),
-                        fillColor: AppColor.secondaryBackgroundColor,
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none
-                      ),
+                          hintText: "Search groups...",
+                          hintStyle: AppTextStyle.bigButtonText
+                              .copyWith(color: AppColor.primaryTextColor),
+                          fillColor: AppColor.secondaryBackgroundColor,
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none),
                     ),
                   ),
                   Icon(Icons.search, color: AppColor.primaryTextColor)

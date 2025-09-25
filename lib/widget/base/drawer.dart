@@ -17,7 +17,8 @@ class AppDrawer extends StatelessWidget {
   final double width;
   final VoidCallback onWillCloseDrawer;
 
-  const AppDrawer({super.key, required this.onWillCloseDrawer, required this.width});
+  const AppDrawer(
+      {super.key, required this.onWillCloseDrawer, required this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -31,57 +32,64 @@ class AppDrawer extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Image.asset('assets/images/logo.png', width: 200.w, height: 200.h, fit: BoxFit.cover),
+                Image.asset('assets/images/logo.png',
+                    width: 200.w, height: 200.h, fit: BoxFit.cover),
                 20.verticalSpace,
                 ScaleButton(
                   decoration: BoxDecoration(
-                      color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryBackgroundColor : AppColor.secondaryBackgroundColorDark,
+                      color:
+                          context.watch<ThemeProvider>().themeString == 'light'
+                              ? AppColor.primaryBackgroundColor
+                              : AppColor.secondaryBackgroundColorDark,
                       border: Border.all(
-                        width: 1,
-                        color: AppColor.secondaryBackgroundColor
-                      )
-                  ),
+                          width: 1, color: AppColor.secondaryBackgroundColor)),
                   bordered: true,
                   onTap: () async {
                     onWillCloseDrawer();
                     await context.push('/profile');
                   },
-                  child: const NavigationTile(leading: Icon(Icons.person), title: 'Profili Görüntüle'),
+                  child: const NavigationTile(
+                      leading: Icon(Icons.person), title: 'Profili Görüntüle'),
                 ),
                 20.verticalSpace,
                 ScaleButton(
                   decoration: BoxDecoration(
-                      color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryBackgroundColor : AppColor.secondaryBackgroundColorDark,
+                      color:
+                          context.watch<ThemeProvider>().themeString == 'light'
+                              ? AppColor.primaryBackgroundColor
+                              : AppColor.secondaryBackgroundColorDark,
                       border: Border.all(
-                          width: 1,
-                          color: AppColor.secondaryBackgroundColor
-                      )
-                  ),
+                          width: 1, color: AppColor.secondaryBackgroundColor)),
                   bordered: true,
                   onTap: () async {
-                    await FirebaseAuth.instance.sendPasswordResetEmail(email: context.read<AutherProvider>().user!.email ?? '');
+                    await FirebaseAuth.instance.sendPasswordResetEmail(
+                        email:
+                            context.read<AutherProvider>().user!.email ?? '');
                     await context.read<AutherProvider>().signOut();
                     context.go('/login');
-                    Fluttertoast.showToast(msg: 'E-Posta Başarıyla Gönderildi !');
+                    Fluttertoast.showToast(
+                        msg: 'E-Posta Başarıyla Gönderildi !');
                     onWillCloseDrawer();
                   },
-                  child: const NavigationTile(leading: Icon(Icons.person), title: 'Şifre Sıfırla'),
+                  child: const NavigationTile(
+                      leading: Icon(Icons.person), title: 'Şifre Sıfırla'),
                 ),
                 20.verticalSpace,
                 ScaleButton(
                   decoration: BoxDecoration(
-                      color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryBackgroundColor : AppColor.secondaryBackgroundColorDark,
+                      color:
+                          context.watch<ThemeProvider>().themeString == 'light'
+                              ? AppColor.primaryBackgroundColor
+                              : AppColor.secondaryBackgroundColorDark,
                       border: Border.all(
-                          width: 1,
-                          color: AppColor.secondaryBackgroundColor
-                      )
-                  ),
+                          width: 1, color: AppColor.secondaryBackgroundColor)),
                   bordered: true,
                   onTap: () async {
                     await context.read<AutherProvider>().signOut();
                     context.go('/login');
                   },
-                  child: const NavigationTile(leading: Icon(Icons.logout), title: 'Çıkış Yap'),
+                  child: const NavigationTile(
+                      leading: Icon(Icons.logout), title: 'Çıkış Yap'),
                 ),
               ],
             ),

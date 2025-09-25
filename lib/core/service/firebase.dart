@@ -6,14 +6,17 @@ class FirebaseService {
   //Static constructor
   static final FirebaseService instance = FirebaseService._();
 
-  static final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
-  static final CollectionReference groupCollection = FirebaseFirestore.instance.collection('groups');
+  static final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
+  static final CollectionReference groupCollection =
+      FirebaseFirestore.instance.collection('groups');
 
   static String _destructureId(String res) {
     return res.substring(0, res.indexOf('_'));
   }
 
-  static Future<void> createUser(String userID, String fullName, String email, String phoneNumber) async {
+  static Future<void> createUser(
+      String userID, String fullName, String email, String phoneNumber) async {
     return await userCollection.doc(userID).set({
       'displayName': fullName,
       'email': email,
@@ -34,7 +37,8 @@ class FirebaseService {
     });
   }
 
-  static Future<void> createGroup(String userID, String admin, String groupName) async {
+  static Future<void> createGroup(
+      String userID, String admin, String groupName) async {
     DocumentReference groupDocRef = await groupCollection.add({
       'groupName': groupName,
       'admin': admin,
@@ -54,21 +58,21 @@ class FirebaseService {
     });
   }
 
-  static Future<void> togglingGroupJoin(String userID, String groupID, String userName, String groupName) async {
+  static Future<void> togglingGroupJoin(
+      String userID, String groupID, String userName, String groupName) async {
     DocumentReference groupRef = groupCollection.doc(groupID);
     DocumentReference userRef = userCollection.doc(userID);
     DocumentSnapshot groupSnapshot = await groupCollection.doc(groupID).get();
     List<dynamic> groupMembers = await groupSnapshot.get('members');
 
-    if(groupMembers.contains(userID + '_' + userName)) {
+    if (groupMembers.contains(userID + '_' + userName)) {
       await groupRef.update({
         'members': FieldValue.arrayRemove([userID + '_' + userName])
       });
       await userRef.update({
         'chats': FieldValue.arrayRemove([groupID + '_' + groupName])
       });
-    }
-    else {
+    } else {
       await groupRef.update({
         'members': FieldValue.arrayUnion([userID + '_' + userName])
       });
@@ -84,7 +88,7 @@ class FirebaseService {
     bool flag = false;
 
     groupMembers.forEach((element) {
-      if(_destructureId(element) == userID) {
+      if (_destructureId(element) == userID) {
         flag = true;
       }
     });
@@ -113,11 +117,19 @@ class FirebaseService {
   }
 
   static Future<Stream<QuerySnapshot>> getChats(String groupID) async {
-    return groupCollection.doc(groupID).collection('messages').orderBy('time').snapshots();
+    return groupCollection
+        .doc(groupID)
+        .collection('messages')
+        .orderBy('time')
+        .snapshots();
   }
 
   static void sendMessage(String groupID, chatMessageData) {
-    FirebaseFirestore.instance.collection('groups').doc(groupID).collection('messages').add(chatMessageData);
+    FirebaseFirestore.instance
+        .collection('groups')
+        .doc(groupID)
+        .collection('messages')
+        .add(chatMessageData);
     FirebaseFirestore.instance.collection('groups').doc(groupID).update({
       'lastMessage': {
         'content': chatMessageData['message'],
@@ -128,12 +140,19 @@ class FirebaseService {
   }
 
   static void deleteMessage(String groupID, String messageID) {
-    FirebaseFirestore.instance.collection('groups').doc(groupID).collection('messages').doc(messageID).delete();
+    FirebaseFirestore.instance
+        .collection('groups')
+        .doc(groupID)
+        .collection('messages')
+        .doc(messageID)
+        .delete();
   }
 
   static void editMessage(String groupID, String messageID, String newMessage) {
-    groupCollection.doc(groupID).collection('messages').doc(messageID).update({
-      'message': newMessage
-    });
+    groupCollection
+        .doc(groupID)
+        .collection('messages')
+        .doc(messageID)
+        .update({'message': newMessage});
   }
 }

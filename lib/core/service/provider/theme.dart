@@ -9,7 +9,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeProvider({required this.themeString});
 
   void init(BuildContext context) {
-    if(isInit) {
+    if (isInit) {
       switch (themeString) {
         case 'dark':
           selected = AppTheme.darkTheme;
@@ -17,10 +17,9 @@ class ThemeProvider extends ChangeNotifier {
           selected = AppTheme.lightTheme;
         case 'platform':
           final platform = MediaQuery.of(context).platformBrightness;
-          if(platform == Brightness.dark) {
+          if (platform == Brightness.dark) {
             selected = AppTheme.darkTheme;
-          }
-          else {
+          } else {
             selected = AppTheme.lightTheme;
           }
         default:
@@ -31,12 +30,11 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   void changeTheme() {
-    if(selected == AppTheme.lightTheme) {
+    if (selected == AppTheme.lightTheme) {
       selected = AppTheme.darkTheme;
       themeString = 'dark';
       _writeShared('dark');
-    }
-    else {
+    } else {
       selected = AppTheme.lightTheme;
       themeString = 'light';
       _writeShared('light');

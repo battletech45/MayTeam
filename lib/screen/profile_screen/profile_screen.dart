@@ -20,12 +20,12 @@ import 'package:provider/provider.dart';
 import '../../core/constant/color.dart';
 import '../../widget/animation/animated_toggle.dart';
 
-
-class ProfileScreen extends StatefulWidget{
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
   @override
   State<StatefulWidget> createState() => ProfileScreenState();
 }
+
 class ProfileScreenState extends State<ProfileScreen> {
   String? link;
   var notifications = false;
@@ -36,11 +36,14 @@ class ProfileScreenState extends State<ProfileScreen> {
       Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
 
       UploadTask uploadTask = storageRef.putFile(imageFile);
-      await uploadTask.whenComplete(() => {
-        LoggerService.logInfo('Image file uploaded.')
-      });
+      await uploadTask
+          .whenComplete(() => {LoggerService.logInfo('Image file uploaded.')});
       String downloadUrl = await storageRef.getDownloadURL();
-      context.read<AutherProvider>().user?.updateProfile(photoURL: downloadUrl).then((val) async {
+      context
+          .read<AutherProvider>()
+          .user
+          ?.updateProfile(photoURL: downloadUrl)
+          .then((val) async {
         await context.read<AutherProvider>().user?.reload();
         setState(() {
           link = context.read<AutherProvider>().user?.photoURL;
@@ -49,8 +52,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         link = downloadUrl;
       });
-    }
-    catch(e) {
+    } catch (e) {
       LoggerService.logError(e.toString());
     }
   }
@@ -59,7 +61,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    if(pickedFile != null) {
+    if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
       _uploadImageToFirebase(imageFile);
     }
@@ -80,59 +82,68 @@ class ProfileScreenState extends State<ProfileScreen> {
       appBar: AppAppBar(
         isDrawer: false,
         title: 'Profil',
-        actions: [
-          IconButton(
-              onPressed: _pickImage,
-              icon: Icon(Icons.edit)
-          )
-        ],
+        actions: [IconButton(onPressed: _pickImage, icon: Icon(Icons.edit))],
       ),
       child: Container(
-          child: Column(
-            children: <Widget>[
-              50.verticalSpace,
-              Container(
-                margin: EdgeInsets.all(15),
-                child: Center(
-                  child: CircleAvatar(
-                    backgroundColor: AppColor.borderColor,
-                    radius: 95,
-                    child: link != null ? CircleAvatar(radius: 90, backgroundImage: CachedNetworkImageProvider(link!)) : Icon(Icons.person,size: 80.0, color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.iconColor : AppColor.iconColorDark),
-                  ),
+        child: Column(
+          children: <Widget>[
+            50.verticalSpace,
+            Container(
+              margin: EdgeInsets.all(15),
+              child: Center(
+                child: CircleAvatar(
+                  backgroundColor: AppColor.borderColor,
+                  radius: 95,
+                  child: link != null
+                      ? CircleAvatar(
+                          radius: 90,
+                          backgroundImage: CachedNetworkImageProvider(link!))
+                      : Icon(Icons.person,
+                          size: 80.0,
+                          color: context.watch<ThemeProvider>().themeString ==
+                                  'light'
+                              ? AppColor.iconColor
+                              : AppColor.iconColorDark),
                 ),
               ),
-              50.verticalSpace,
-              ProfileTile(icon: Icons.person_outline_rounded, data: "${context.read<AutherProvider>().user?.displayName ?? ''}"),
-              10.verticalSpace,
-              ProfileTile(icon: Icons.alternate_email_rounded, data: "${context.read<AutherProvider>().user?.email ?? ''}"),
-              20.verticalSpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  AnimatedToggle(
-                    title: 'Bildirimler',
-                    current: notifications,
-                    first: false,
-                    second: true,
-                    leftIcon: Icons.notification_important_outlined,
-                    onChanged: (b) => setState(() => notifications = b!),
-                  ),
-                  AnimatedToggle(
+            ),
+            50.verticalSpace,
+            ProfileTile(
+                icon: Icons.person_outline_rounded,
+                data:
+                    "${context.read<AutherProvider>().user?.displayName ?? ''}"),
+            10.verticalSpace,
+            ProfileTile(
+                icon: Icons.alternate_email_rounded,
+                data: "${context.read<AutherProvider>().user?.email ?? ''}"),
+            20.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                AnimatedToggle(
+                  title: 'Bildirimler',
+                  current: notifications,
+                  first: false,
+                  second: true,
+                  leftIcon: Icons.notification_important_outlined,
+                  onChanged: (b) => setState(() => notifications = b!),
+                ),
+                AnimatedToggle(
                     title: 'Tema',
-                    current: context.watch<ThemeProvider>().themeString == 'light',
+                    current:
+                        context.watch<ThemeProvider>().themeString == 'light',
                     first: false,
                     second: true,
                     rightText: 'Koyu',
                     leftIcon: Icons.light_outlined,
                     rightIcon: Icons.mode_night_outlined,
-                    onChanged: (b) => context.read<ThemeProvider>().changeTheme()
-                  ),
-                ],
-              )
-            ],
-     ),
-    ),
+                    onChanged: (b) =>
+                        context.read<ThemeProvider>().changeTheme()),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
-
 }

@@ -9,14 +9,20 @@ import 'log.dart';
 class NotificationService {
   final BuildContext context;
   NotificationService(this.context);
-  final FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin plugin =
+      FlutterLocalNotificationsPlugin();
 
   @pragma('vm:entry-point')
-  static void onDidReceiveBackgroundNotificationResponse(NotificationResponse details) {
-    LoggerService.logInfo('onDidReceiveBackgroundNotificationResponse:payload ${details.payload}');
-    LoggerService.logInfo('onDidReceiveBackgroundNotificationResponse:actionId ${details.actionId}');
-    LoggerService.logInfo('onDidReceiveBackgroundNotificationResponse:id ${details.id}');
-    LoggerService.logInfo('onDidReceiveBackgroundNotificationResponse:notificationResponseType ${details.notificationResponseType}');
+  static void onDidReceiveBackgroundNotificationResponse(
+      NotificationResponse details) {
+    LoggerService.logInfo(
+        'onDidReceiveBackgroundNotificationResponse:payload ${details.payload}');
+    LoggerService.logInfo(
+        'onDidReceiveBackgroundNotificationResponse:actionId ${details.actionId}');
+    LoggerService.logInfo(
+        'onDidReceiveBackgroundNotificationResponse:id ${details.id}');
+    LoggerService.logInfo(
+        'onDidReceiveBackgroundNotificationResponse:notificationResponseType ${details.notificationResponseType}');
     navigatePage(details.payload);
   }
 
@@ -42,28 +48,37 @@ class NotificationService {
   }
 
   static void onDidReceiveNotificationResponse(NotificationResponse details) {
-    LoggerService.logInfo('onDidReceiveNotificationResponse:payload ${details.payload}');
-    LoggerService.logInfo('onDidReceiveNotificationResponse:actionId ${details.actionId}');
+    LoggerService.logInfo(
+        'onDidReceiveNotificationResponse:payload ${details.payload}');
+    LoggerService.logInfo(
+        'onDidReceiveNotificationResponse:actionId ${details.actionId}');
     LoggerService.logInfo('onDidReceiveNotificationResponse:id ${details.id}');
-    LoggerService.logInfo('onDidReceiveNotificationResponse:notificationResponseType ${details.notificationResponseType}');
+    LoggerService.logInfo(
+        'onDidReceiveNotificationResponse:notificationResponseType ${details.notificationResponseType}');
     navigatePage(details.payload);
   }
 
   Future<void> initNotification() async {
     LoggerService.logInfo('initNotification started');
-    AndroidInitializationSettings android = const AndroidInitializationSettings('logo');
+    AndroidInitializationSettings android =
+        const AndroidInitializationSettings('logo');
     var ios = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
       requestProvisionalPermission: true,
     );
-    var settings = InitializationSettings(android: android, iOS: ios, macOS: ios);
-    await plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+    var settings =
+        InitializationSettings(android: android, iOS: ios, macOS: ios);
+    await plugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
     LoggerService.logInfo('plugin initialize started');
     await plugin.initialize(
       settings,
-      onDidReceiveBackgroundNotificationResponse: onDidReceiveBackgroundNotificationResponse,
+      onDidReceiveBackgroundNotificationResponse:
+          onDidReceiveBackgroundNotificationResponse,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
     );
     LoggerService.logInfo('initNotification finished');
@@ -80,7 +95,8 @@ class NotificationService {
         macOS: DarwinNotificationDetails());
   }
 
-  Future<void> showNotification({int id = 0, String? title, String? body, String? payload}) async {
+  Future<void> showNotification(
+      {int id = 0, String? title, String? body, String? payload}) async {
     return plugin.show(id, title, body, notificationDetail(), payload: payload);
   }
 }

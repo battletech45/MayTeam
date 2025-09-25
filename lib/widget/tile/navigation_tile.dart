@@ -34,7 +34,9 @@ class NavigationTile extends StatelessWidget {
                 SizedBox(width: leadingPadding),
               ]
             : [],
-        didSetTitle ? Text(title!, style: AppTextStyle.description) : UIConst.zeroGap,
+        didSetTitle
+            ? Text(title!, style: AppTextStyle.description)
+            : UIConst.zeroGap,
         ...didSetTrailing
             ? [
                 const Spacer(),

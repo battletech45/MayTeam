@@ -38,7 +38,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   static final _drawerWidth = UIConst.screenSize.width * 0.8;
   static double get drawerWidth => _drawerWidth;
-  ScrollController scrollController = ScrollController(initialScrollOffset: drawerWidth);
+  ScrollController scrollController =
+      ScrollController(initialScrollOffset: drawerWidth);
   late AnimationController animationController;
   late Animation<double> animation;
   ScrollPhysics physics = const NeverScrollableScrollPhysics();
@@ -70,10 +71,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   Future<void> onNotificationClick() async {
     await notificationService.plugin.getNotificationAppLaunchDetails().then(
-          (appLaunchDetail) {
-        if (appLaunchDetail != null && appLaunchDetail.didNotificationLaunchApp) {
-          if (appLaunchDetail.notificationResponse != null && appLaunchDetail.notificationResponse!.payload != null) {
-            var json = jsonDecode(appLaunchDetail.notificationResponse!.payload!);
+      (appLaunchDetail) {
+        if (appLaunchDetail != null &&
+            appLaunchDetail.didNotificationLaunchApp) {
+          if (appLaunchDetail.notificationResponse != null &&
+              appLaunchDetail.notificationResponse!.payload != null) {
+            var json =
+                jsonDecode(appLaunchDetail.notificationResponse!.payload!);
             if (json is Map) {
               var page = json['page'];
               if (page != null) {
@@ -89,13 +93,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   Future<void> onMessageOpenedApp(RemoteMessage message) async {
     LoggerService.logInfo('onMessageOpenedApp: data: ${message.data}');
     if (message.data['page'] != null) {
-      LoggerService.logInfo('message data is not null \nnavigating: ${message.data['page']}');
+      LoggerService.logInfo(
+          'message data is not null \nnavigating: ${message.data['page']}');
       GoRouter.of(context).push(message.data['page']);
     }
   }
 
   Future<void> foregroundMessageListener(RemoteMessage message) async {
-    LoggerService.logInfo('\x1B[31mforgroundMessageListener: ${jsonEncode(message.toMap())}');
+    LoggerService.logInfo(
+        '\x1B[31mforgroundMessageListener: ${jsonEncode(message.toMap())}');
     if (message.data.isNotEmpty) {
       notificationService.showNotification(
         id: 0,
@@ -113,7 +119,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   void scrollAnimationListener() {
-    if (scrollController.offset >= 0 && scrollController.offset <= drawerWidth) {
+    if (scrollController.offset >= 0 &&
+        scrollController.offset <= drawerWidth) {
       final d = scrollController.offset / drawerWidth;
       animationController.animateTo(d, duration: Duration.zero);
     }
@@ -137,7 +144,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _getUserAuthAndJoinedGroups();
-    animationController = AnimationController(vsync: this, duration: UIConst.animationDuration, value: 1);
+    animationController = AnimationController(
+        vsync: this, duration: UIConst.animationDuration, value: 1);
     animation = Tween<double>(begin: 0.5, end: 0).animate(animationController);
     scrollController.addListener(scrollAnimationListener);
     scrollController.addListener(scrollPhysicsListener);
@@ -160,37 +168,35 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             SizedBox(height: 20.0),
             Text("You've not joined any group, tap on the 'search' icon"),
           ],
-        )
-    );
+        ));
   }
 
   Widget groupsList() {
-    return StreamBuilder <DocumentSnapshot>(
+    return StreamBuilder<DocumentSnapshot>(
       stream: _groups,
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if(snapshot.hasData) {
+        if (snapshot.hasData) {
           var data = snapshot.data;
-          if(data!['chats'] != null) {
-            if(data['chats'].length != 0) {
+          if (data!['chats'] != null) {
+            if (data['chats'].length != 0) {
               return ListView.builder(
                   physics: BouncingScrollPhysics(),
                   itemCount: data['chats'].length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     int reqIndex = data['chats'].length - index - 1;
-                    return GroupTile(userName: data['displayName'], groupID: _destructureId(data['chats'][reqIndex]), groupName: _destructureName(data['chats'][reqIndex]));
-                  }
-              );
-            }
-            else {
+                    return GroupTile(
+                        userName: data['displayName'],
+                        groupID: _destructureId(data['chats'][reqIndex]),
+                        groupName: _destructureName(data['chats'][reqIndex]));
+                  });
+            } else {
               return noGroupWidget();
             }
-          }
-          else {
+          } else {
             return noGroupWidget();
           }
-        }
-        else {
+        } else {
           return AnimatedLogo();
         }
       },
@@ -198,7 +204,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   }
 
   _getUserAuthAndJoinedGroups() async {
-    FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid).then((Stream<DocumentSnapshot> snapshots) {
+    FirebaseService.getUserGroups(context.read<AutherProvider>().user!.uid)
+        .then((Stream<DocumentSnapshot> snapshots) {
       setState(() {
         _groups = snapshots;
       });
@@ -219,10 +226,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       child: PopScope(
         canPop: canpop,
         onPopInvoked: (didPop) {
-          if(canpop) {
+          if (canpop) {
             return;
           }
-          scrollController.animateTo(drawerWidth, duration: UIConst.animationDuration, curve: Curves.ease);
+          scrollController.animateTo(drawerWidth,
+              duration: UIConst.animationDuration, curve: Curves.ease);
         },
         child: Listener(
           behavior: HitTestBehavior.opaque,
@@ -237,10 +245,12 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             if (isDragging == true) {
               isDragging = false;
               if (scrollController.offset >= drawerWidth * 0.5) {
-                scrollController.animateTo(drawerWidth, duration: UIConst.animationDuration, curve: Curves.ease);
+                scrollController.animateTo(drawerWidth,
+                    duration: UIConst.animationDuration, curve: Curves.ease);
                 return;
               }
-              scrollController.animateTo(0, duration: UIConst.animationDuration, curve: Curves.ease);
+              scrollController.animateTo(0,
+                  duration: UIConst.animationDuration, curve: Curves.ease);
               return;
             }
           },
@@ -249,103 +259,117 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             controller: scrollController,
             scrollDirection: Axis.horizontal,
             physics: physics,
-            child: Row(
-              children: [
-                AppDrawer(
-                    width: drawerWidth,
-                    onWillCloseDrawer: () async {
-                      await scrollController.animateTo(drawerWidth, duration: UIConst.animationDuration, curve: Curves.ease);
-                    }
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    if (scrollController.offset != drawerWidth) {
-                      await scrollController.animateTo(drawerWidth, duration: UIConst.animationDuration, curve: Curves.ease);
-                    }
-                  },
-                  child: SizedBox(
-                    width: UIConst.screenSize.width,
-                    height: UIConst.screenSize.height,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        AppScaffold(
-                          appBar: AppAppBar(
-                            isDrawer: true,
-                            progress: animationController,
-                            actions: [
-                              IconButton(
-                                onPressed: () async {
-                                  context.showAppDialog(
-                                    AppAlertDialog(
-                                      title: 'Yeni Oda Oluştur',
-                                      leftButtonText: 'Oluştur',
-                                      leftFunction: () async {
-                                        await FirebaseService.createGroup(context.read<AutherProvider>().user!.uid, context.read<AutherProvider>().user?.displayName ?? "", groupNameController.text);
-                                      },
-                                      height: 100.h,
-                                      customIcon: Center(
-                                        child: AppFormField(
-                                          hintText: 'Grup Adı',
-                                          controller: groupNameController,
-                                          validator: AppValidator.passwordValidator,
-                                          keyboardType: TextInputType.text,
-                                          autofillHints: const [AutofillHints.name],
-                                          textInputAction: TextInputAction.done,
-                                        ),
-                                      ),
-                                    )
-                                  );
-                                },
-                                icon: Icon(Icons.add),
-                              )
-                            ],
-                            leading: ScaleButton(
+            child: Row(children: [
+              AppDrawer(
+                  width: drawerWidth,
+                  onWillCloseDrawer: () async {
+                    await scrollController.animateTo(drawerWidth,
+                        duration: UIConst.animationDuration,
+                        curve: Curves.ease);
+                  }),
+              GestureDetector(
+                onTap: () async {
+                  if (scrollController.offset != drawerWidth) {
+                    await scrollController.animateTo(drawerWidth,
+                        duration: UIConst.animationDuration,
+                        curve: Curves.ease);
+                  }
+                },
+                child: SizedBox(
+                  width: UIConst.screenSize.width,
+                  height: UIConst.screenSize.height,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      AppScaffold(
+                        appBar: AppAppBar(
+                          isDrawer: true,
+                          progress: animationController,
+                          actions: [
+                            IconButton(
+                              onPressed: () async {
+                                context.showAppDialog(AppAlertDialog(
+                                  title: 'Yeni Oda Oluştur',
+                                  leftButtonText: 'Oluştur',
+                                  leftFunction: () async {
+                                    await FirebaseService.createGroup(
+                                        context
+                                            .read<AutherProvider>()
+                                            .user!
+                                            .uid,
+                                        context
+                                                .read<AutherProvider>()
+                                                .user
+                                                ?.displayName ??
+                                            "",
+                                        groupNameController.text);
+                                  },
+                                  height: 100.h,
+                                  customIcon: Center(
+                                    child: AppFormField(
+                                      hintText: 'Grup Adı',
+                                      controller: groupNameController,
+                                      validator: AppValidator.passwordValidator,
+                                      keyboardType: TextInputType.text,
+                                      autofillHints: const [AutofillHints.name],
+                                      textInputAction: TextInputAction.done,
+                                    ),
+                                  ),
+                                ));
+                              },
+                              icon: Icon(Icons.add),
+                            )
+                          ],
+                          leading: ScaleButton(
                               decoration: BoxDecoration(
-                                  color: Colors.transparent,
+                                color: Colors.transparent,
                               ),
                               waitAnimation: true,
-                                bordered: false,
-                                onTap: () async {
-                                  if (scrollController.offset == drawerWidth) {
-                                    await scrollController.animateTo(0, duration: UIConst.animationDuration, curve: Curves.ease);
-                                    return;
-                                  }
-                                  await scrollController.animateTo(drawerWidth, duration: UIConst.animationDuration, curve: Curves.ease);
-                                },
-                                child: Center(child: const Icon(Icons.menu))
-                            ),
-                          ),
-                          backgroundImage: false,
-                          child: groupsList(),
-                          floatingActionButton: FloatingActionButton(
-                            elevation: 2.0,
-                            backgroundColor: AppColor.secondaryBackgroundColor,
-                            onPressed: () {
-                              context.push('/search');
-                            },
-                            child: Icon(Icons.search, color: AppColor.iconColor),
-                          ),
+                              bordered: false,
+                              onTap: () async {
+                                if (scrollController.offset == drawerWidth) {
+                                  await scrollController.animateTo(0,
+                                      duration: UIConst.animationDuration,
+                                      curve: Curves.ease);
+                                  return;
+                                }
+                                await scrollController.animateTo(drawerWidth,
+                                    duration: UIConst.animationDuration,
+                                    curve: Curves.ease);
+                              },
+                              child: Center(child: const Icon(Icons.menu))),
                         ),
-                        AnimatedBuilder(
-                          animation: animation,
-                          builder: (context, _) {
-                            return Opacity(
-                              opacity: animation.value,
-                              child: Material(
-                                color: Colors.black,
-                                //? [MaterialType.transparency] tıklama geçirgenliği için kullanıldı
-                                type: animation.value == 0 ? MaterialType.transparency : MaterialType.button,
-                              ),
-                            );
+                        backgroundImage: false,
+                        child: groupsList(),
+                        floatingActionButton: FloatingActionButton(
+                          elevation: 2.0,
+                          backgroundColor: AppColor.secondaryBackgroundColor,
+                          onPressed: () {
+                            context.push('/search');
                           },
+                          child: Icon(Icons.search, color: AppColor.iconColor),
                         ),
-                      ],
-                    ),
+                      ),
+                      AnimatedBuilder(
+                        animation: animation,
+                        builder: (context, _) {
+                          return Opacity(
+                            opacity: animation.value,
+                            child: Material(
+                              color: Colors.black,
+                              //? [MaterialType.transparency] tıklama geçirgenliği için kullanıldı
+                              type: animation.value == 0
+                                  ? MaterialType.transparency
+                                  : MaterialType.button,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ]
-            ),
+              ),
+            ]),
           ),
         ),
       ),

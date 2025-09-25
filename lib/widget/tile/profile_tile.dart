@@ -15,9 +15,15 @@ class ProfileTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      decoration: BoxDecoration(border: Border.all(width: 1.0, color: context.watch<ThemeProvider>().themeString == 'light' ? AppColor.primaryTextColor : AppColor.primaryTextColorDark), borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+          border: Border.all(
+              width: 1.0,
+              color: context.watch<ThemeProvider>().themeString == 'light'
+                  ? AppColor.primaryTextColor
+                  : AppColor.primaryTextColorDark),
+          borderRadius: BorderRadius.circular(8)),
       margin: EdgeInsets.symmetric(horizontal: 30.0),
-      child:Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 25.r),

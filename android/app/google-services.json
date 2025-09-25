@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:336574716884:android:8d594285a499c846b91441",
+        "mobilesdk_app_id": "1:336574716884:android:6dc907067849db86b91441",
         "android_client_info": {
-          "package_name": "com.example.mayteam"
+          "package_name": "com.devora.mayteam"
         }
       },
       "oauth_client": [],

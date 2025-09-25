@@ -18,7 +18,17 @@ class AnimatedToggle extends StatelessWidget {
   final String? leftText;
   final String? rightText;
 
-  const AnimatedToggle({super.key, this.current, this.first, this.second, required this.onChanged, required this.leftIcon, required this.title, this.rightIcon, this.leftText, this.rightText});
+  const AnimatedToggle(
+      {super.key,
+      this.current,
+      this.first,
+      this.second,
+      required this.onChanged,
+      required this.leftIcon,
+      required this.title,
+      this.rightIcon,
+      this.leftText,
+      this.rightText});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,10 +45,8 @@ class AnimatedToggle extends StatelessWidget {
                       color: AppColor.primaryBackgroundColor,
                       spreadRadius: 1,
                       blurRadius: 2,
-                      offset: Offset(0, 1.5)
-                  )
-                ]
-            ),
+                      offset: Offset(0, 1.5))
+                ]),
             iconBuilder: (val) => Icon(
               val! ? leftIcon : rightIcon ?? Icons.power_settings_new_rounded,
               size: 32.r,
@@ -48,8 +56,7 @@ class AnimatedToggle extends StatelessWidget {
                 backgroundColor: AppColor.primaryBackgroundColor,
                 indicatorColor: b! ? AppColor.brightBlue : AppColor.red,
                 borderRadius: BorderRadius.circular(50.r),
-                indicatorBorderRadius: BorderRadius.circular(50.r)
-            ),
+                indicatorBorderRadius: BorderRadius.circular(50.r)),
             height: 50.h,
             borderWidth: 5.0,
             current: current,
@@ -57,7 +64,10 @@ class AnimatedToggle extends StatelessWidget {
             second: second,
             onChanged: onChanged,
             textBuilder: (t) => Center(
-              child: Text(t! ? leftText ?? 'Açık' : rightText ??  'Kapalı', style: AppTextStyle.description.copyWith(fontWeight: FontWeight.w600, color: AppColor.primaryTextColor)),
+              child: Text(t! ? leftText ?? 'Açık' : rightText ?? 'Kapalı',
+                  style: AppTextStyle.description.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColor.primaryTextColor)),
             ),
           ),
         ],

@@ -82,7 +82,8 @@ class _AppFormFieldState extends State<AppFormField> {
       autocorrect: true,
       enableIMEPersonalizedLearning: true,
       enableSuggestions: true,
-      style: AppTextStyle.contactCardTitle.copyWith(color: AppColor.primaryTextColor),
+      style: AppTextStyle.contactCardTitle
+          .copyWith(color: AppColor.primaryTextColor),
       onFieldSubmitted: widget.onFieldSubmitted,
       textCapitalization: widget.textCapitalization,
       onTapOutside: (event) {
@@ -93,30 +94,37 @@ class _AppFormFieldState extends State<AppFormField> {
       maxLines: widget.isBigField ? 5 : 1,
       cursorColor: AppColor.primaryTextColor,
       decoration: InputDecoration(
-        border: widget.border ?? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.r),
-            borderSide: BorderSide(color: AppColor.borderColor, width: 1)
-        ),
-        focusedBorder: widget.selectedBorder ?? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.r),
-            borderSide: BorderSide(color: AppColor.primaryTextColor, width: 1)
-        ),
+        border: widget.border ??
+            OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide: BorderSide(color: AppColor.borderColor, width: 1)),
+        focusedBorder: widget.selectedBorder ??
+            OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.r),
+                borderSide:
+                    BorderSide(color: AppColor.primaryTextColor, width: 1)),
         prefixIcon: widget.prefixIcon,
-        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: widget.isBigField ? 12 : 0).r,
+        contentPadding: EdgeInsets.symmetric(
+                horizontal: 12, vertical: widget.isBigField ? 12 : 0)
+            .r,
         hintText: widget.hintText,
-        hintStyle: AppTextStyle.smallButtonText.copyWith(color: AppColor.iconColor),
+        hintStyle:
+            AppTextStyle.smallButtonText.copyWith(color: AppColor.iconColor),
         helperText: widget.helperText ?? "",
         suffixIcon: widget.obscureText
             ? IconButton(
-          onPressed: () {
-            setState(() {
-              isVisible = !isVisible;
-            });
-          },
-          icon: Icon(
-            !isVisible ? Icons.visibility_off_outlined : Icons.visibility_outlined, color: AppColor.red,
-          ),
-        )
+                onPressed: () {
+                  setState(() {
+                    isVisible = !isVisible;
+                  });
+                },
+                icon: Icon(
+                  !isVisible
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: AppColor.red,
+                ),
+              )
             : null,
         suffixIconColor: AppColor.primaryBackgroundColor,
       ),

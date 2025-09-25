@@ -10,9 +10,12 @@ class AppColor {
   static const secondaryBackgroundColor = Color(0xffF0F0F0);
   static const secondaryTextColor = Color(0xff333333);
 
-  static const brightBlue = Color(0xff007BFF); //for buttons links and highlights
-  static const green = Color(0xff28A745); // for success messages and notifications
-  static const amber = Color(0xffFFC107); //for warnings and important highlights
+  static const brightBlue =
+      Color(0xff007BFF); //for buttons links and highlights
+  static const green =
+      Color(0xff28A745); // for success messages and notifications
+  static const amber =
+      Color(0xffFFC107); //for warnings and important highlights
   static const red = Color(0xffDC3545); //for error messages and alerts
 
   static const outgoingBubbleBackground = Color(0xffE1FFC7);
@@ -20,7 +23,6 @@ class AppColor {
 
   static const borderColor = Color(0xffE0E0E0);
   static const iconColor = Color(0xff6C757D);
-
 
   // Dark Theme Colors
   static const primaryBackgroundColorDark = Color(0xff121212);

@@ -8,13 +8,11 @@ import '../../core/util/validator.dart';
 import '../../widget/form/app_form_field.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
-
   @override
   State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-
   final TextEditingController oldController = TextEditingController();
   final TextEditingController newController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -24,8 +22,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     setState(() {
       _isLoading = true;
     });
-    final _credential = EmailAuthProvider.credential(email: context.read<AutherProvider>().user!.email!, password: oldPassword);
-    await context.read<AutherProvider>().user!.reauthenticateWithCredential(_credential);
+    final _credential = EmailAuthProvider.credential(
+        email: context.read<AutherProvider>().user!.email!,
+        password: oldPassword);
+    await context
+        .read<AutherProvider>()
+        .user!
+        .reauthenticateWithCredential(_credential);
     await context.read<AutherProvider>().user!.updatePassword(newPassword);
     setState(() {
       _isLoading = false;
@@ -73,11 +76,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: 50.0),
-                  Text('Forget Password', style: TextStyle(color: Colors.white, fontSize: 25.0)),
+                  Text('Forget Password',
+                      style: TextStyle(color: Colors.white, fontSize: 25.0)),
                   SizedBox(height: 30.0),
                   Icon(Icons.key, size: 100.0),
                   SizedBox(height: 30.0),
-                  Text('Please enter your new password here.', style: TextStyle(color: Colors.white, fontSize: 15.0)),
+                  Text('Please enter your new password here.',
+                      style: TextStyle(color: Colors.white, fontSize: 15.0)),
                   SizedBox(height: 20.0),
                   AppFormField(
                     hintText: 'Old Password',
@@ -100,21 +105,22 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ),
                   SizedBox(height: 30.0),
                   MaterialButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(80.0)),
                       color: Colors.red,
-                      child: _isLoading ? CircularProgressIndicator(color: Colors.black, strokeWidth: 3.5) : Text('Reset Password'),
+                      child: _isLoading
+                          ? CircularProgressIndicator(
+                              color: Colors.black, strokeWidth: 3.5)
+                          : Text('Reset Password'),
                       onPressed: () {
                         _resetPassword(oldController.text, newController.text);
-                      }
-                  ),
+                      }),
                   MaterialButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(80.0)),
                       color: Colors.black,
                       child: Text('Back'),
-                      onPressed: () => {
-                        context.go('/')
-                      }
-                  )
+                      onPressed: () => {context.go('/')})
                 ],
               )
             ],

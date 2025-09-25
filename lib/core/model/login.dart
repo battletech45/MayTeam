@@ -34,7 +34,8 @@ class LoginModel {
 
   String toJson() => json.encode(toMap());
 
-  factory LoginModel.fromJson(String source) => LoginModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory LoginModel.fromJson(String source) =>
+      LoginModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'LoginModel(email: $email, password: $password)';

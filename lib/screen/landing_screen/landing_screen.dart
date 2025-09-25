@@ -18,9 +18,10 @@ String? fcmToken;
 String? apnsToken;
 
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage  message) async {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
+
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
 
@@ -28,15 +29,14 @@ class LandingScreen extends StatefulWidget {
   State<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> with SingleTickerProviderStateMixin  {
-
+class _LandingScreenState extends State<LandingScreen>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
     try {
       initApp();
-    }
-    catch (e) {
+    } catch (e) {
       LoggerService.logError(e.toString());
     }
   }
@@ -44,16 +44,15 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
   void initApp() async {
     //await initFirebaseMessage();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) {
-      if(context.read<AutherProvider>().isAuth) {
-        if(context.read<AutherProvider>().user!.emailVerified) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+        .then((value) {
+      if (context.read<AutherProvider>().isAuth) {
+        if (context.read<AutherProvider>().user!.emailVerified) {
           context.go('/');
-        }
-        else {
+        } else {
           context.go('/verify');
         }
-      }
-      else {
+      } else {
         context.go('/login');
       }
     });
@@ -61,7 +60,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
 
   Future<void> initFirebaseMessage() async {
     var messaging = FirebaseMessaging.instance;
-    if(Platform.isIOS) {
+    if (Platform.isIOS) {
       LoggerService.logInfo('APNS TOKEN: $apnsToken');
       apnsToken = await messaging.getAPNSToken();
       LoggerService.logInfo('APNS TOKEN: $apnsToken');
@@ -75,7 +74,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    if(DeviceService.isInit == false) {
+    if (DeviceService.isInit == false) {
       DeviceService.init(context);
     }
     return Scaffold(

@@ -21,7 +21,8 @@ class MemberTile extends StatelessWidget {
           fontsize: 21.sp,
         ),
         title: Text(rawUserName, style: TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text("You are a member of $groupName", style: TextStyle(fontSize: 13.0)),
+        subtitle: Text("You are a member of $groupName",
+            style: TextStyle(fontSize: 13.0)),
       ),
     );
   }

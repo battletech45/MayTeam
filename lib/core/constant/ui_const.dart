@@ -21,7 +21,8 @@ class UIConst {
   static const horizontal = EdgeInsets.symmetric(horizontal: paddingValue);
   static Radius radius = const Radius.circular(radiusValue).r;
   static BorderRadius cardBorderRadius = BorderRadius.circular(radiusValue).r;
-  static RoundedRectangleBorder rectangelBorder = RoundedRectangleBorder(borderRadius: cardBorderRadius);
+  static RoundedRectangleBorder rectangelBorder =
+      RoundedRectangleBorder(borderRadius: cardBorderRadius);
 
   static SizedBox verticalBlankSpace = 21.vb;
   static SizedBox horizontalBlankSpace = 12.hb;
@@ -32,22 +33,33 @@ class UIConst {
     border: Border.all(color: AppColor.borderColor, style: BorderStyle.solid),
   );
 
-  static BoxDecoration boxDecoration = BoxDecoration(color: AppColor.primaryBackgroundColor, borderRadius: UIConst.cardBorderRadius);
+  static BoxDecoration boxDecoration = BoxDecoration(
+      color: AppColor.primaryBackgroundColor,
+      borderRadius: UIConst.cardBorderRadius);
 
   /// ([paddingValue] = 12.0) * [multipler]
-  static SizedBox horizontalGap([double multipler = 1]) => SizedBox(width: paddingValue * multipler);
+  static SizedBox horizontalGap([double multipler = 1]) =>
+      SizedBox(width: paddingValue * multipler);
 
   /// ([paddingValue] = 12.0) * [multipler]
-  static SizedBox verticalGap([double multipler = 1]) => SizedBox(height: paddingValue * multipler);
+  static SizedBox verticalGap([double multipler = 1]) =>
+      SizedBox(height: paddingValue * multipler);
 
   static SizedBox get zeroGap => const SizedBox.shrink();
 
-  static EdgeInsets pagePadding = const EdgeInsets.symmetric(horizontal: paddingValue).r;
+  static EdgeInsets pagePadding =
+      const EdgeInsets.symmetric(horizontal: paddingValue).r;
   static EdgeInsets inputTopMargin = const EdgeInsets.only(top: 5).r;
-  static EdgeInsets pageScrollPadding(BuildContext context) => EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + paddingValue).r;
+  static EdgeInsets pageScrollPadding(BuildContext context) => EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom + paddingValue)
+      .r;
 
-  static EdgeInsets pageFullPadding(BuildContext context) =>
-      EdgeInsets.only(left: paddingValue, right: paddingValue, top: paddingValue, bottom: MediaQuery.of(context).padding.bottom + paddingValue).r;
+  static EdgeInsets pageFullPadding(BuildContext context) => EdgeInsets.only(
+          left: paddingValue,
+          right: paddingValue,
+          top: paddingValue,
+          bottom: MediaQuery.of(context).padding.bottom + paddingValue)
+      .r;
 
   static void init(BuildContext context) {
     if (didInit) return;

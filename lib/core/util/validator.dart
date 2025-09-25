@@ -73,8 +73,11 @@ class AppValidator {
           final List<String> date = value.split(RegExp(r'/'));
           final int month = int.parse(date.first);
           final int year = int.parse('20${date.last}');
-          final int lastDayOfMonth = month < 12 ? DateTime(year, month + 1, 0).day : DateTime(year + 1, 1, 0).day;
-          final DateTime cardDate = DateTime(year, month, lastDayOfMonth, 23, 59, 59, 999);
+          final int lastDayOfMonth = month < 12
+              ? DateTime(year, month + 1, 0).day
+              : DateTime(year + 1, 1, 0).day;
+          final DateTime cardDate =
+              DateTime(year, month, lastDayOfMonth, 23, 59, 59, 999);
           if (cardDate.isBefore(now) || month > 12 || month == 0) {
             return 'Geçmiş tarih girilemez';
           }
@@ -104,7 +107,8 @@ class AppValidator {
 
   static FutureOr<String?> phoneNumberValidator(PhoneNumber? value) {
     if (value == null) return 'Hatalı giriş';
-    if (value.completeNumber.isEmpty) return emptyValidator(value.completeNumber);
+    if (value.completeNumber.isEmpty)
+      return emptyValidator(value.completeNumber);
     try {
       final isValid = value.isValidNumber();
       if (isValid == false) return 'Geçersiz Telefon Numarası';

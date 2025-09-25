@@ -12,16 +12,21 @@ class AppTheme {
     fontFamily: 'NotoSans',
     useMaterial3: true,
     brightness: Brightness.light,
-    colorScheme: const ColorScheme.light(primary: AppColor.primaryBackgroundColor, secondary: AppColor.secondaryBackgroundColor),
-    appBarTheme: const AppBarTheme(iconTheme: _iconTheme, backgroundColor: AppColor.primaryBackgroundColor),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(backgroundColor: AppColor.primaryBackgroundColor, unselectedItemColor: AppColor.secondaryBackgroundColor),
-    pageTransitionsTheme: const PageTransitionsTheme(
-      builders: {
-        TargetPlatform.android: SlidingPageTransition(),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
-      }
-    ),
-    progressIndicatorTheme: const ProgressIndicatorThemeData(color: AppColor.red),
+    colorScheme: const ColorScheme.light(
+        primary: AppColor.primaryBackgroundColor,
+        secondary: AppColor.secondaryBackgroundColor),
+    appBarTheme: const AppBarTheme(
+        iconTheme: _iconTheme,
+        backgroundColor: AppColor.primaryBackgroundColor),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColor.primaryBackgroundColor,
+        unselectedItemColor: AppColor.secondaryBackgroundColor),
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      TargetPlatform.android: SlidingPageTransition(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+    }),
+    progressIndicatorTheme:
+        const ProgressIndicatorThemeData(color: AppColor.red),
     indicatorColor: AppColor.brightBlue,
     inputDecorationTheme: _inputTheme,
     filledButtonTheme: filledButtonTheme,
@@ -37,43 +42,56 @@ class AppTheme {
   );
 
   static ThemeData darkTheme = ThemeData(
-    fontFamily: 'NotoSans',
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    colorScheme: const ColorScheme.dark(primary: AppColor.primaryBackgroundColorDark, secondary: AppColor.secondaryBackgroundColorDark),
-    appBarTheme: const AppBarTheme(iconTheme: _iconThemeDark, backgroundColor: AppColor.primaryBackgroundColorDark),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(backgroundColor: AppColor.primaryBackgroundColorDark, unselectedItemColor: AppColor.secondaryBackgroundColorDark),
-    pageTransitionsTheme: const PageTransitionsTheme(
-      builders: {
+      fontFamily: 'NotoSans',
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorScheme: const ColorScheme.dark(
+          primary: AppColor.primaryBackgroundColorDark,
+          secondary: AppColor.secondaryBackgroundColorDark),
+      appBarTheme: const AppBarTheme(
+          iconTheme: _iconThemeDark,
+          backgroundColor: AppColor.primaryBackgroundColorDark),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: AppColor.primaryBackgroundColorDark,
+          unselectedItemColor: AppColor.secondaryBackgroundColorDark),
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
         TargetPlatform.android: SlidingPageTransition(),
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
-      }
-    ),
-    progressIndicatorTheme: const ProgressIndicatorThemeData(color: AppColor.red),
-    indicatorColor: AppColor.brightBlueDark,
-    inputDecorationTheme: _inputThemeDark,
-    filledButtonTheme: filledButtonTheme,
-    textButtonTheme: _textButtonThemeDark,
-    cardTheme: _cardThemeDark,
-    bottomSheetTheme: _bottomSheetTheme,
-    dialogTheme: dialogTheme,
-    datePickerTheme: _datePickerTheme,
-    checkboxTheme: _checkboxThemeData,
-    dividerTheme: _dividerThemeDataDark,
-    snackBarTheme: _snackBarThemeDataDark,
-    iconTheme: _iconThemeDark
-  );
+      }),
+      progressIndicatorTheme:
+          const ProgressIndicatorThemeData(color: AppColor.red),
+      indicatorColor: AppColor.brightBlueDark,
+      inputDecorationTheme: _inputThemeDark,
+      filledButtonTheme: filledButtonTheme,
+      textButtonTheme: _textButtonThemeDark,
+      cardTheme: _cardThemeDark,
+      bottomSheetTheme: _bottomSheetTheme,
+      dialogTheme: dialogTheme,
+      datePickerTheme: _datePickerTheme,
+      checkboxTheme: _checkboxThemeData,
+      dividerTheme: _dividerThemeDataDark,
+      snackBarTheme: _snackBarThemeDataDark,
+      iconTheme: _iconThemeDark);
 
-  static const IconThemeData _iconTheme = IconThemeData(size: 20, color: AppColor.iconColor);
-  static const IconThemeData _iconThemeDark = IconThemeData(size: 20, color: AppColor.iconColorDark);
-  static const DividerThemeData _dividerThemeData = DividerThemeData(space: 0, color: AppColor.iconColor);
-  static const DividerThemeData _dividerThemeDataDark = DividerThemeData(space: 0, color: AppColor.iconColorDark);
-  static const CheckboxThemeData _checkboxThemeData = CheckboxThemeData(shape: CircleBorder());
-  static const _datePickerTheme = DatePickerThemeData(surfaceTintColor: Colors.transparent);
+  static const IconThemeData _iconTheme =
+      IconThemeData(size: 20, color: AppColor.iconColor);
+  static const IconThemeData _iconThemeDark =
+      IconThemeData(size: 20, color: AppColor.iconColorDark);
+  static const DividerThemeData _dividerThemeData =
+      DividerThemeData(space: 0, color: AppColor.iconColor);
+  static const DividerThemeData _dividerThemeDataDark =
+      DividerThemeData(space: 0, color: AppColor.iconColorDark);
+  static const CheckboxThemeData _checkboxThemeData =
+      CheckboxThemeData(shape: CircleBorder());
+  static const _datePickerTheme =
+      DatePickerThemeData(surfaceTintColor: Colors.transparent);
 
   static final BottomSheetThemeData _bottomSheetTheme = BottomSheetThemeData(
     surfaceTintColor: Colors.transparent,
-    shape: RoundedRectangleBorder(borderRadius: const BorderRadius.vertical(top: Radius.circular(UIConst.radiusValue)).r),
+    shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(UIConst.radiusValue))
+            .r),
     showDragHandle: true,
   );
 
@@ -113,7 +131,9 @@ class AppTheme {
   static final _cardTheme = CardThemeData(
     surfaceTintColor: Colors.transparent,
     color: AppColor.outgoingBubbleBackground,
-    shape: UIConst.rectangelBorder.copyWith(side: const BorderSide(color: AppColor.borderColor, width: 1, style: BorderStyle.solid)),
+    shape: UIConst.rectangelBorder.copyWith(
+        side: const BorderSide(
+            color: AppColor.borderColor, width: 1, style: BorderStyle.solid)),
     margin: EdgeInsets.zero,
     elevation: 0,
   );
